@@ -1,0 +1,13 @@
+$bg-1: rgba(210, 238, 255, 0.2);
+$bg-2: #dd179d;
+$fg-1: black;
+$fg-2: red;
+
+body {
+  background: $bg-1;
+  color: $fg-1;
+}
+
+h1 {
+  text-align: center;
+}
