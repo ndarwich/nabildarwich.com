@@ -1,0 +1,15 @@
+{
+  "name": "Nabil Darwich - Home",
+  "short_name": "ND",
+  "author": "Nabil Darwich",
+  "description": "Nabil Darwich Personal Website",
+  "icons": [{
+        "src": "img/nd-icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }],
+  "start_url": "/index.html",
+  "display": "browser",
+  "background_color": "#D2EEFF",
+  "theme_color": "#D2EEFF"
+}
