@@ -1,7 +1,9 @@
+@import 'mixins';
+
 $bg-1: rgba(210, 238, 255, 0.2);
-$bg-2: #dd179d;
+$bg-2: rgba(#7a82ff, 0.27);
 $fg-1: black;
-$fg-2: red;
+$fg-2: white;
 
 body {
   background: $bg-1;
@@ -10,4 +12,34 @@ body {
 
 h1 {
   text-align: center;
+}
+
+nav {
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+  li {
+    text-align: center;
+    display: inline-block;
+    padding: 15px;
+    margin-left: 35px;
+    @include border-radius(20px);
+    a {
+      font-size: 1.2em;
+      font-family: arial;
+      color: $fg-1;
+    }
+    a:hover {
+      color: $fg-2;
+    }
+  }
+  li:hover {
+    background: $bg-2;
+  }
+}
+
+a {
+  user-select: none;
+  color: $fg-1;
+  text-decoration: none;
 }

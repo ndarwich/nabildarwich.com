@@ -1,0 +1,29 @@
+.project-container {
+  margin: 30px;
+  display: grid;
+  grid-gap: 5px;
+  width: auto;
+  height: -webkit-fill-available;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  overflow: auto; }
+
+.project-item {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+  border-radius: 50px;
+  background-color: white;
+  min-height: 300px;
+  max-height: max-content;
+  padding: 20px;
+  text-align: center;
+  font-family: arial;
+  font-weight: bold;
+  font-size: 2em; }
+  .project-item a {
+    margin: auto;
+    display: block;
+    width: 100%;
+    height: 100%; }
