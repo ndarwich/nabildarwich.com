@@ -23,27 +23,27 @@
   grid-area: enjoy2; }
 
 .i4 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/marmaris.jpg");
   grid-area: travel0; }
 
 .i5 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/london.jpg");
   grid-area: travel1; }
 
 .i6 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/clearwater.jpg");
   grid-area: travel2; }
 
 .i7 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/phoenix.jpg");
   grid-area: travel3; }
 
 .i8 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/san-francisco.jpg");
   grid-area: travel4; }
 
 .i9 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/blacksburg.jpg");
   grid-area: travel5; }
 
 .i10 {
@@ -67,11 +67,11 @@
   grid-area: txt3; }
 
 .bio-item {
-  -webkit-background-size: 100% auto;
-  -moz-background-size: 100% auto;
-  -ms-background-size: 100% auto;
-  -o-background-size: 100% auto;
-  background-size: 100% auto;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
   -webkit-background-repeat: no-repeat;
   -moz-background-repeat: no-repeat;
   -ms-background-repeat: no-repeat;
@@ -82,6 +82,13 @@
   -ms-background-position: center;
   -o-background-position: center;
   background-position: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  border: 2px solid black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
   font-family: arial;
   font-size: 24px;
   font-weight: bold;

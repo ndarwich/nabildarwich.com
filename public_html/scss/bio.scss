@@ -39,32 +39,32 @@
 }
 
 .i4 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/marmaris.jpg");
   grid-area: travel0;
 }
 
 .i5 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/london.jpg");
   grid-area: travel1;
 }
 
 .i6 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/clearwater.jpg");
   grid-area: travel2;
 }
 
 .i7 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/phoenix.jpg");
   grid-area: travel3;
 }
 
 .i8 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/san-francisco.jpg");
   grid-area: travel4;
 }
 
 .i9 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/blacksburg.jpg");
   grid-area: travel5;
 }
 
@@ -95,9 +95,16 @@
 }
 
 .bio-item {
-  @include background-size(100% auto);
+  @include background-size(100% 100%);
   @include background-repeat(no-repeat);
   @include background-position(center);
+  @include border-radius(10px);
+  border: 2px solid black;
+  text-shadow:
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
   font-family: arial;
   font-size: 24px;
   font-weight: bold;
