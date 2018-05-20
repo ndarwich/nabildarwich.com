@@ -16,3 +16,19 @@
        -o-background-size: $property;
           background-size: $property;
 }
+
+@mixin background-repeat($property) {
+  -webkit-background-repeat: $property;
+     -moz-background-repeat: $property;
+      -ms-background-repeat: $property;
+       -o-background-repeat: $property;
+          background-repeat: $property;
+}
+
+@mixin background-position($property) {
+  -webkit-background-position: $property;
+     -moz-background-position: $property;
+      -ms-background-position: $property;
+       -o-background-position: $property;
+          background-position: $property;
+}

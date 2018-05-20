@@ -14,26 +14,27 @@
   'travel0 travel1 travel2 travel3 travel4 travel5'
   'txt3 txt3 txt3 txt3 txt3 txt3'
   'search0 search0 search0 search1 search1 search1';
-  grid-gap:10px;
+  grid-gap:15px;
+  overflow-x: auto;
 }
 
 .i0 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/flag-morocco.png");
   grid-area: flag;
 }
 
 .i1 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/traveling.jpg");
   grid-area: enjoy0;
 }
 
 .i2 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/researching.jpg");
   grid-area: enjoy1;
 }
 
 .i3 {
-  background-image: url("../img/nd-icon.png");
+  background-image: url("../img/games.jpg");
   grid-area: enjoy2;
 }
 
@@ -94,11 +95,19 @@
 }
 
 .bio-item {
-  @include background-size(cover);
+  @include background-size(100% auto);
+  @include background-repeat(no-repeat);
+  @include background-position(center);
   font-family: arial;
   font-size: 24px;
   font-weight: bold;
   color: white;
-  height: 100px;
+  user-select: none;
+  min-height: 200px;
   text-align: center;
+}
+
+h2 {
+  text-align: center;
+  line-height: 0.5em;
 }
