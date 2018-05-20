@@ -32,3 +32,11 @@
        -o-background-position: $property;
           background-position: $property;
 }
+
+@mixin transition($property) {
+  -webkit-transition: $property;
+     -moz-transition: $property;
+      -ms-transition: $property;
+       -o-transition: $property;
+          transition: $property;
+}

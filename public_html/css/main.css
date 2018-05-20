@@ -6,29 +6,48 @@ h1 {
   text-align: center; }
 
 nav {
+  background-color: black;
+  padding: 1px;
+  width: 100%;
   display: block;
-  margin: 0 auto;
-  width: fit-content; }
+  align-content: center;
+  justify-content: center;
+  text-align: center; }
   nav li {
     text-align: center;
+    width: 8em;
     display: inline-block;
-    padding: 15px;
+    padding: 10px;
     margin-left: 35px;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
-    border-radius: 20px; }
+    border-radius: 20px;
+    transition: all 0.2s ease-in 0s; }
     nav li a {
       font-size: 1.2em;
       font-family: arial;
-      color: black; }
-    nav li a:hover {
       color: white; }
+    nav li.active {
+      background: #8e00c2; }
   nav li:hover {
-    background: rgba(122, 130, 255, 0.27); }
+    background: rgba(28, 0, 255, 0.7); }
 
 a {
   user-select: none;
-  color: black;
+  color: white;
   text-decoration: none; }
+
+#page-body {
+  opacity: 0;
+  -webkit-transition: all 0.5s ease-in 0s;
+  -moz-transition: all 0.5s ease-in 0s;
+  -ms-transition: all 0.5s ease-in 0s;
+  -o-transition: all 0.5s ease-in 0s;
+  transition: all 0.5s ease-in 0s; }
+  #page-body.load-page {
+    opacity: 1; }
+
+body {
+  margin: 0px 0px 0px 8px; }

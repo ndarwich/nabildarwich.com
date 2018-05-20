@@ -57,7 +57,8 @@
   grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); }
 
 .bio-item {
-  overflow: hidden;
+  display: grid;
+  align-items: flex-end;
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   -ms-background-size: 100% 100%;
