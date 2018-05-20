@@ -1,72 +1,63 @@
 .bio-container {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: minmax(100px, auto);
-  grid-template-areas: 'txt0 txt0 txt0 txt0 txt0 txt0' 'flag flag flag flag flag flag' 'txt1 txt1 txt1 txt1 txt1 txt1' 'enjoy0 enjoy0 enjoy1 enjoy1 enjoy2 enjoy2' 'txt2 txt2 txt2 txt2 txt2 txt2' 'travel0 travel1 travel2 travel3 travel4 travel5' 'txt3 txt3 txt3 txt3 txt3 txt3' 'search0 search0 search0 search1 search1 search1';
-  grid-gap: 15px;
-  overflow-x: auto; }
+  /*grid-template-areas:
+  'txt0 txt0 txt0 txt0 txt0 txt0'
+  'flag flag flag flag flag flag'
+  'txt1 txt1 txt1 txt1 txt1 txt1'
+  'enjoy0 enjoy0 enjoy1 enjoy1 enjoy2 enjoy2'
+  'txt2 txt2 txt2 txt2 txt2 txt2'
+  'travel0 travel1 travel2 travel3 travel4 travel5'
+  'txt3 txt3 txt3 txt3 txt3 txt3'
+  'search0 search0 search0 search1 search1 search1';*/
+  grid-gap: 15px; }
 
 .i0 {
-  background-image: url("../img/flag-morocco.png");
-  grid-area: flag; }
+  background-image: url("../img/flag-morocco.png"); }
 
 .i1 {
-  background-image: url("../img/traveling.jpg");
-  grid-area: enjoy0; }
+  background-image: url("../img/traveling.png"); }
 
 .i2 {
-  background-image: url("../img/researching.jpg");
-  grid-area: enjoy1; }
+  background-image: url("../img/researching.png"); }
 
 .i3 {
-  background-image: url("../img/games.jpg");
-  grid-area: enjoy2; }
+  background-image: url("../img/games.png"); }
 
 .i4 {
-  background-image: url("../img/marmaris.jpg");
-  grid-area: travel0; }
+  background-image: url("../img/marmaris.png"); }
 
 .i5 {
-  background-image: url("../img/london.jpg");
-  grid-area: travel1; }
+  background-image: url("../img/london.png"); }
 
 .i6 {
-  background-image: url("../img/clearwater.jpg");
-  grid-area: travel2; }
+  background-image: url("../img/clearwater.jpg"); }
 
 .i7 {
-  background-image: url("../img/phoenix.jpg");
-  grid-area: travel3; }
+  background-image: url("../img/phoenix.jpg"); }
 
 .i8 {
-  background-image: url("../img/san-francisco.jpg");
-  grid-area: travel4; }
+  background-image: url("../img/san-francisco.jpg"); }
 
 .i9 {
-  background-image: url("../img/blacksburg.jpg");
-  grid-area: travel5; }
+  background-image: url("../img/blacksburg.jpg"); }
 
 .i10 {
-  background-image: url("../img/nd-icon.png");
-  grid-area: search0; }
+  background-image: url("../img/achievements.png"); }
 
 .i11 {
-  background-image: url("../img/nd-icon.png");
-  grid-area: search1; }
+  background-image: url("../img/meaning.jpg"); }
 
-.h0 {
-  grid-area: txt0; }
+.c1 {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
 
-.h1 {
-  grid-area: txt1; }
+.c2 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
-.h2 {
-  grid-area: txt2; }
-
-.h3 {
-  grid-area: txt3; }
+.c3 {
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); }
 
 .bio-item {
+  overflow: hidden;
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   -ms-background-size: 100% 100%;
@@ -99,4 +90,31 @@
 
 h2 {
   text-align: center;
-  line-height: 0.5em; }
+  line-height: 0.1em; }
+
+/*// debug - experimenting with css grid
+.test-container {
+  display: grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 300px));
+}
+
+.test-item-1 {
+  @include border-radius(10px);
+  border: 4px solid black;
+}
+
+.test-item-2 {
+  @include border-radius(10px);
+  border: 4px solid black;
+}
+
+.test-item-3 {
+  @include border-radius(10px);
+  border: 4px solid black;
+}
+
+.test-item-4 {
+  @include border-radius(10px);
+  border: 4px solid black;
+}
+*/
