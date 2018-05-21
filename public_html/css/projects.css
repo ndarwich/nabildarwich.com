@@ -1,12 +1,8 @@
 .project-container {
-  margin: 30px;
   display: grid;
-  grid-gap: 5px;
-  width: auto;
-  height: -webkit-fill-available;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-  overflow: auto; }
+  margin: 2vh 1vw;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(48vw, 1fr)); }
 
 .project-item {
   -webkit-border-radius: 50px;
@@ -14,16 +10,41 @@
   -ms-border-radius: 50px;
   -o-border-radius: 50px;
   border-radius: 50px;
-  background-color: white;
-  min-height: 300px;
-  max-height: max-content;
-  padding: 20px;
-  text-align: center;
+  -webkit-background-size: auto auto;
+  -moz-background-size: auto auto;
+  -ms-background-size: auto auto;
+  -o-background-size: auto auto;
+  background-size: auto auto;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  -webkit-background-position: center;
+  -moz-background-position: center;
+  -ms-background-position: center;
+  -o-background-position: center;
+  background-position: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  user-select: none;
+  background-color: black;
+  color: white;
+  min-height: 250px;
+  min-width: 400px;
+  height: 50vh;
+  border: 6px double #8e00c2;
+  display: grid;
   font-family: arial;
   font-weight: bold;
-  font-size: 2em; }
-  .project-item a {
-    margin: auto;
-    display: block;
-    width: 100%;
-    height: 100%; }
+  font-size: 2em;
+  cursor: pointer;
+  text-align: center; }
+
+#tetriworld {
+  background-image: url("../img/tetriworld.png"); }
+
+.jg-container {
+  display: grid;
+  margin: 2vh 1vw;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(36vw, 1fr)); }

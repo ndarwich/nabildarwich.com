@@ -8,17 +8,13 @@ h1 {
 nav {
   background-color: black;
   padding: 1px;
-  width: 100%;
   display: block;
-  align-content: center;
-  justify-content: center;
   text-align: center; }
   nav li {
     text-align: center;
     width: 8em;
     display: inline-block;
-    padding: 10px;
-    margin-left: 35px;
+    padding: 0.5em;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;

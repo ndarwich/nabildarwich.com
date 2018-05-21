@@ -1,12 +1,5 @@
 @import 'mixins';
 
-$bg-1: rgba(210, 238, 255, 0.2);
-$bg-2: rgba(#1c00ff, 0.7);
-$bg-3: black;
-$bg-4: rgb(142, 0, 194);
-$fg-1: black;
-$fg-2: white;
-
 body {
   background: $bg-1;
   color: $fg-1;
@@ -19,17 +12,13 @@ h1 {
 nav {
   background-color: $bg-3;
   padding: 1px;
-  width: 100%;
   display: block;
-  align-content: center;
-  justify-content: center;
   text-align: center;
   li {
     text-align: center;
     width: 8em;
     display: inline-block;
-    padding: 10px;
-    margin-left: 35px;
+    padding: 0.5em;
     @include border-radius(20px);
     transition: all 0.2s ease-in 0s;
     a {

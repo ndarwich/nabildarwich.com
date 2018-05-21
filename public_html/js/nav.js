@@ -1,8 +1,6 @@
-
 $(function(){
-  $('#navigation').load('navigation.html');
+  $('#navigation').load('./components/navigation.html');
 });
-
 
 $(window).on( "load", function() {
     $('#page-body').addClass('load-page');
