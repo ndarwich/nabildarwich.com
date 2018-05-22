@@ -29,9 +29,8 @@
   user-select: none;
   background-color: black;
   color: white;
-  min-height: 250px;
+  min-height: 300px;
   min-width: 400px;
-  height: 50vh;
   border: 6px double #8e00c2;
   font-family: arial;
   font-weight: bold;
@@ -44,6 +43,9 @@
 
 #dormbuddy {
   background-image: url("../img/dormbuddy.png"); }
+
+#javagames {
+  background-image: url("../img/javagames.png"); }
 
 .jg-container {
   display: grid;
@@ -107,3 +109,24 @@
   padding-bottom: 3px;
   margin-bottom: 3px;
   border-bottom: 1px dashed #868686; }
+
+.jg-item-header h1 {
+  padding: 1rem;
+  margin: 0; }
+
+#back-button {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px solid black;
+  user-select: none;
+  cursor: pointer;
+  position: absolute;
+  margin: 0.5rem 1vw;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(28, 0, 255, 0.7);
+  padding: 0.5rem 1rem; }

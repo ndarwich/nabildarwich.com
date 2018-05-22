@@ -5,19 +5,16 @@ $(window).on("load", function() {
   $("#page-body").load("../pages/projectsMenu.html");
 
   $("body").on("click", "#dormbuddy", () => {
-    loadItem(0);
-  });
-  $("body").on("click", "#javagames", () => {
     loadItem(1);
   });
-  $("body").on("click", "#tetriworld", () => {
+  $("body").on("click", "#javagames", () => {
     loadItem(2);
   });
-  $("body").on("click", "#websites", () => {
+  $("body").on("click", "#tetriworld", () => {
     loadItem(3);
   });
   $("body").on("click", "#back-button", () => {
-    loadItem(4);
+    loadItem(0);
   });
   $("body").on("click", ".jg-item", (event) => {
     window.open(baseGameURL);
@@ -33,19 +30,16 @@ loadItem = (itemId) => {
   clearBody();
   switch (itemId) {
     case 0:
-      $("#page-body").load("../pages/dormbuddy.html");
+      $("#page-body").load("../pages/projectsMenu.html");
       break;
     case 1:
-      $("#page-body").load("../pages/javagames.html");
+      $("#page-body").load("../pages/dormbuddy.html");
       break;
     case 2:
-      $("#page-body").load("./pages/tetriworld.html");
+      $("#page-body").load("../pages/javagames.html");
       break;
     case 3:
-      $("#page-body").load("../pages/websites.html");
-      break;
-    case 4:
-      $("#page-body").load("../pages/projectsMenu.html");
+      $("#page-body").load("./pages/tetriworld.html");
       break;
     default:
       break;
