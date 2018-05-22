@@ -25,7 +25,6 @@
   min-width: 400px;
   height: 50vh;
   border: 6px double $bg-4;
-  display: grid;
   font-family: arial;
   font-weight: bold;
   font-size: 2em;
@@ -35,6 +34,10 @@
 
 #tetriworld {
   background-image: url('../img/tetriworld.png');
+}
+
+#dormbuddy {
+  background-image: url('../img/dormbuddy.png');
 }
 
 //css for specific pages
