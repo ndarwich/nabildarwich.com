@@ -1,14 +1,4 @@
-const baseGameURL = "https://github.com/ndarwich/\
-Nabil-s-Game-Collection/tree/master/";
-
-const games = [
-  "HillHeroes",
-  "Snake",
-  "BattleSnake",
-  "TetrisWorld",
-  "Chess",
-  "Rocketman",
-];
+const baseGameURL = "https://github.com/ndarwich/Nabil-s-Game-Collection/";
 
 $(window).on("load", function() {
   loadPage(2);
@@ -30,7 +20,7 @@ $(window).on("load", function() {
     loadItem(4);
   });
   $("body").on("click", ".jg-item", (event) => {
-    window.open(baseGameURL + games[$(event.target).index()]);
+    window.open(baseGameURL);
   });
 
 });
