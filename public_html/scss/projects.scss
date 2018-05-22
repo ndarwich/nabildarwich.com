@@ -40,7 +40,50 @@
 //css for specific pages
 .jg-container {
   display: grid;
-  margin: 2vh 1vw;
   grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(36vw, 1fr));
+  margin: 2vh 1vw;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 0.8fr));
+  justify-content: center;
+}
+
+.jg-item {
+  min-height: 300px;
+  min-width: 400px;
+  background-color: rgb(228, 228, 228);
+  border: 2px solid black;
+  @include border-radius(50px);
+  @include background-size(auto auto);
+  @include background-position(center);
+  @include border-radius(10px);
+  user-select: none;
+  cursor: pointer;
+  img {
+    float: left;
+    height:250px;
+    margin: 10px;
+    @include border-radius(20px);
+  }
+  span{
+    font: arial;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8em;
+  }
+}
+
+.jg-game-info {
+  display: flex;
+}
+
+.jg-game-info-body {
+  margin-top: 15px;
+  display: inline;
+  font-size: 1.1em;
+}
+
+.jg-game-info-body-section {
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+  border-bottom: 1px dashed rgb(134, 134, 134);
 }
