@@ -129,13 +129,28 @@
   border: 2px solid black;
   user-select: none;
   cursor: pointer;
-  position: absolute;
   margin: 0.5rem 1vw;
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
   background-color: rgba(28, 0, 255, 0.7);
   padding: 0.5rem 1rem; }
+  @media only screen and (max-width: 320px) {
+    #back-button {
+      display: block;
+      width: fit-content;
+      position: relative;
+      margin: 1vw auto; } }
+  @media only screen and (min-width: 320px) {
+    #back-button {
+      display: block;
+      width: fit-content;
+      position: relative;
+      margin: 1vw auto; } }
+  @media only screen and (min-width: 992px) {
+    #back-button {
+      position: absolute;
+      margin: 0.5rem 1vw; } }
 
 .tw-body {
   flex: 1;

@@ -15,7 +15,7 @@
   grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
   }
   @media only screen and #{$device-xl} {
-  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
   }
 }
 
@@ -117,13 +117,28 @@
   border: 2px solid black;
   user-select: none;
   cursor: pointer;
-  position: absolute;
   margin: 0.5rem 1vw;
   font-size: 1.5rem;
   font-weight: bold;
   color: $fg-2;
   background-color: $bg-2;
   padding: 0.5rem 1rem;
+  @media only screen and #{$device-xxs} {
+    display: block;
+    width: fit-content;
+    position: relative;
+    margin: 1vw auto;
+  }
+  @media only screen and #{$device-xs} {
+    display: block;
+    width: fit-content;
+    position: relative;
+    margin: 1vw auto;
+  }
+  @media only screen and #{$device-l} {
+    position: absolute;
+    margin: 0.5rem 1vw;
+  }
 }
 
 .tw-body {
