@@ -1,3 +1,17 @@
+$bg-1: rgba(210, 238, 255, 0.2);
+$bg-2: rgba(#1c00ff, 0.7);
+$bg-3: black;
+$bg-4: rgb(142, 0, 194);
+$fg-1: black;
+$fg-2: white;
+$device-xxs: "(max-width : 320px)";
+$device-xs: "(min-width : 320px)";
+$device-s:  "(min-width : 600px)";
+$device-m:  "(min-width : 768px)";
+$device-l:  "(min-width : 992px)";
+$device-xl:  "(min-width : 1200px)";
+
+
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
      -moz-border-radius: $radius;

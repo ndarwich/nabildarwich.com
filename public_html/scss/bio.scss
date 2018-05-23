@@ -78,14 +78,41 @@
 
 .c1 {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(80vmin, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(80vmin, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
 }
 
 .c2 {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(24vmax, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(24vmax, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
 }
 
 .c3 {
   grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(80vmin, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(80vmin, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+  }
 }
 
 .bio-item {

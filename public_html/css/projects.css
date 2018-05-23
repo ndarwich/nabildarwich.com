@@ -1,12 +1,20 @@
 .project-container {
-  margin: 30px;
   display: grid;
-  grid-gap: 5px;
-  width: auto;
-  height: -webkit-fill-available;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-  overflow: auto; }
+  margin: 2vh 1vw;
+  grid-gap: 10px; }
+  @media only screen and (max-width: 320px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr)); } }
+  @media only screen and (min-width: 320px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(94vmin, 94vmax));
+      margin: 2vmin 3%; } }
+  @media only screen and (min-width: 992px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); } }
+  @media only screen and (min-width: 1200px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); } }
 
 .project-item {
   -webkit-border-radius: 50px;
@@ -14,16 +22,264 @@
   -ms-border-radius: 50px;
   -o-border-radius: 50px;
   border-radius: 50px;
-  background-color: white;
+  -webkit-background-size: auto auto;
+  -moz-background-size: auto auto;
+  -ms-background-size: auto auto;
+  -o-background-size: auto auto;
+  background-size: auto auto;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  -webkit-background-position: left;
+  -moz-background-position: left;
+  -ms-background-position: left;
+  -o-background-position: left;
+  background-position: left;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  user-select: none;
+  background-color: black;
+  color: white;
   min-height: 300px;
-  max-height: max-content;
-  padding: 20px;
-  text-align: center;
+  border: 6px double #8e00c2;
   font-family: arial;
   font-weight: bold;
-  font-size: 2em; }
-  .project-item a {
-    margin: auto;
+  font-size: 2em;
+  cursor: pointer;
+  text-align: center; }
+
+#tetriworld {
+  background-image: url("../img/tetriworld.png"); }
+
+#dormbuddy {
+  background-image: url("../img/dormbuddy.png"); }
+
+#javagames {
+  background-image: url("../img/javagames.png"); }
+
+.jg-container {
+  display: grid;
+  grid-gap: 10px;
+  margin: 2vh 1vw;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 0.8fr));
+  justify-content: center; }
+
+.jg-item {
+  min-height: 300px;
+  min-width: 400px;
+  background-color: #e4e4e4;
+  border: 2px solid black;
+  -webkit-background-size: auto auto;
+  -moz-background-size: auto auto;
+  -ms-background-size: auto auto;
+  -o-background-size: auto auto;
+  background-size: auto auto;
+  -webkit-background-position: center;
+  -moz-background-position: center;
+  -ms-background-position: center;
+  -o-background-position: center;
+  background-position: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  user-select: none;
+  cursor: pointer; }
+  .jg-item img {
+    float: left;
+    height: 250px;
+    margin: 10px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    border-radius: 20px; }
+  .jg-item span {
+    font: arial;
     display: block;
-    width: 100%;
-    height: 100%; }
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8em; }
+
+.jg-game-info {
+  display: flex; }
+
+.jg-game-info-body {
+  margin-top: 15px;
+  display: inline;
+  font-size: 1.1em; }
+
+.jg-game-info-body-section {
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+  border-bottom: 1px dashed #868686; }
+
+.project-header h1 {
+  padding: 1rem;
+  margin: 0; }
+
+#back-button {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px solid black;
+  user-select: none;
+  cursor: pointer;
+  margin: 0.5rem 1vw;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(28, 0, 255, 0.7);
+  padding: 0.5rem 1rem; }
+  @media only screen and (max-width: 320px) {
+    #back-button {
+      display: block;
+      width: fit-content;
+      position: relative;
+      margin: 1vw auto; } }
+  @media only screen and (min-width: 320px) {
+    #back-button {
+      display: block;
+      width: fit-content;
+      position: relative;
+      margin: 1vw auto; } }
+  @media only screen and (min-width: 992px) {
+    #back-button {
+      position: absolute;
+      margin: 0.5rem 1vw; } }
+
+.tw-body {
+  flex: 1;
+  margin: 0vw;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 4px double black;
+  display: grid;
+  grid-template-rows: auto auto 1fr; }
+  .tw-body h2 {
+    margin: 0 0 1rem 0;
+    text-align: center; }
+
+.tw-section {
+  border: 2px double black;
+  background-color: white;
+  padding: 1vw; }
+
+.tw-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr; }
+
+.tw-img-container {
+  margin: 0.5rem auto;
+  padding-right: 0.5rem; }
+  @media only screen and (max-width: 320px) {
+    .tw-img-container {
+      display: block;
+      width: 90vw;
+      margin: 0 auto; } }
+  @media only screen and (min-width: 320px) {
+    .tw-img-container {
+      display: block;
+      width: 90vw;
+      margin: 0 auto; } }
+  @media only screen and (min-width: 992px) {
+    .tw-img-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(405px, 1fr)); } }
+  @media only screen and (max-width: 320px) {
+    .tw-img-container img {
+      width: 100%;
+      margin: 1vw auto; } }
+  @media only screen and (min-width: 320px) {
+    .tw-img-container img {
+      width: 100%; } }
+
+.tw-game-mode {
+  border: 2px dashed black;
+  background-color: rgba(210, 238, 255, 0.2); }
+  @media only screen and (max-width: 320px) {
+    .tw-game-mode img {
+      display: block;
+      width: 100%; } }
+  @media only screen and (min-width: 320px) {
+    .tw-game-mode img {
+      display: block;
+      width: 100%; } }
+  @media only screen and (min-width: 992px) {
+    .tw-game-mode img {
+      width: 450px;
+      height: 250px;
+      float: left;
+      margin: 0 0.5rem 0 0; } }
+  .tw-game-mode h3 {
+    display: block;
+    text-align: center; }
+    @media only screen and (min-width: 992px) {
+      .tw-game-mode h3 {
+        display: inline-block;
+        margin: 0.5rem auto; } }
+  .tw-game-mode p {
+    padding: 0 0.5rem; }
+
+.tw-block, .tw-block-row, .tw-block-col {
+  background-image: url("../img/tw-block.png");
+  -webkit-background-repeat: repeat;
+  -moz-background-repeat: repeat;
+  -ms-background-repeat: repeat;
+  -o-background-repeat: repeat;
+  background-repeat: repeat;
+  -webkit-background-position: top left;
+  -moz-background-position: top left;
+  -ms-background-position: top left;
+  -o-background-position: top left;
+  background-position: top left; }
+
+.tw-block-row {
+  height: 40px;
+  width: 100%; }
+
+.tw-block-col {
+  flex: 1;
+  max-width: 80px; }
+
+.tw-flex {
+  display: flex; }
+
+#play-tw {
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #00a7de;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border-radius: 20px;
+  border: 2px solid black; }
+  @media only screen and (max-width: 320px) {
+    #play-tw {
+      font-size: 1rem;
+      margin: 0.5rem auto; } }
+  @media only screen and (min-width: 320px) {
+    #play-tw {
+      font-size: 2rem;
+      padding: 0.5rem;
+      margin: 0.5rem auto; } }
+  @media only screen and (min-width: 768px) {
+    #play-tw {
+      font-size: 3rem; } }
+  @media only screen and (min-width: 992px) {
+    #play-tw {
+      font-size: 4rem;
+      padding: 1rem 2rem;
+      margin: 1rem auto; } }
