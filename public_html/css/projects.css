@@ -177,21 +177,54 @@
   grid-template-rows: 1fr 1fr 1fr; }
 
 .tw-img-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(405px, 1fr));
   margin: 0.5rem auto;
   padding-right: 0.5rem; }
+  @media only screen and (max-width: 320px) {
+    .tw-img-container {
+      display: block;
+      width: 90vw;
+      margin: 0 auto; } }
+  @media only screen and (min-width: 320px) {
+    .tw-img-container {
+      display: block;
+      width: 90vw;
+      margin: 0 auto; } }
+  @media only screen and (min-width: 992px) {
+    .tw-img-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(405px, 1fr)); } }
+  @media only screen and (max-width: 320px) {
+    .tw-img-container img {
+      width: 100%;
+      margin: 1vw auto; } }
+  @media only screen and (min-width: 320px) {
+    .tw-img-container img {
+      width: 100%; } }
 
 .tw-game-mode {
   border: 2px dashed black;
   background-color: rgba(210, 238, 255, 0.2); }
-  .tw-game-mode img {
-    width: 450px;
-    height: 250px;
-    float: left;
-    margin: 0 0.5rem 0 0; }
+  @media only screen and (max-width: 320px) {
+    .tw-game-mode img {
+      display: block;
+      width: 100%; } }
+  @media only screen and (min-width: 320px) {
+    .tw-game-mode img {
+      display: block;
+      width: 100%; } }
+  @media only screen and (min-width: 992px) {
+    .tw-game-mode img {
+      width: 450px;
+      height: 250px;
+      float: left;
+      margin: 0 0.5rem 0 0; } }
   .tw-game-mode h3 {
+    display: block;
     text-align: center; }
+    @media only screen and (min-width: 992px) {
+      .tw-game-mode h3 {
+        display: inline-block;
+        margin: 0.5rem auto; } }
   .tw-game-mode p {
     padding: 0 0.5rem; }
 
@@ -220,14 +253,11 @@
 
 #play-tw {
   color: white;
-  margin: 1rem auto;
   text-align: center;
   cursor: pointer;
   user-select: none;
-  font-size: 4rem;
   font-weight: bold;
   font-family: arial;
-  padding: 1rem 2rem;
   background-color: #00a7de;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -235,3 +265,20 @@
   -o-border-radius: 20px;
   border-radius: 20px;
   border: 2px solid black; }
+  @media only screen and (max-width: 320px) {
+    #play-tw {
+      font-size: 1rem;
+      margin: 0.5rem auto; } }
+  @media only screen and (min-width: 320px) {
+    #play-tw {
+      font-size: 2rem;
+      padding: 0.5rem;
+      margin: 0.5rem auto; } }
+  @media only screen and (min-width: 768px) {
+    #play-tw {
+      font-size: 3rem; } }
+  @media only screen and (min-width: 992px) {
+    #play-tw {
+      font-size: 4rem;
+      padding: 1rem 2rem;
+      margin: 1rem auto; } }
