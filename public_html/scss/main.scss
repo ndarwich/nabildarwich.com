@@ -30,6 +30,18 @@ nav {
     &.active {
       background: $bg-4;
     }
+    @media only screen and #{$device-xxs} {
+      min-width: 48vw;
+      max-width: 80vw;
+      padding: 0.5vw 0;
+    }
+    @media only screen and #{$device-xs} {
+      max-width: 23vw;
+      padding: 1vw 0;
+    }
+    @media only screen and #{$device-m} {
+      padding: 0.5 em;
+    }
   }
   li:hover {
     background: $bg-2;

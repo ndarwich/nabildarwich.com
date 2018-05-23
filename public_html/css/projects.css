@@ -2,7 +2,10 @@
   display: grid;
   margin: 2vh 1vw;
   grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(48vw, 1fr)); }
+  grid-template-columns: repeat(auto-fit, minmax(48vmax, 1fr)); }
+  @media only screen and (min-width: 320px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(80vmax, 1fr)); } }
 
 .project-item {
   -webkit-border-radius: 50px;
@@ -37,6 +40,10 @@
   font-size: 2em;
   cursor: pointer;
   text-align: center; }
+  @media only screen and (min-width: 320px) {
+    .project-item {
+      min-height: 60vw;
+      min-width: 80vw; } }
 
 #tetriworld {
   background-image: url("../img/tetriworld.png"); }
