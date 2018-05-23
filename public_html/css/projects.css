@@ -242,7 +242,8 @@
   background-position: top left; }
 
 .tw-block-row {
-  height: 40px; }
+  height: 40px;
+  width: 100%; }
 
 .tw-block-col {
   flex: 1;

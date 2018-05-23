@@ -233,12 +233,13 @@
 .tw-block-row {
   @extend .tw-block;
   height: 40px;
+  width: 100%;
 }
 
 .tw-block-col{
   @extend .tw-block;
   flex: 1; //same height as the body
-  max-width:80px;
+  max-width:80px; //allow for collapsing in smaller screens
 }
 
 .tw-flex {
