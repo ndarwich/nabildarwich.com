@@ -26,7 +26,7 @@ nav {
       font-size: 1.2em;
       font-family: arial;
       color: white; }
-    nav li.active {
+    nav li .active {
       background: #8e00c2; }
     @media only screen and (max-width: 320px) {
       nav li {

@@ -1,11 +1,20 @@
 .project-container {
   display: grid;
   margin: 2vh 1vw;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(48vmax, 1fr)); }
+  grid-gap: 10px; }
+  @media only screen and (max-width: 320px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr)); } }
   @media only screen and (min-width: 320px) {
     .project-container {
-      grid-template-columns: repeat(auto-fit, minmax(80vmax, 1fr)); } }
+      grid-template-columns: repeat(auto-fit, minmax(94vmin, 94vmax));
+      margin: 2vmin 3%; } }
+  @media only screen and (min-width: 992px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); } }
+  @media only screen and (min-width: 1200px) {
+    .project-container {
+      grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); } }
 
 .project-item {
   -webkit-border-radius: 50px;
@@ -19,11 +28,11 @@
   -o-background-size: auto auto;
   background-size: auto auto;
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-  -webkit-background-position: center;
-  -moz-background-position: center;
-  -ms-background-position: center;
-  -o-background-position: center;
-  background-position: center;
+  -webkit-background-position: left;
+  -moz-background-position: left;
+  -ms-background-position: left;
+  -o-background-position: left;
+  background-position: left;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -33,17 +42,12 @@
   background-color: black;
   color: white;
   min-height: 300px;
-  min-width: 400px;
   border: 6px double #8e00c2;
   font-family: arial;
   font-weight: bold;
   font-size: 2em;
   cursor: pointer;
   text-align: center; }
-  @media only screen and (min-width: 320px) {
-    .project-item {
-      min-height: 60vw;
-      min-width: 80vw; } }
 
 #tetriworld {
   background-image: url("../img/tetriworld.png"); }

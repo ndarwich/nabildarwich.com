@@ -4,9 +4,18 @@
   display: grid;
   margin: 2vh 1vw;
   grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(48vmax, 1fr));
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr));
+  }
   @media only screen and #{$device-xs} {
-    grid-template-columns: repeat(auto-fit, minmax(80vmax, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(94vmin, 94vmax));
+    margin: 2vmin 3%;
+  }
+  @media only screen and #{$device-l} {
+  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+  }
+  @media only screen and #{$device-xl} {
+  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
   }
 }
 
@@ -19,23 +28,18 @@
     1px -1px 0 black,
     -1px 1px 0 black,
     1px 1px 0 black;
-  @include background-position(center);
+  @include background-position(left);
   @include border-radius(10px);
   user-select: none;
   background-color: $fg-1;
   color: $fg-2;
   min-height: 300px;
-  min-width: 400px;
   border: 6px double $bg-4;
   font-family: arial;
   font-weight: bold;
   font-size: 2em;
   cursor: pointer;
   text-align: center;
-  @media only screen and #{$device-xs} {
-    min-height: 60vw;
-    min-width: 80vw;
-  }
 }
 
 #tetriworld {

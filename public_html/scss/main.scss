@@ -27,7 +27,7 @@ nav {
       font-family: arial;
       color: $fg-2;
     }
-    &.active {
+    .active {
       background: $bg-4;
     }
     @media only screen and #{$device-xxs} {
