@@ -132,17 +132,18 @@
     border: 2px double black;
     background-color: white;
     padding: 1vw;
-    img {
-      display: block;
-      margin: 0.5rem auto 0 auto;
-      width: 450px;
-      height: 250px;
-    }
 }
 
 .tw-container {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
+}
+
+.tw-img-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(405px, 1fr));
+  margin: 0.5rem auto;
+  padding-right: 0.5rem;
 }
 
 .tw-game-mode {
@@ -185,6 +186,7 @@
 #play-tw {
   color: white;
   margin: 1rem auto;
+  text-align: center;
   cursor: pointer;
   user-select: none;
   font-size: 4rem;
