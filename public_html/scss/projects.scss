@@ -57,7 +57,6 @@
   min-width: 400px;
   background-color: rgb(228, 228, 228);
   border: 2px solid black;
-  @include border-radius(50px);
   @include background-size(auto auto);
   @include background-position(center);
   @include border-radius(10px);
@@ -94,7 +93,7 @@
   border-bottom: 1px dashed rgb(134, 134, 134);
 }
 
-.jg-item-header {
+.project-header {
   //edit h1 defaults to make room for back button
   h1 {
     padding: 1rem;
@@ -109,9 +108,90 @@
   cursor: pointer;
   position: absolute;
   margin: 0.5rem 1vw;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: $fg-2;
   background-color: $bg-2;
   padding: 0.5rem 1rem;
+}
+
+.tw-body {
+  flex: 1;
+  margin: 0vw;
+  @include border-radius(5px);
+  border: 4px double black;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  h2 {
+    margin: 0 0 1rem 0;
+    text-align: center;
+  }
+}
+
+.tw-section {
+    border: 2px double black;
+    background-color: white;
+    padding: 1vw;
+    img {
+      display: block;
+      margin: 0.5rem auto 0 auto;
+      width: 450px;
+      height: 250px;
+    }
+}
+
+.tw-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.tw-game-mode {
+  border: 2px dashed black;
+  background-color: $bg-1;
+  img {
+    width: 450px;
+    height: 250px;
+    float: left;
+    margin: 0 0.5rem 0 0;
+  }
+  h3 {
+    text-align: center;
+  }
+  p {
+    padding: 0 0.5rem;
+  }
+}
+.tw-block {
+  background-image: url('../img/tw-block.png');
+  @include background-repeat(repeat);
+  @include background-position(top left);
+}
+
+.tw-block-row {
+  @extend .tw-block;
+  height: 40px;
+}
+
+.tw-block-col{
+  @extend .tw-block;
+  flex: 1; //same height as the body
+  max-width:80px;
+}
+
+.tw-flex {
+  display: flex;
+}
+
+#play-tw {
+  color: white;
+  margin: 1rem auto;
+  cursor: pointer;
+  user-select: none;
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: arial;
+  padding: 1rem 2rem;
+  background-color: rgb(0,167,222);
+  @include border-radius(20px);
+  border: 2px solid black;
 }

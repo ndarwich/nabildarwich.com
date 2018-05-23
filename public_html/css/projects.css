@@ -59,11 +59,6 @@
   min-width: 400px;
   background-color: #e4e4e4;
   border: 2px solid black;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  -ms-border-radius: 50px;
-  -o-border-radius: 50px;
-  border-radius: 50px;
   -webkit-background-size: auto auto;
   -moz-background-size: auto auto;
   -ms-background-size: auto auto;
@@ -110,7 +105,7 @@
   margin-bottom: 3px;
   border-bottom: 1px dashed #868686; }
 
-.jg-item-header h1 {
+.project-header h1 {
   padding: 1rem;
   margin: 0; }
 
@@ -125,8 +120,90 @@
   cursor: pointer;
   position: absolute;
   margin: 0.5rem 1vw;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: white;
   background-color: rgba(28, 0, 255, 0.7);
   padding: 0.5rem 1rem; }
+
+.tw-body {
+  flex: 1;
+  margin: 0vw;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 4px double black;
+  display: grid;
+  grid-template-rows: auto auto 1fr; }
+  .tw-body h2 {
+    margin: 0 0 1rem 0;
+    text-align: center; }
+
+.tw-section {
+  border: 2px double black;
+  background-color: white;
+  padding: 1vw; }
+  .tw-section img {
+    display: block;
+    margin: 0.5rem auto 0 auto;
+    width: 450px;
+    height: 250px; }
+
+.tw-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr; }
+
+.tw-game-mode {
+  border: 2px dashed black;
+  background-color: rgba(210, 238, 255, 0.2); }
+  .tw-game-mode img {
+    width: 450px;
+    height: 250px;
+    float: left;
+    margin: 0 0.5rem 0 0; }
+  .tw-game-mode h3 {
+    text-align: center; }
+  .tw-game-mode p {
+    padding: 0 0.5rem; }
+
+.tw-block, .tw-block-row, .tw-block-col {
+  background-image: url("../img/tw-block.png");
+  -webkit-background-repeat: repeat;
+  -moz-background-repeat: repeat;
+  -ms-background-repeat: repeat;
+  -o-background-repeat: repeat;
+  background-repeat: repeat;
+  -webkit-background-position: top left;
+  -moz-background-position: top left;
+  -ms-background-position: top left;
+  -o-background-position: top left;
+  background-position: top left; }
+
+.tw-block-row {
+  height: 40px; }
+
+.tw-block-col {
+  flex: 1;
+  max-width: 80px; }
+
+.tw-flex {
+  display: flex; }
+
+#play-tw {
+  color: white;
+  margin: 1rem auto;
+  cursor: pointer;
+  user-select: none;
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: arial;
+  padding: 1rem 2rem;
+  background-color: #00a7de;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border-radius: 20px;
+  border: 2px solid black; }

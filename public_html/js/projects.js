@@ -1,4 +1,5 @@
-const baseGameURL = "https://github.com/ndarwich/Nabil-s-Game-Collection/";
+const jgURL = "https://github.com/ndarwich/Nabil-s-Game-Collection/";
+const twURL = "http://www.tetriworld.com/";
 
 $(window).on("load", function() {
   loadPage(2);
@@ -17,9 +18,11 @@ $(window).on("load", function() {
     loadItem(0);
   });
   $("body").on("click", ".jg-item", (event) => {
-    window.open(baseGameURL);
+    window.open(jgURL);
   });
-
+  $("body").on("click", "#play-tw", (event) => {
+    window.open(twURL);
+  });
 });
 
 clearBody = () => {
