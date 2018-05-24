@@ -70,7 +70,7 @@
     grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr)); //1 column
   }
   @media only screen and #{$device-l} {
-    grid-template-columns: repeat(auto-fit, minmax(45vmin, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(415px, 1fr));
   }
   justify-content: center;
 }
@@ -89,7 +89,10 @@
     width: 90%;
     @include border-radius(20px);
     @media only screen and #{$device-m} {
-
+      width: auto;
+      float: left;
+      max-height: 250px;
+      margin: 0.5rem;
     }
   }
   span{
@@ -109,6 +112,9 @@
   display: block;
   font-size: 1.1em;
   margin: 0.5rem;
+  @media only screen and #{$device-m} {
+    display: inline;
+  }
 }
 
 .jg-game-info-body-section {

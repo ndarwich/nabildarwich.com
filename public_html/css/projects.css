@@ -74,7 +74,7 @@
       grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr)); } }
   @media only screen and (min-width: 992px) {
     .jg-container {
-      grid-template-columns: repeat(auto-fit, minmax(45vmin, 1fr)); } }
+      grid-template-columns: repeat(auto-fit, minmax(415px, 1fr)); } }
 
 .jg-item {
   background-color: #e4e4e4;
@@ -105,6 +105,12 @@
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
     border-radius: 20px; }
+    @media only screen and (min-width: 768px) {
+      .jg-item img {
+        width: auto;
+        float: left;
+        max-height: 250px;
+        margin: 0.5rem; } }
   .jg-item span {
     font: arial;
     display: block;
@@ -119,6 +125,9 @@
   display: block;
   font-size: 1.1em;
   margin: 0.5rem; }
+  @media only screen and (min-width: 768px) {
+    .jg-game-info-body {
+      display: inline; } }
 
 .jg-game-info-body-section {
   padding-bottom: 3px;
