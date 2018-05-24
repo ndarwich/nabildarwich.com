@@ -62,12 +62,21 @@
   display: grid;
   grid-gap: 10px;
   margin: 2vh 1vw;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 0.8fr));
   justify-content: center; }
+  @media only screen and (max-width: 320px) {
+    .jg-container {
+      grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); } }
+  @media only screen and (min-width: 320px) {
+    .jg-container {
+      grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); } }
+  @media only screen and (min-width: 600px) {
+    .jg-container {
+      grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr)); } }
+  @media only screen and (min-width: 992px) {
+    .jg-container {
+      grid-template-columns: repeat(auto-fit, minmax(45vmin, 1fr)); } }
 
 .jg-item {
-  min-height: 300px;
-  min-width: 400px;
   background-color: #e4e4e4;
   border: 2px solid black;
   -webkit-background-size: auto auto;
@@ -88,9 +97,9 @@
   user-select: none;
   cursor: pointer; }
   .jg-item img {
-    float: left;
-    height: 250px;
-    margin: 10px;
+    display: block;
+    margin: 0.5rem auto;
+    width: 90%;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;
@@ -104,12 +113,12 @@
     font-size: 1.8em; }
 
 .jg-game-info {
-  display: flex; }
+  display: block; }
 
 .jg-game-info-body {
-  margin-top: 15px;
-  display: inline;
-  font-size: 1.1em; }
+  display: block;
+  font-size: 1.1em;
+  margin: 0.5rem; }
 
 .jg-game-info-body-section {
   padding-bottom: 3px;

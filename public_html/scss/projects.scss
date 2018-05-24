@@ -59,13 +59,23 @@
   display: grid;
   grid-gap: 10px;
   margin: 2vh 1vw;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 0.8fr));
+
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); //1 column
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); //1 column
+  }
+  @media only screen and #{$device-s} {
+    grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr)); //1 column
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(45vmin, 1fr));
+  }
   justify-content: center;
 }
 
 .jg-item {
-  min-height: 300px;
-  min-width: 400px;
   background-color: rgb(228, 228, 228);
   border: 2px solid black;
   @include background-size(auto auto);
@@ -74,10 +84,13 @@
   user-select: none;
   cursor: pointer;
   img {
-    float: left;
-    height:250px;
-    margin: 10px;
+    display: block;
+    margin: 0.5rem auto;
+    width: 90%;
     @include border-radius(20px);
+    @media only screen and #{$device-m} {
+
+    }
   }
   span{
     font: arial;
@@ -89,13 +102,13 @@
 }
 
 .jg-game-info {
-  display: flex;
+  display: block;
 }
 
 .jg-game-info-body {
-  margin-top: 15px;
-  display: inline;
+  display: block;
   font-size: 1.1em;
+  margin: 0.5rem;
 }
 
 .jg-game-info-body-section {
