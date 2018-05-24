@@ -18,10 +18,10 @@
     </header>
     <div id="page-body">
       <h1>Contact Me</h1>
-      <form class="contact-form" action="sendMail.php" onsubmit="return formSubmitted()" method="post">
+      <form class="contact-form" action="sendMail.php" onsubmit="checkCapcha" method="post">
     		<div>
           Name
-          <input type="text" maxlength="30" name="name" />
+          <input type="text" maxlength="30" name="name" required />
         </div>
           <!--form action="sendMail.php" onsubmit="return formSubmitted()" method="post">
         		<p><span id="namee">Name:</span><br><input type="text" id="name" name="name" cols="40" maxlength="25"></p>
@@ -32,20 +32,25 @@
         	</form-->
         <div>
           Email Address
-          <input type="text" maxlength="40" name="email" />
+          <input type="text" maxlength="40" name="email" required />
         </div>
         <div>
           Subject
-          <input type="text" maxlength="50" />
+          <input type="text" maxlength="50" required />
         </div>
         <div>
           Body
-          <textarea id="message" maxlength="500"></textarea>
+          <textarea id="message" maxlength="500" required></textarea>
         </div>
         <div>
           Are You Not a Robot?
         </div>
-        <div class="g-recaptcha" data-sitekey="6LeWHVsUAAAAAGz5lpon6Labj8WP4VuQorAo1tmD"></div>
+        <div class="g-recaptcha"
+          data-callback="validateCapcha"
+          data-expired-callback="expireCapcha"
+          data-sitekey="6LeWHVsUAAAAAGz5lpon6Labj8WP4VuQorAo1tmD"
+        >
+        </div>
         <div class="submit-btn-container">
           <input id="submit-btn" type="submit" value="Submit" />
         </div>

@@ -40,7 +40,8 @@
   font-family: arial;
   background-color: $bg-2;
   color: $fg-2;
-  cursor: pointer
+  cursor: pointer;
+  select: none;
   &:hover {
     background-color: rgb(31, 0, 182);
   }
