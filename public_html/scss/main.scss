@@ -27,9 +27,6 @@ nav {
       font-family: arial;
       color: $fg-2;
     }
-    .active {
-      background: $bg-4;
-    }
     @media only screen and #{$device-xxs} {
       min-width: 48vw;
       max-width: 80vw;
@@ -52,6 +49,10 @@ a {
   user-select: none;
   color: $fg-2;
   text-decoration: none;
+}
+
+.active {
+  background: $bg-4;
 }
 
 #page-body {

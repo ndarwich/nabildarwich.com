@@ -26,8 +26,6 @@ nav {
       font-size: 1.2em;
       font-family: arial;
       color: white; }
-    nav li .active {
-      background: #8e00c2; }
     @media only screen and (max-width: 320px) {
       nav li {
         min-width: 48vw;
@@ -47,6 +45,9 @@ a {
   user-select: none;
   color: white;
   text-decoration: none; }
+
+.active {
+  background: #8e00c2; }
 
 #page-body {
   opacity: 0;
