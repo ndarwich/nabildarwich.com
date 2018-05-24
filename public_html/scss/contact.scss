@@ -1,0 +1,47 @@
+@import 'mixins';
+
+.contact-form {
+  display: grid;
+  grid-auto-columns: 1fr;
+  text-align: center;
+  justify-content: center;
+  border-top:1rem double $bg-4;
+  div {
+    margin: 0.5rem auto;
+    font-size: 1.8rem;
+    max-width: 30em;
+    width: 100%;
+    input {
+      display: block;
+      text-align: center;
+      font-size: 1.3em;
+      color: rgb(24, 0, 215);
+      background-color: rgb(251, 251, 251);
+      width: 95%;
+      margin: 0.5rem auto;
+    }
+    textarea {
+      display: block;
+      color: rgb(24, 0, 215);
+      font-size: 1em;
+      height: 15em;
+      width: 90%;
+      margin: 0.5rem auto;
+    }
+  }
+}
+
+#submit-btn {
+  @include border-radius(10px);
+  width: auto;
+  margin: 1rem auto;
+  padding: 1rem 2rem;
+  font-size: 3rem;
+  font-family: arial;
+  background-color: $bg-2;
+  color: $fg-2;
+  cursor: pointer
+  &:hover {
+    background-color: rgb(31, 0, 182);
+  }
+}

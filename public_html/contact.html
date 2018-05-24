@@ -1,22 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Nabil Darwich</title>
+    <title>Nabil Darwich - Contact</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/contact.css">
     <link rel="icon" sizes="192x192" href="img/nd-icon.png">
     <link rel="manifest" href="manifest.json">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="./js/nav.js"></script>
     <script src="./js/contact.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
   </head>
   <body>
     <header>
       <div id="navigation"></div>
     </header>
     <div id="page-body">
-      <h1>Nabil Darwich</h1>
-      <p>This is the personal website of Nabil Darwich</p>
+      <h1>Contact Me</h1>
+      <form class="contact-form" action="sendMail.php" onsubmit="return formSubmitted()" method="post">
+    		<div>
+          Name
+          <input type="text" maxlength="30" name="name" />
+        </div>
+          <!--form action="sendMail.php" onsubmit="return formSubmitted()" method="post">
+        		<p><span id="namee">Name:</span><br><input type="text" id="name" name="name" cols="40" maxlength="25"></p>
+        		<p style="padding-left: 1px;"><span id="emaill">Email:</span><br><input type="text" id="email" name="email" cols="40" maxlength="40"></p>
+        		<p style="padding-left: 1px;"><span id="subjectt">Subject:</span><br><input type="text" id="subject" name="subject" cols="40" maxlength="40"></p>
+        		<p><span id="messagee">Message:</span><br><textarea name="message" id="message" cols="100" rows="10" maxlength="500"></textarea></p>
+        		<p><input id="submitt" type="submit" name="submit" value="Submit"></p>
+        	</form-->
+        <div>
+          Email Address
+          <input type="text" maxlength="40" name="email" />
+        </div>
+        <div>
+          Subject
+          <input type="text" maxlength="50" />
+        </div>
+        <div>
+          Body
+          <textarea id="message" maxlength="500"></textarea>
+        </div>
+        <div>
+          Are You Not a Robot?
+        </div>
+        <div class="g-recaptcha" data-sitekey="6LeWHVsUAAAAAGz5lpon6Labj8WP4VuQorAo1tmD"></div>
+        <div class="submit-btn-container">
+          <input id="submit-btn" type="submit" value="Submit" />
+        </div>
+    	</form>
     </div>
   </body>
 </html>
