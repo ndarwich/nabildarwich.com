@@ -5,31 +5,31 @@ $(window).on("load", function() {
   loadPage(2);
   $("#page-body").load("../pages/projectsMenu.html");
 
-  $("body").on("click", "#dormbuddy", () => {
+  $("body").on("click", "#dormbuddy", function () {
     loadItem(1);
   });
-  $("body").on("click", "#javagames", () => {
+  $("body").on("click", "#javagames", function () {
     loadItem(2);
   });
-  $("body").on("click", "#tetriworld", () => {
+  $("body").on("click", "#tetriworld", function () {
     loadItem(3);
   });
-  $("body").on("click", "#back-button", () => {
+  $("body").on("click", "#back-button", function () {
     loadItem(0);
   });
-  $("body").on("click", ".jg-item", (event) => {
+  $("body").on("click", ".jg-item", function () {
     window.open(jgURL);
   });
-  $("body").on("click", "#play-tw", (event) => {
+  $("body").on("click", "#play-tw", function () {
     window.open(twURL);
   });
 });
 
-clearBody = () => {
+clearBody = function () {
   $("#page-body").html("");
 }
 
-loadItem = (itemId) => {
+loadItem = function (itemId) {
   clearBody();
   switch (itemId) {
     case 0:
