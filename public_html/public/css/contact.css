@@ -1,3 +1,6 @@
+.invalidInput {
+  color: red !important; }
+
 .contact-form {
   display: grid;
   grid-auto-columns: 1fr;
@@ -38,6 +41,7 @@
   font-family: arial;
   background-color: rgba(28, 0, 255, 0.7);
   color: white;
-  cursor: pointer #submit-btn; }
-  #submit-btn :hover {
+  cursor: pointer;
+  select: none; }
+  #submit-btn:hover {
     background-color: #1f00b6; }

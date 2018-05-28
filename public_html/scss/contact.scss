@@ -1,5 +1,9 @@
 @import 'mixins';
 
+.invalidInput {
+  color: red !important;
+}
+
 .contact-form {
   display: grid;
   grid-auto-columns: 1fr;
@@ -30,6 +34,7 @@
     }
   }
 }
+
 
 #submit-btn {
   @include border-radius(10px);

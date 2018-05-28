@@ -18,10 +18,10 @@
     </header>
     <div id="page-body">
       <h1>Contact Me</h1>
-      <form class="contact-form" action="./php/sendMail.php" onsubmit="return formSubmitted()" method="post">
+      <form class="contact-form" onsubmit="checkCapcha" method="post">
     		<div>
           Name
-          <input type="text" maxlength="30" name="name" id="namee" required />
+          <input type="text" maxlength="30" name="name" id="namee" autocomplete='name' required />
         </div>
           <!--form action="sendMail.php" onsubmit="return formSubmitted()" method="post">
         		<p><span id="namee">Name:</span><br><input type="text" id="name" name="name" cols="40" maxlength="25"></p>
@@ -32,7 +32,7 @@
         	</form-->
         <div>
           Email Address
-          <input type="text" maxlength="40" name="email"  id="emaill" required />
+          <input type="text" maxlength="40" name="email"  id="emaill" autocomplete='email' required />
         </div>
         <div>
           Subject
@@ -40,7 +40,7 @@
         </div>
         <div>
           Body
-          <textarea id="message" maxlength="500" required  id="messagee" name="message"></textarea>
+          <textarea id="messagee" maxlength="500" required  id="messagee" name="message"></textarea>
         </div>
         <div>
           Are You Not a Robot?
