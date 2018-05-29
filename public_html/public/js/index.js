@@ -1,3 +1,3 @@
 $(window).on("load", function() {
-  loadPage(0);
+  loadNavigation(0);
 });

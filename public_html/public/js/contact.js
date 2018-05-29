@@ -1,5 +1,5 @@
 $(window).on("load", function() {
-  loadPage(3);
+  loadNavigation(3);
 });
 
 var capchaValid = false;

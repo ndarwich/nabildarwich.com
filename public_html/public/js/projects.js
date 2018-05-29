@@ -2,7 +2,7 @@ const jgURL = "https://github.com/ndarwich/Nabil-s-Game-Collection/";
 const twURL = "http://www.tetriworld.com/";
 
 $(window).on("load", function() {
-  loadPage(2);
+  loadNavigation(2);
   $("#page-body").load("../pages/projectsMenu.html");
 
   $("body").on("click", "#dormbuddy", function () {
@@ -26,7 +26,10 @@ $(window).on("load", function() {
 });
 
 clearBody = function () {
+  $("#page-body").css("opacity", 0);
+  $("#alt-body").css("opacity", 0);
   $("#page-body").html("");
+  $("#alt-body").html("");
 }
 
 loadItem = function (itemId) {
@@ -34,15 +37,19 @@ loadItem = function (itemId) {
   switch (itemId) {
     case 0:
       $("#page-body").load("../pages/projectsMenu.html");
+      $("#page-body").css("opacity", 1);
       break;
     case 1:
-      $("#page-body").load("../pages/dormbuddy.html");
+      $("#alt-body").load("../pages/dormbuddy.html");
+      $("#alt-body").css("opacity", 1);
       break;
     case 2:
-      $("#page-body").load("../pages/javagames.html");
+      $("#alt-body").load("../pages/javagames.html");
+      $("#alt-body").css("opacity", 1);
       break;
     case 3:
-      $("#page-body").load("./pages/tetriworld.html");
+      $("#alt-body").load("./pages/tetriworld.html");
+      $("#alt-body").css("opacity", 1);
       break;
     default:
       break;
