@@ -2,7 +2,7 @@ $(window).on("load", function() {
   loadNavigation(3);
 });
 
-var capchaValid = false;
+let capchaValid = false;
 
 function validateCapcha() {
   capchaValid = true;

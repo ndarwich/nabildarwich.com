@@ -40,6 +40,7 @@ app.get("/pages/:pageName", function(req, res){
   res.sendFile("/public/pages/" + req.params.pageName, {root: __dirname });
 });
 
+/*
 app.post("/contact", function(req, res){
   let postData = req.body;
   var querystring = require("querystring");
