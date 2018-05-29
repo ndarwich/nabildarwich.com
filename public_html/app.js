@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
+var https = require("https");
 var app = express();
 var router = express.Router();
 //ALL routes are imported
@@ -22,23 +23,40 @@ app.use("/projects", projects);
 app.use("/bio", bio);
 
 
-app.get("/js/:fileName", function(req, res){
+app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "text/js");
-  res.sendFile("/public/js/" + req.params.fileName, {root: __dirname });
+  res.sendFile("/public/js/" + req.params.scriptName + ".js",
+    {root: __dirname });
 });
 
-app.get("/components/:componentName", function(req, res){
+app.get("*/:cascadingStyleSheet.css", function(req, res){
+  res.setHeader("Content-Type", "text/css");
+  res.sendFile("/public/css/" + req.params.cascadingStyleSheet + ".css",
+    {root: __dirname });
+});
+
+app.get("*/:imageFile.png", function(req, res){
+  res.setHeader("Content-Type", "text/css");
+  res.sendFile("/public/img/" + req.params.imageFile + ".png",
+    {root: __dirname });
+});
+
+app.get("*/components/:componentName", function(req, res){
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/components/" + req.params.componentName,
     {root: __dirname });
 });
 
-app.get("/pages/:pageName", function(req, res){
+app.get("*/pages/:pageName", function(req, res){
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/pages/" + req.params.pageName, {root: __dirname });
 });
 
 app.post("/sendMail", (req, res) => {
+  const key = "6LeWHVsUAAAAAAcLySamR5oeIE2rm-25tZFMVXxu";
+  let googleReq = "https://www.google.com/recaptcha/api/siteverify?secret="
+    + key + "&response=" + req.body["g-recaptcha-response"]
+    + "&remoteip=" + req.connection.remoteAddress;
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -46,17 +64,22 @@ app.post("/sendMail", (req, res) => {
       pass: process.env.nabildarwichdotcom
     }
   });
+  let isBot = req.body["g-recaptcha-response"] === "" ? "BOT" : "Human";
   let mailOptions = {
     from: "nabildarwichdotcom@gmail.com",
     to: "dnabil1996@gmail.com",
     subject: req.body.subject,
-    text: "" + req.body.email + " wrote:\n" + req.body.message
+    text: isBot + "\n" + req.connection.remoteAddress + "\n" +
+      req.body.email + " wrote:\n" + req.body.message
   };
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
     } else {
       res.end("Mail Sent Successfully: " + info.response);
+      setTimeout(() => {
+         res.redirect("nabildarwich.com")
+      }, 3000);
     }
   });
 });

@@ -3,20 +3,16 @@ const twURL = "http://www.tetriworld.com/";
 
 $(window).on("load", function() {
   loadNavigation(2);
-  $("#page-body").load("../pages/projectsMenu.html");
-
-  $("body").on("click", "#dormbuddy", function () {
+  let pageURL = window.location.href;
+  if (pageURL.endsWith("dormBuddy")) {
     loadItem(1);
-  });
-  $("body").on("click", "#javagames", function () {
+  } else if (pageURL.endsWith("javaGames")) {
     loadItem(2);
-  });
-  $("body").on("click", "#tetriworld", function () {
+  } else if (pageURL.endsWith("tetriworld")) {
     loadItem(3);
-  });
-  $("body").on("click", "#back-button", function () {
+  } else {
     loadItem(0);
-  });
+  }
   $("body").on("click", ".jg-item", function () {
     window.open(jgURL);
   });

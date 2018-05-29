@@ -18,7 +18,7 @@ gulp.task("serve", ["nodemon"], function() {
         proxy: "http://localhost:3002", // port of node server
   });
    //treat the scss file as gulp"s sass
-  gulp.watch(["public_html/public/scss/*.scss"], ["sass"]);
+  gulp.watch(["public_html/scss/*.scss"], ["sass"]);
   //watch all the following files
   gulp.watch("public_html/*.html")
     .on("change", browserSync.reload);

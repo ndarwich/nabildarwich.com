@@ -8,15 +8,18 @@ router.get("/", (req, res) => {
 });
 
 router.get("/dormBuddy", function(req, res){
-  console.info("project accessed");
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/projects.html", { root: __dirname + "/../public" });
 });
 
 router.get("/tetriworld", function(req, res){
-  console.info("project accessed");
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/projects.html", { root: __dirname + "/../public" });
 });
 
 router.get("/javaGames", function(req, res){
-  console.info("project accessed");
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/projects.html", { root: __dirname + "/../public" });
 });
 
 module.exports = router;

@@ -131,7 +131,7 @@
   }
 }
 
-#back-button {
+#menu-button {
   @include border-radius(5px);
   border: 2px solid black;
   user-select: none;
@@ -142,6 +142,7 @@
   color: $fg-2;
   background-color: $bg-2;
   padding: 0.5rem 1rem;
+  //center menu button in smaller screens
   @media only screen and #{$device-xxs} {
     display: block;
     width: fit-content;
@@ -154,6 +155,7 @@
     position: relative;
     margin: 1vw auto;
   }
+  //position it on top left in large screens
   @media only screen and #{$device-l} {
     position: absolute;
     margin: 0.5rem 1vw;

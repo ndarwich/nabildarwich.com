@@ -138,7 +138,7 @@
   padding: 1rem;
   margin: 0; }
 
-#back-button {
+#menu-button {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -154,19 +154,19 @@
   background-color: rgba(28, 0, 255, 0.7);
   padding: 0.5rem 1rem; }
   @media only screen and (max-width: 320px) {
-    #back-button {
+    #menu-button {
       display: block;
       width: fit-content;
       position: relative;
       margin: 1vw auto; } }
   @media only screen and (min-width: 320px) {
-    #back-button {
+    #menu-button {
       display: block;
       width: fit-content;
       position: relative;
       margin: 1vw auto; } }
   @media only screen and (min-width: 992px) {
-    #back-button {
+    #menu-button {
       position: absolute;
       margin: 0.5rem 1vw; } }
 
