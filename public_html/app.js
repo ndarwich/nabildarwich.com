@@ -1,9 +1,7 @@
 const express = require("express");
 const path = require("path");
-const http = require("http");
 const bodyParser = require("body-parser");
-const querystring = require("querystring");
-const request = require("request");
+const nodemailer = require("nodemailer");
 var app = express();
 var router = express.Router();
 //ALL routes are imported
@@ -40,44 +38,34 @@ app.get("/pages/:pageName", function(req, res){
   res.sendFile("/public/pages/" + req.params.pageName, {root: __dirname });
 });
 
-/*
-app.post("/contact", function(req, res){
-  let postData = req.body;
-  var querystring = require("querystring");
-  var qs = querystring.stringify(postData);
-  var qslength = qs.length;
-  var options = {
-      hostname: "nabildarwich.com",
-      port: 80,
-      path: "/public/php/sendMail.php",
-      method: "POST",
-      headers:{
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Content-Length": qslength
-      }
-};
-
-var buffer = "";
-var req = http.request(options, function(res) {
-    res.on("data", function (chunk) {
-       buffer+=chunk;
-    });
-    res.on("end", function() {
-        console.log(buffer);
-    });
+app.post("/sendMail", (req, res) => {
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "nabildarwichdotcom@gmail.com",
+      pass: process.env.nabildarwichdotcom
+    }
+  });
+  let mailOptions = {
+    from: "nabildarwichdotcom@gmail.com",
+    to: "dnabil1996@gmail.com",
+    subject: req.body.subject,
+    text: "" + req.body.email + " wrote:\n" + req.body.message
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      res.end("Mail Sent Successfully: " + info.response);
+    }
+  });
 });
 
-req.write(qs);
-req.end();
-});
-
-/*
 app.get("*", function(req, res){
   res.status(404);
   res.setHeader("Content-Type", "text/html");
-  res.sendFile("/error.html", {root: __dirname });
+  res.sendFile("/public/error.html", {root: __dirname });
 });
-*/
 
 //port for express server
 app.listen(3002, function () {
