@@ -142,6 +142,7 @@
   color: $fg-2;
   background-color: $bg-2;
   padding: 0.5rem 1rem;
+  text-align: center;
   //center menu button in smaller screens
   @media only screen and #{$device-xxs} {
     display: block;

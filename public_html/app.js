@@ -76,10 +76,10 @@ app.post("/sendMail", (req, res) => {
     if (error) {
       console.log(error);
     } else {
-      res.end("Mail Sent Successfully: " + info.response);
-      setTimeout(() => {
-         res.redirect("nabildarwich.com")
-      }, 3000);
+      res.setHeader("Content-Type", "text/html");
+      let botResponse = isBot === "BOT" ? "... You are a bot though" : "";
+      res.end("Mail Sent Successfully" + botResponse
+        + ". Return to homepage <a href='/'>here</a>.");
     }
   });
 });
