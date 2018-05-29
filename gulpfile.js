@@ -18,17 +18,25 @@ gulp.task("serve", ["nodemon"], function() {
         proxy: "http://localhost:3002", // port of node server
   });
    //treat the scss file as gulp"s sass
-  gulp.watch(["public_html/scss/*.scss"], ["sass"]);
+  gulp.watch(["public_html/public/scss/*.scss"], ["sass"]);
   //watch all the following files
-  gulp.watch("public_html/*.html").on("change", browserSync.reload);
-  gulp.watch("public_html/pages/*.html").on("change", browserSync.reload);
-  gulp.watch("public_html/img/*").on("change", browserSync.reload);
-  gulp.watch("public_html/public/js/*").on("change", browserSync.reload);
+  gulp.watch("public_html/*.html")
+    .on("change", browserSync.reload);
+  gulp.watch("public_html/*.js")
+    .on("change", browserSync.reload);
+  gulp.watch("public_html/public/img/*")
+    .on("change", browserSync.reload);
+  gulp.watch("public_html/public/pages/*.html")
+    .on("change", browserSync.reload);
+  gulp.watch("public_html/public/js/*")
+    .on("change", browserSync.reload);
+  gulp.watch("public_html/routes/*.js")
+    .on("change", browserSync.reload);
 });
 
 gulp.task("nodemon", function (cb) {
     var cbCalled = false;
-    return nodemon({script: "./public_html/server.js"}).on("start", function (){
+    return nodemon({script: "./public_html/app.js"}).on("start", function (){
         if (!cbCalled) {
           cbCalled = true;
           cb();

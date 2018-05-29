@@ -6,37 +6,23 @@ const querystring = require("querystring");
 const request = require("request");
 var app = express();
 var router = express.Router();
+//ALL routes are imported
+let index = require("./routes/index");
+let contact = require("./routes/contact");
+let projects = require("./routes/projects");
+let bio = require("./routes/bio");
 
+//all the files under public are static
+app.use(express.static(path.join(__dirname, "public")));
+//for POST requests
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/", function(req, res){
-  res.setHeader("Content-Type", "text/html");
-  res.sendFile("/index.html", {root: __dirname });
-});
+app.use("/", index);
+app.use("/contact", contact);
+app.use("/projects", projects);
+app.use("/bio", bio);
 
-app.get("/bio", function(req, res){
-  res.setHeader("Content-Type", "text/html");
-  res.sendFile("/bio.html", {root: __dirname });
-});
-
-app.get("/projects", function(req, res){
-  res.setHeader("Content-Type", "text/html");
-  res.sendFile("/projects.html", {root: __dirname });
-});
-
-app.get("/contact", function(req, res){
-  res.setHeader("Content-Type", "text/html");
-  res.sendFile("/contact.html", {root: __dirname });
-});
-
-app.get("/css/:cssFileName", function(req, res){
-  res.setHeader("Content-Type", "text/css");
-  res.sendFile("/public/css/" + req.params.cssFileName, {root: __dirname });
-});
-
-app.get("/img/:imgFileName", function(req, res){
-  res.sendFile("/public/img/" + req.params.imgFileName, {root: __dirname });
-});
 
 app.get("/js/:fileName", function(req, res){
   res.setHeader("Content-Type", "text/js");
@@ -96,6 +82,3 @@ app.get("*", function(req, res){
 app.listen(3002, function () {
   console.info("Listening on port 3002...");
 });
-
-//all the files under public are static
-app.use(express.static(path.join(__dirname, "public")));
