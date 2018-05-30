@@ -12,14 +12,6 @@ function expireCapcha() {
   capchaValid = false;
 }
 
-function checkCapcha(e) {
-  if (capchaValid) {
-    return checkForm();
-  }
-  alert("Please prove you are human");
-  return false;
-}
-
 function checkForm()
 {
   var valid = true;
@@ -46,6 +38,10 @@ function checkForm()
       $("#messagee").addClass("invalidInput");
   		valid=false;
   	}
+    if (!capchaValid) {
+      alert("Please prove you are human");
+      valid = false;
+    }
   	if (! valid){
   		$("#submit-btn").val("Try Again");
       $("#submit-btn").css("background-color", "red");
