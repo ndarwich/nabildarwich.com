@@ -377,8 +377,11 @@
   height: 2rem;
   width: 2rem;
   border: 0.2rem double #8e00c2;
-  cursor: pointer;
   background-color: #8e8e8e; }
+  #db-screen-button a {
+    display: block;
+    width: 100%;
+    height: 100%; }
 
 .db-screen {
   display: grid; }
@@ -405,3 +408,6 @@
   .db-widget img {
     max-width: 100%;
     min-height: 100%; }
+  .db-widget a {
+    width: 100%;
+    height: 100%; }

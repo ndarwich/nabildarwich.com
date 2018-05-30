@@ -1,14 +1,15 @@
 const jgURL = "https://github.com/ndarwich/Nabil-s-Game-Collection/";
 const twURL = "http://www.tetriworld.com/";
+const dbURL = "https://github.com/ndarwich/DormBuddy/";
 
 $(window).on("load", function() {
   loadNavigation(2);
   let pageURL = window.location.href;
-  if (pageURL.endsWith("dormBuddy")) {
+  if (pageURL.includes("dormBuddy")) {
     loadItem(1);
-  } else if (pageURL.endsWith("javaGames")) {
+  } else if (pageURL.includes("javaGames")) {
     loadItem(2);
-  } else if (pageURL.endsWith("tetriworld")) {
+  } else if (pageURL.includes("tetriworld")) {
     loadItem(3);
   } else {
     loadItem(0);
@@ -18,6 +19,9 @@ $(window).on("load", function() {
   });
   $("body").on("click", "#play-tw", function () {
     window.open(twURL);
+  });
+  $("body").on("click", "#get-dormBuddy", function () {
+    window.open(dbURL);
   });
 });
 
