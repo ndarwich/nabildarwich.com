@@ -420,13 +420,33 @@
 }
 
 .db-float-right {
-  float: right;
+  display: block;
+  margin: 0 auto;
+  @media only screen and #{$device-xxs} {
+    max-width: 80vw;
+  }
+  @media only screen and #{$device-xs} {
+    max-width: 80vw;
+  }
+  @media only screen and #{$device-m} {
+    max-width: 500px;
+    margin: 0;
+    float: right;
+  }
 }
 
 .db-img-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin: 1rem auto;
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+  }
 }
 
 .db-img {
@@ -438,12 +458,22 @@
 
 .db-phone-img {
   display: block;
-  max-width: 400px;
+  width:400px;
+  max-width: 90%;
   margin: 0 auto;
 }
 
 .db-landscape-img {
   display: block;
-  max-width: 500px;
+  margin: 0 auto;
   border: 3px double $bg-4;
+  @media only screen and #{$device-xxs} {
+    max-width: 80%;
+  }
+  @media only screen and #{$device-xs} {
+    max-width: 80%;
+  }
+  @media only screen and #{$device-m} {
+    max-width: 100%;
+  }
 }
