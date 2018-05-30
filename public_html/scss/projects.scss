@@ -376,7 +376,21 @@
 
 .db-screen {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr));
+  }
+  @media only screen and #{$device-s} {
+    grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  @media only screen and #{$device-xl} {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
 }
 
 .db-widget {

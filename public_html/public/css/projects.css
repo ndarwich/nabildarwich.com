@@ -381,8 +381,22 @@
   background-color: #8e8e8e; }
 
 .db-screen {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+  display: grid; }
+  @media only screen and (max-width: 320px) {
+    .db-screen {
+      grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr)); } }
+  @media only screen and (min-width: 320px) {
+    .db-screen {
+      grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr)); } }
+  @media only screen and (min-width: 600px) {
+    .db-screen {
+      grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr)); } }
+  @media only screen and (min-width: 992px) {
+    .db-screen {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } }
+  @media only screen and (min-width: 1200px) {
+    .db-screen {
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); } }
 
 .db-widget {
   min-height: fit-content;
