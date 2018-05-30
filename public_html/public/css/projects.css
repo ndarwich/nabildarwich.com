@@ -345,5 +345,49 @@
 
 .db-container {
   background-color: white;
-  display: flex;
   flex: 1; }
+
+.db-screen-top {
+  display: block;
+  height: 1.7rem;
+  background-color: rgba(28, 0, 255, 0.7);
+  width: 100%;
+  text-align: center;
+  padding: 0.2rem;
+  color: white;
+  font-size: 1.5rem;
+  font-family: Arial; }
+
+.db-screen-bottom {
+  display: block;
+  height: 3rem;
+  background-color: #202020;
+  width: 100%;
+  text-align: center; }
+
+#db-screen-button {
+  display: inline-block;
+  margin: 0 auto;
+  margin-top: 0.5rem;
+  -webkit-border-radius: 2rem;
+  -moz-border-radius: 2rem;
+  -ms-border-radius: 2rem;
+  -o-border-radius: 2rem;
+  border-radius: 2rem;
+  height: 2rem;
+  width: 2rem;
+  border: 0.2rem double #8e00c2;
+  cursor: pointer;
+  background-color: #8e8e8e; }
+
+.db-screen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+
+.db-widget {
+  min-height: fit-content;
+  max-height: 400px;
+  cursor: pointer; }
+  .db-widget img {
+    max-width: 100%;
+    min-height: 100%; }

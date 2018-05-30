@@ -339,6 +339,52 @@
 
 .db-container {
   background-color: $fg-2;
-  display: flex;
   flex: 1;
+}
+
+.db-screen-top {
+    display: block;
+    height: 1.7rem;
+    background-color: $bg-2;
+    width: 100%;
+    text-align: center;
+    padding: 0.2rem;
+    color: $fg-2;
+    font-size: 1.5rem;
+    font-family: Arial;
+}
+
+.db-screen-bottom {
+    display: block;
+    height: 3rem;
+    background-color: rgb(32, 32, 32);
+    width: 100%;
+    text-align:center;
+}
+
+#db-screen-button {
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 0.5rem;
+    @include border-radius(2rem);
+    height: 2rem;
+    width: 2rem;
+    border: 0.2rem double $bg-4;
+    cursor: pointer;
+    background-color: rgb(142, 142, 142);
+}
+
+.db-screen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.db-widget {
+  min-height: fit-content;
+  max-height:400px;
+  cursor: pointer;
+  img {
+    max-width: 100%;
+    min-height: 100%;
+  }
 }
