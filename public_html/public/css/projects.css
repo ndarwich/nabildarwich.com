@@ -387,16 +387,16 @@
       grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr)); } }
   @media only screen and (min-width: 320px) {
     .db-screen {
-      grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr)); } }
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
   @media only screen and (min-width: 600px) {
     .db-screen {
-      grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr)); } }
+      grid-template-columns: repeat(auto-fit, minmax(275px, 1fr)); } }
   @media only screen and (min-width: 992px) {
     .db-screen {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } }
   @media only screen and (min-width: 1200px) {
     .db-screen {
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); } }
+      grid-template-columns: repeat(auto-fit, minmax(30vmax, 1fr)); } }
 
 .db-widget {
   min-height: fit-content;

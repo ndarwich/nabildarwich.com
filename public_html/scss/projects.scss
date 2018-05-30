@@ -380,16 +380,16 @@
     grid-template-columns: repeat(auto-fit, minmax(60vmin, 1fr));
   }
   @media only screen and #{$device-xs} {
-    grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
   @media only screen and #{$device-s} {
-    grid-template-columns: repeat(auto-fit, minmax(70vmin, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   }
   @media only screen and #{$device-l} {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
   @media only screen and #{$device-xl} {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(30vmax, 1fr));
   }
 }
 
