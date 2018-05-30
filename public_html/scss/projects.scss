@@ -409,3 +409,41 @@
     height: 100%;
   }
 }
+
+.db-screen-body {
+  font-size: 1.1rem;
+  margin: 0rem 1rem 1rem 1rem;
+  a {
+    color: $bg-2;
+    text-decoration: underline;
+  }
+}
+
+.db-float-right {
+  float: right;
+}
+
+.db-img-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin: 1rem auto;
+}
+
+.db-img {
+  display: block;
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
+.db-phone-img {
+  display: block;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.db-landscape-img {
+  display: block;
+  max-width: 500px;
+  border: 3px double $bg-4;
+}
