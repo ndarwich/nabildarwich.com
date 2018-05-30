@@ -1,6 +1,86 @@
 <div>
   <h1>Dorm Buddy - Overview</h1>
   <div class="screen-text">
-    <h2>Dorm</h2>
+    <h2>Background</h2>
+      In the beginning of November 2017, 2 months into our Mobile Application
+      Development (CS477) course, we got started on the semester's main project,
+      developing an Android application. I decided to partner up with
+      <a href="https://github.com/wavecore">Vincent Liu</a> after hearing his
+      idea of having a "laundry reservation app," where students can reserve
+      laundry machines ahead of time so that they save a trip to the laundromat
+      when all machines are full. I really liked this idea, but at the same
+      time, wanted to expand it into much more. After a lot of discussion and
+      high level talks, we settled on having not just a laundry reservation
+      system, but a general application that would help dorm students with their
+      college experience. We dubbed the app "DormBuddy," and decided that
+      having "buddies" would be a recurring theme in the app.
+    <h2>The Idea</h2>
+      The first thing we did was write up an architecture document. Our
+      architecture document included the app's features, activities, and
+      relations. The document also discussed the necessary database tables,
+      servers/services, and a storyboard from a user's point of view. The gists
+      of the architecture document are as follows:
+      <ul>
+        <li>
+          The app will have 5 different major features, called buddies. Those are:
+          <ul>
+            <li>Laundry Buddy</li>
+            <li>Map Buddy</li>
+            <li>Study Buddy</li>
+            <li>Event Buddy</li>
+            <li>Profile Buddy</li>
+          </ul>
+        </li>
+        <li>
+          There will be two personas: a student and an administrator.
+          Administrators, such as Resident Advisors, would have more application
+          privileges than an average dorm tenant.
+        </li>
+        <li>
+          Firebase will be used as our database service. Data stored in Firebase
+          would include dorm buildings, their maps, their rooms, laundry machine,
+          and most importantly, the reservations made.
+        </li>
+        <li>
+          Some static database data would also be copied to the user's phone
+          for convenience. Such data would include the user's profile info,
+          the laundry machines available for their specific building, and
+          dorm floor maps/university maps.
+        </li>
+        <li>
+          Other data stored on the user's phone would be their laundry
+          templates, their upcoming reservations,
+        </li>
+        <li>All relations will follow the following ERP diagram</li>
+      </ul>
+      <div class="db-img right">
+        <img src="../img/db-diagram.png" class="db-landscape-img" />
+        DormBuddy's ERP Diagram
+      </div>
+    <h2>The Application</h2>
+      When the user first launches the app, a login screen pops up. In here,
+      The user signs in with their GMU credentials. For POC purposes, we have
+      created four users:
+      <ul>
+        <li>John Doe (jdoe): a resident advisor</li>
+        <li>Jane Doe (jdoe2): a student</li>
+        <li>Alice Doe (adoe): a student</li>
+        <li>Bob Doe (bdoe): a student</li>
+      </ul>
+      In order to sign in with any one of them, use their id and their password
+      is, and I want you to keep this confidential but, "password", without
+      quotes.
+      When logged in, DormBuddy's main activity pops up, and you can get started
+      and interact with any of the available activities.
+    <div class="db-img-container">
+      <div class="db-img">
+        <img src="../img/db-0.png" class="db-phone-img" />
+        DormBuddy Login Screen
+      </div>
+      <div class="db-img">
+        <img src="../img/db-1.png" class="db-phone-img" />
+        DormBuddy Buddies
+      </div>
+    </div>
   </div>
 </div>

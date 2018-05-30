@@ -30,6 +30,8 @@ gulp.task("serve", ["nodemon"], function() {
     .on("change", browserSync.reload);
   gulp.watch("public_html/public/js/*")
     .on("change", browserSync.reload);
+  gulp.watch("public_html/public/components/*")
+    .on("change", browserSync.reload);
   gulp.watch("public_html/routes/*.js")
     .on("change", browserSync.reload);
 });
