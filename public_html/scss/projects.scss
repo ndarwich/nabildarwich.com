@@ -131,7 +131,7 @@
   }
 }
 
-#menu-button {
+.menu-button {
   @include border-radius(5px);
   border: 2px solid black;
   user-select: none;
@@ -160,6 +160,15 @@
   @media only screen and #{$device-l} {
     position: absolute;
     margin: 0.5rem 1vw;
+  }
+}
+
+.db-button {
+  @extend .menu-button;
+  //position it on top left in large screens
+  @media only screen and #{$device-l} {
+    position: absolute;
+    margin: 0.5rem 8.5rem;
   }
 }
 

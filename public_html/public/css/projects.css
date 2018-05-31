@@ -138,7 +138,7 @@
   padding: 1rem;
   margin: 0; }
 
-#menu-button {
+.menu-button, .db-button {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -155,21 +155,26 @@
   padding: 0.5rem 1rem;
   text-align: center; }
   @media only screen and (max-width: 320px) {
-    #menu-button {
+    .menu-button, .db-button {
       display: block;
       width: fit-content;
       position: relative;
       margin: 1vw auto; } }
   @media only screen and (min-width: 320px) {
-    #menu-button {
+    .menu-button, .db-button {
       display: block;
       width: fit-content;
       position: relative;
       margin: 1vw auto; } }
   @media only screen and (min-width: 992px) {
-    #menu-button {
+    .menu-button, .db-button {
       position: absolute;
       margin: 0.5rem 1vw; } }
+
+@media only screen and (min-width: 992px) {
+  .db-button {
+    position: absolute;
+    margin: 0.5rem 8.5rem; } }
 
 .tw-body {
   flex: 1;
