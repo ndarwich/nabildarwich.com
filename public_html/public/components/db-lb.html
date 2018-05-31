@@ -1,4 +1,111 @@
-<div>
+<div class="db-screen-body">
   <h1>Laundry Buddy</h1>
-
+  <h2>Preface</h2>
+  Laundry Buddy is the root of DormBuddy. As stated in the
+  <a href="/projects/dormBuddy/overview">Overview</a>, Laundry Buddy is the
+  initial idea that led to DormBuddy's development. Vincent and I were taking
+  a concurrent programming course at the time, and he wanted to implement this
+  idea of concurrency in the real life laundry machine reservation scenario, and
+  I couldn't agree more
+  <h2>Purpose</h2>
+  Ever go to the laundry room only to find out that all washers are full and
+  you need to go back? Well, this is a common problem on-campus students face,
+  as laundry rooms are shared in each building. Sometimes washers and dryers
+  are full and are never emptied by the students who filled them. This is where
+  Laundry Buddy comes in. Laundry Buddy shows the building's registered laundry
+  machines, and allows students to reserve them ahead of time, state when they
+  started, get notified when the machine is ready, and find out which machines
+  are problematic. This makes the process of doing laundry mindless for
+  students, allowing them to focus on academia instead.
+  <div class="db-screen-text-section">
+    <div class="db-float-left">
+      <div class="db-img">
+        <img src="../img/db-lb-0.png" class="db-phone-img" />
+      </div>
+    </div>
+    <h2>Cycle Templates</h2>
+    When Laundry Buddy is first launched, a screen pops up instructing the user
+    to select washing machine templates in order to view the machines. This is
+    where the user creates their own preferences regarding their cycle.
+    Those preference help remind the user of their settings, and they also
+    determine how long the washing/drying will take, notifying the user
+    when it is done. For washers, a cycle template features the soil level,
+    the type of clothes, the temperature, and the size of the load. For dryers,
+    cycle settings include the temperature and if extra cool down time is
+    needed.
+    <div class="db-img-container-medium">
+      <div class="db-img">
+        <img src="../img/db-lb-1.png" class="db-phone-img-medium" />
+        Interface for adding a new template
+      </div>
+      <div class="db-img">
+        <img src="../img/db-lb-2.png" class="db-phone-img-medium" />
+        Interface for editing an existing template
+      </div>
+    </div>
+  </div>
+  <div class="db-phone-and-text">
+    <div class="db-float-left">
+      <div class="db-img">
+        <img src="../img/db-lb-3.png" class="db-phone-img" />
+      </div>
+    </div>
+    <div class="db-screen-text-section">
+      <h2>Reserving a laundry Machine</h2>
+      <div class="db-float-right">
+        <div class="db-img">
+          <img src="../img/db-lb-6.png" class="db-phone-img-medium" />
+          Machine Legend
+        </div>
+      </div>
+      <h3>Status and Condition</h3>
+      Before reserving a laundry machine, knowing the status of the machine and
+      its condition is a must. That's why icons were implemented do just that.
+      The icons follow the pictured legend and their explanation is as follows:
+      <div>
+        <ul>
+          <li>Status</li>
+          <ul>
+            <li>Free - the laundry machine is available for reservation</li>
+            <li>Busy - the machine is currently running a cycle</li>
+            <li>Reserved - the machine has been reserved but no cycle has started</li>
+          </ul>
+          <li>Condition</li>
+          <ul>
+            <li>Good - this machine is in working order and has no issues</li>
+            <li>Reported - an admnistrator marked this machine as problematic</li>
+            <li>Broken - the machine is out of order. One cannot reserve it</li>
+          </ul>
+        </ul>
+      </div>
+      <h3>Reservations</h3>
+      If a laumdry machine is available, the user can reserve it. Other users
+      will not be allowed to use the machine when it's reserved. After reserving
+      the machine, the user has 15 minutes to go to the laundry room, load the
+      machine, and start their laundry. The reservation gets automatically
+      cancelled if they don't start it in time. Once the cycle starts, based
+      on the selected template settings, the machine would run for that period
+      of time. The machine is considered "busy" for the time it takes to complete
+      the cycle, and a 10 minute overhead for users to come pick up their laundry.
+      When the time expires, other users regain the right to reserve the machine.
+      <div class="db-img-container-small">
+        <div class="db-img">
+          <img src="../img/db-lb-8.png" class="db-phone-img-small" />
+          A busy laundry machine
+        </div>
+        <div class="db-img">
+          <img src="../img/db-lb-7.png" class="db-phone-img-small" />
+          An available laundry machine
+        </div>
+        <div class="db-img">
+          <img src="../img/db-lb-4.png" class="db-phone-img-small" />
+          A laundry machine reserved by the user
+        </div>
+        <div class="db-img">
+          <img src="../img/db-lb-5.png" class="db-phone-img-small" />
+          A laundry machine after laundry is started
+        </div>
+      </div>
+    </div>
+    </div>
 </div>

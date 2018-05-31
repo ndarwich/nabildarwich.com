@@ -421,6 +421,11 @@
 .db-screen-text-section {
   height: max-content; }
 
+@media only screen and (min-width: 768px) {
+  .db-phone-and-text {
+    display: grid;
+    grid-template-columns: 400px 1fr; } }
+
 .db-float, .db-float-right, .db-float-left {
   display: block;
   margin: 0 auto; }

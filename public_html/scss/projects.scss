@@ -423,6 +423,13 @@
   height: max-content;
 }
 
+.db-phone-and-text {
+  @media only screen and #{$device-m} {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+  }
+}
+
 //dont float on small screens
 .db-float {
   display: block;
