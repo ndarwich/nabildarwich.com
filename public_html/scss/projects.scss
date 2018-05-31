@@ -419,7 +419,12 @@
   }
 }
 
-.db-float-right {
+.db-screen-text-section {
+  height: max-content;
+}
+
+//dont float on small screens
+.db-float {
   display: block;
   margin: 0 auto;
   @media only screen and #{$device-xxs} {
@@ -428,10 +433,23 @@
   @media only screen and #{$device-xs} {
     max-width: 80vw;
   }
+}
+
+.db-float-right {
+  @extend .db-float;
   @media only screen and #{$device-m} {
     max-width: 500px;
     margin: 0;
     float: right;
+  }
+}
+
+.db-float-left {
+  @extend .db-float;
+  @media only screen and #{$device-m} {
+    max-width: 400px;
+    margin: 0;
+    float: left;
   }
 }
 
@@ -449,6 +467,32 @@
   }
 }
 
+.db-img-container-small {
+  @extend .db-img-container;
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+.db-img-container-medium {
+  @extend .db-img-container;
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  @media only screen and #{$device-l} {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
 .db-img {
   display: block;
   text-align: center;
@@ -461,6 +505,16 @@
   width:400px;
   max-width: 90%;
   margin: 0 auto;
+}
+
+.db-phone-img-medium {
+  @extend .db-phone-img;
+  width: 280px;
+}
+
+.db-phone-img-small {
+  @extend .db-phone-img;
+  width: 150px;
 }
 
 .db-landscape-img {
