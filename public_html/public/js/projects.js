@@ -25,31 +25,23 @@ $(window).on("load", function() {
   });
 });
 
-clearBody = function () {
-  $("#page-body").css("opacity", 0);
-  $("#alt-body").css("opacity", 0);
-  $("#page-body").html("");
-  $("#alt-body").html("");
-}
-
 loadItem = function (itemId) {
-  clearBody();
   switch (itemId) {
     case 0:
       $("#page-body").load("/pages/projectsMenu.html");
       $("#page-body").css("opacity", 1);
       break;
     case 1:
-      $("#alt-body").load("/pages/dormbuddy.html");
-      $("#alt-body").css("opacity", 1);
+      $("#page-body").load("/pages/dormbuddy.html");
+      $("#page-body").css("opacity", 1);
       break;
     case 2:
-      $("#alt-body").load("/pages/javagames.html");
-      $("#alt-body").css("opacity", 1);
+      $("#page-body").load("/pages/javagames.html");
+      $("#page-body").css("opacity", 1);
       break;
     case 3:
-      $("#alt-body").load("/pages/tetriworld.html");
-      $("#alt-body").css("opacity", 1);
+      $("#page-body").load("/pages/tetriworld.html");
+      $("#page-body").css("opacity", 1);
       break;
     default:
       break;

@@ -50,13 +50,13 @@
   text-align: center; }
 
 #tetriworld {
-  background-image: url("/img/tetriworld.png"); }
+  background-image: url("../img/tetriworld.png"); }
 
 #dormbuddy {
-  background-image: url("/img/dormbuddy.png"); }
+  background-image: url("../img/dormbuddy.png"); }
 
 #javagames {
-  background-image: url("/img/javagames.png"); }
+  background-image: url("../img/javagames.png"); }
 
 .jg-container {
   display: grid;
@@ -68,13 +68,10 @@
       grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); } }
   @media only screen and (min-width: 320px) {
     .jg-container {
-      grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); } }
-  @media only screen and (min-width: 600px) {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
+  @media only screen and (min-width: 768px) {
     .jg-container {
-      grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr)); } }
-  @media only screen and (min-width: 992px) {
-    .jg-container {
-      grid-template-columns: repeat(auto-fit, minmax(415px, 1fr)); } }
+      grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); } }
 
 .jg-item {
   background-color: #e4e4e4;
@@ -253,7 +250,7 @@
     padding: 0 0.5rem; }
 
 .tw-block, .tw-block-row, .tw-block-col {
-  background-image: url("/img/tw-block.png");
+  background-image: url("../img/tw-block.png");
   -webkit-background-repeat: repeat;
   -moz-background-repeat: repeat;
   -ms-background-repeat: repeat;

@@ -12,40 +12,40 @@
   grid-gap: 15px; }
 
 .i0 {
-  background-image: url("/img/flag-morocco.png"); }
+  background-image: url("../img/flag-morocco.png"); }
 
 .i1 {
-  background-image: url("/img/traveling.png"); }
+  background-image: url("../img/traveling.png"); }
 
 .i2 {
-  background-image: url("/img/researching.png"); }
+  background-image: url("../img/researching.png"); }
 
 .i3 {
-  background-image: url("/img/games.png"); }
+  background-image: url("../img/games.png"); }
 
 .i4 {
-  background-image: url("/img/marmaris.png"); }
+  background-image: url("../img/marmaris.png"); }
 
 .i5 {
-  background-image: url("/img/london.png"); }
+  background-image: url("../img/london.png"); }
 
 .i6 {
-  background-image: url("/img/clearwater.jpg"); }
+  background-image: url("../img/clearwater.jpg"); }
 
 .i7 {
-  background-image: url("/img/phoenix.jpg"); }
+  background-image: url("../img/phoenix.jpg"); }
 
 .i8 {
-  background-image: url("/img/san-francisco.jpg"); }
+  background-image: url("../img/san-francisco.jpg"); }
 
 .i9 {
-  background-image: url("/img/blacksburg.jpg"); }
+  background-image: url("../img/blacksburg.jpg"); }
 
 .i10 {
-  background-image: url("/img/achievements.png"); }
+  background-image: url("../img/achievements.png"); }
 
 .i11 {
-  background-image: url("/img/meaning.jpg"); }
+  background-image: url("../img/meaning.jpg"); }
 
 .c1 {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }

@@ -64,13 +64,10 @@
     grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); //1 column
   }
   @media only screen and #{$device-xs} {
-    grid-template-columns: repeat(auto-fit, minmax(55vw, 1fr)); //1 column
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); //1 column
   }
-  @media only screen and #{$device-s} {
-    grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr)); //1 column
-  }
-  @media only screen and #{$device-l} {
-    grid-template-columns: repeat(auto-fit, minmax(415px, 1fr));
+  @media only screen and #{$device-m} {
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); //1 column
   }
   justify-content: center;
 }
