@@ -17,12 +17,12 @@ let loadTime = () => {
 }
 let loadWidget = (widgetName) => {
   let widgetIdx = widgetNames.indexOf(widgetName);
-  $("#db-screen").load("../components/db-" + widgetItems[widgetIdx] + ".html");
+  $("#db-screen").load("/components/db-" + widgetItems[widgetIdx] + ".html");
 }
 
 loadTime(); //load the time
 if (widgetName === "") {
-  $("#db-screen").load("../components/db-main.html");
+  $("#db-screen").load("/components/db-main.html");
 } else {
   loadWidget(widgetName); //load the correct widget
 }

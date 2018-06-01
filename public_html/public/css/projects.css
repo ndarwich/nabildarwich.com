@@ -50,13 +50,13 @@
   text-align: center; }
 
 #tetriworld {
-  background-image: url("../img/tetriworld.png"); }
+  background-image: url("/img/tetriworld.png"); }
 
 #dormbuddy {
-  background-image: url("../img/dormbuddy.png"); }
+  background-image: url("/img/dormbuddy.png"); }
 
 #javagames {
-  background-image: url("../img/javagames.png"); }
+  background-image: url("/img/javagames.png"); }
 
 .jg-container {
   display: grid;
@@ -253,7 +253,7 @@
     padding: 0 0.5rem; }
 
 .tw-block, .tw-block-row, .tw-block-col {
-  background-image: url("../img/tw-block.png");
+  background-image: url("/img/tw-block.png");
   -webkit-background-repeat: repeat;
   -moz-background-repeat: repeat;
   -ms-background-repeat: repeat;

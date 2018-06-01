@@ -1,6 +1,6 @@
 //load a navigation page and change its background
 loadNavigation = (p) => {
-  $("#navigation").load("./components/navigation.html", () => {
+  $("#navigation").load("/components/navigation.html", () => {
     $("#nav" + p).addClass("active");
   });
 }
