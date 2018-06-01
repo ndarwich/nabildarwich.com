@@ -433,7 +433,7 @@
 }
 
 .db-phone-and-text {
-  @media only screen and #{$device-m} {
+  @media only screen and #{$device-l} {
     display: grid;
     grid-template-columns: 400px 1fr;
   }
@@ -462,7 +462,7 @@
 
 .db-float-left {
   @extend .db-float;
-  @media only screen and #{$device-m} {
+  @media only screen and #{$device-l} {
     max-width: 400px;
     margin: 0;
     float: left;

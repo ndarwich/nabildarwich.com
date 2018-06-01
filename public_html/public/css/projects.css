@@ -426,7 +426,7 @@
 .db-screen-text-section {
   height: max-content; }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 992px) {
   .db-phone-and-text {
     display: grid;
     grid-template-columns: 400px 1fr; } }
@@ -447,7 +447,7 @@
     margin: 0;
     float: right; } }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 992px) {
   .db-float-left {
     max-width: 400px;
     margin: 0;
