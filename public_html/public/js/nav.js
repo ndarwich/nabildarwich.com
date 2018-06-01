@@ -7,4 +7,15 @@ loadNavigation = (p) => {
 
 $(window).on("load", function() {
     $("#page-body").addClass("load-page");
+    $("body").on("click", ".displayable-photo", (e) => {
+    console.info(e.target.src);
+    loadImage(e.target.src);
+  });
 });
+
+let loadImage = (imgUrl) => {
+  $("#page-body").load("/components/image-page.html", () => {
+    console.info(imgUrl);
+    $("#main-photo-img").attr("src", imgUrl);
+  });
+}
