@@ -11,42 +11,62 @@
   'search0 search0 search0 search1 search1 search1';*/
   grid-gap: 15px; }
 
-.i0 {
-  background-image: url("../img/flag-morocco.png"); }
-
+/*
 .i1 {
-  background-image: url("../img/traveling.png"); }
+  background-image: url("../img/traveling.png");
+  //grid-area: enjoy0;
+}
 
 .i2 {
-  background-image: url("../img/researching.png"); }
+  background-image: url("../img/researching.png");
+  //grid-area: enjoy1;
+}
 
 .i3 {
-  background-image: url("../img/games.png"); }
+  background-image: url("../img/games.png");
+  //grid-area: enjoy2;
+}
 
 .i4 {
-  background-image: url("../img/marmaris.png"); }
+  background-image: url("../img/marmaris.png");
+  //grid-area: travel0;
+}
 
 .i5 {
-  background-image: url("../img/london.png"); }
+  background-image: url("../img/london.png");
+  //grid-area: travel1;
+}
 
 .i6 {
-  background-image: url("../img/clearwater.jpg"); }
+  background-image: url("../img/clearwater.jpg");
+  //grid-area: travel2;
+}
 
 .i7 {
-  background-image: url("../img/phoenix.jpg"); }
+  background-image: url("../img/phoenix.jpg");
+  //grid-area: travel3;
+}
 
 .i8 {
-  background-image: url("../img/san-francisco.jpg"); }
+  background-image: url("../img/san-francisco.jpg");
+  //grid-area: travel4;
+}
 
 .i9 {
-  background-image: url("../img/blacksburg.jpg"); }
+  background-image: url("../img/blacksburg.jpg");
+  //grid-area: travel5;
+}
 
 .i10 {
-  background-image: url("../img/achievements.png"); }
+  background-image: url("../img/achievements.png");
+  //grid-area: search0;
+}
 
 .i11 {
-  background-image: url("../img/meaning.jpg"); }
-
+  background-image: url("../img/meaning.jpg");
+  //grid-area: search1;
+}
+*/
 .c1 {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
   @media only screen and (max-width: 320px) {
@@ -115,6 +135,15 @@
   user-select: none;
   min-height: 200px;
   text-align: center; }
+  .bio-item img {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+    float: left;
+    width: 100%;
+    height: 100%; }
 
 h2 {
   text-align: center;

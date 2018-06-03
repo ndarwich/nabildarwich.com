@@ -16,11 +16,7 @@
   grid-gap:15px;
 }
 
-.i0 {
-  background-image: url("../img/flag-morocco.png");
-  //grid-area: flag;
-}
-
+/*
 .i1 {
   background-image: url("../img/traveling.png");
   //grid-area: enjoy0;
@@ -75,6 +71,7 @@
   background-image: url("../img/meaning.jpg");
   //grid-area: search1;
 }
+*/
 
 .c1 {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -135,6 +132,12 @@
   user-select: none;
   min-height: 200px;
   text-align: center;
+  img {
+    @include border-radius(8px);
+    float: left;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 h2 {
