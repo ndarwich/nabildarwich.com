@@ -8,14 +8,23 @@ loadNavigation = (p) => {
 $(window).on("load", function() {
     $("#page-body").addClass("load-page");
     $("body").on("click", ".displayable-photo", (e) => {
-    console.info(e.target.src);
-    loadImage(e.target.src);
-  });
+      console.info(e.target.src);
+      loadImage(e.target.src);
+    });
+    $("body").on("click", ".image-page", () => {
+      exitImage();
+    });
 });
 
 let loadImage = (imgUrl) => {
-  $("#page-body").load("/components/image-page.html", () => {
+  $("#page-overlay").load("/components/image-page.html", () => {
+    $("#page-overlay").addClass("load-overlay");
     console.info(imgUrl);
     $("#main-photo-img").attr("src", imgUrl);
   });
+}
+
+let exitImage = () => {
+  $("#page-overlay").empty();
+  $("#page-overlay").removeClass("load-overlay");
 }
