@@ -115,9 +115,11 @@
 .bio-item {
   display: grid;
   align-items: flex-end;
+  /*
   @include background-size(100% 100%);
   @include background-repeat(no-repeat);
   @include background-position(center);
+  */
   @include border-radius(10px);
   border: 2px solid black;
   text-shadow:
@@ -130,11 +132,10 @@
   font-weight: bold;
   color: white;
   user-select: none;
-  min-height: 200px;
+  height: 200px;
   text-align: center;
   img {
     @include border-radius(8px);
-    float: left;
     width: 100%;
     height: 100%;
   }

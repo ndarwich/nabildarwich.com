@@ -106,21 +106,11 @@
 .bio-item {
   display: grid;
   align-items: flex-end;
-  -webkit-background-size: 100% 100%;
-  -moz-background-size: 100% 100%;
-  -ms-background-size: 100% 100%;
-  -o-background-size: 100% 100%;
-  background-size: 100% 100%;
-  -webkit-background-repeat: no-repeat;
-  -moz-background-repeat: no-repeat;
-  -ms-background-repeat: no-repeat;
-  -o-background-repeat: no-repeat;
-  background-repeat: no-repeat;
-  -webkit-background-position: center;
-  -moz-background-position: center;
-  -ms-background-position: center;
-  -o-background-position: center;
-  background-position: center;
+  /*
+  @include background-size(100% 100%);
+  @include background-repeat(no-repeat);
+  @include background-position(center);
+  */
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -133,7 +123,7 @@
   font-weight: bold;
   color: white;
   user-select: none;
-  min-height: 200px;
+  height: 200px;
   text-align: center; }
   .bio-item img {
     -webkit-border-radius: 8px;
@@ -141,7 +131,6 @@
     -ms-border-radius: 8px;
     -o-border-radius: 8px;
     border-radius: 8px;
-    float: left;
     width: 100%;
     height: 100%; }
 

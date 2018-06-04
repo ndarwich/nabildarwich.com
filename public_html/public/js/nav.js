@@ -11,8 +11,14 @@ $(window).on("load", function() {
       console.info(e.target.src);
       loadImage(e.target.src);
     });
-    $("body").on("click", ".image-page", () => {
+    $("body").on("click", "#page-overlay", () => {
       exitImage();
+    });
+    [].forEach.call(document.querySelectorAll("img[data-src]"), (img) => {
+      img.setAttribute("src", img.getAttribute("data-src"));
+      img.onload = function() {
+        img.removeAttribute("data-src");
+      };
     });
 });
 

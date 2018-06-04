@@ -6,6 +6,13 @@ h1 {
   font-family: Arial;
   text-align: center; }
 
+img {
+  opacity: 1;
+  transition: opacity 0.2s 0s; }
+
+img[data-src] {
+  opacity: 0; }
+
 nav {
   background-color: black;
   padding: 1px;
@@ -110,8 +117,8 @@ body {
   padding: 0rem 2rem; }
 
 .main-photo img {
-  max-height: 90vh;
-  max-width: 90vw; }
+  max-height: 80vh;
+  max-width: 80vw; }
 
 #photo-title {
   font-weight: bold;

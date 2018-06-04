@@ -10,6 +10,15 @@ h1 {
   text-align: center;
 }
 
+img {
+  opacity: 1;
+  transition: opacity 0.2s 0s;
+}
+
+img[data-src] {
+  opacity: 0;
+}
+
 nav {
   background-color: $bg-3;
   padding: 1px;
@@ -114,8 +123,8 @@ body {
 
 .main-photo {
   img {
-    max-height: 90vh;
-    max-width: 90vw;
+    max-height: 80vh;
+    max-width: 80vw;
   }
 }
 
