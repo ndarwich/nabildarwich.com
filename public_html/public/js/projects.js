@@ -20,7 +20,7 @@ $(window).on("load", function() {
   $("body").on("click", "#play-tw", function () {
     window.open(twURL);
   });
-  $("body").on("click", "#get-dormBuddy", function () {
+  $("body").on("click", "#get-db", function () {
     window.open(dbURL);
   });
 });
