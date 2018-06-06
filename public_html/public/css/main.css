@@ -37,14 +37,14 @@ nav {
       nav li {
         min-width: 48vw;
         max-width: 80vw;
-        padding: 0.5vw 0; } }
+        padding: 0.5rem 0; } }
     @media only screen and (min-width: 320px) {
       nav li {
         max-width: 23vw;
-        padding: 1vw 0; } }
+        padding: 0.5rem 0; } }
     @media only screen and (min-width: 768px) {
       nav li {
-        padding: 0.5 em; } }
+        padding: 1rem 0; } }
   nav li:hover {
     background: #1c00ff; }
     nav li:hover .nav-drop-down {
@@ -54,6 +54,7 @@ nav {
   position: absolute;
   z-index: 2;
   padding: 0rem;
+  margin-top: 0.5rem;
   display: none; }
   .nav-drop-down li {
     text-align: left;
@@ -67,7 +68,7 @@ nav {
     -ms-border-radius: 0px;
     -o-border-radius: 0px;
     border-radius: 0px;
-    min-width: fit-content; }
+    min-width: 10rem; }
     .nav-drop-down li:nth-child(1) {
       -webkit-animation: drop-down-animation 300ms 0ms ease-in-out forwards;
       -moz-animation: drop-down-animation 300ms 0ms ease-in-out forwards;
@@ -86,6 +87,9 @@ nav {
       -ms-animation: drop-down-animation 300ms 600ms ease-in-out forwards;
       -o-animation: drop-down-animation 300ms 600ms ease-in-out forwards;
       animation: drop-down-animation 300ms 600ms ease-in-out forwards; }
+  @media only screen and (min-width: 768px) {
+    .nav-drop-down {
+      margin-top: 1rem; } }
 
 @-webkit-keyframes drop-down-animation {
   0% {
