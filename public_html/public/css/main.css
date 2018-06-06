@@ -52,6 +52,7 @@ nav {
 
 .nav-drop-down {
   position: absolute;
+  z-index: 2;
   padding: 0rem;
   display: none; }
   .nav-drop-down li {
@@ -65,7 +66,8 @@ nav {
     -moz-border-radius: 0px;
     -ms-border-radius: 0px;
     -o-border-radius: 0px;
-    border-radius: 0px; }
+    border-radius: 0px;
+    min-width: fit-content; }
     .nav-drop-down li:nth-child(1) {
       -webkit-animation: drop-down-animation 300ms 0ms ease-in-out forwards;
       -moz-animation: drop-down-animation 300ms 0ms ease-in-out forwards;
@@ -155,6 +157,7 @@ a {
 
 #page-overlay {
   position: absolute;
+  z-index: 3;
   top: 0;
   left: 0;
   opacity: 0;
