@@ -51,8 +51,46 @@ nav {
   }
   li:hover {
     background: $bg-2;
+    .nav-drop-down {
+      display: block;
+    }
   }
 }
+
+.nav-drop-down {
+  position: absolute;
+  padding: 0rem;
+  display: none;
+  li {
+    text-align: left;
+    opacity: 0;
+    padding: 1rem;
+    display: block;
+    border-top: 50px;
+    background: rgb(101, 101, 101);
+    @include border-radius(0px);
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i}) {
+        @include customAnimation(drop-down-animation 300ms (300ms*$i)-300ms ease-in-out forwards);
+      }
+    }
+  }
+}
+
+@include customKeyFrames(drop-down-animation) {
+  0% {
+    opacity: 0;
+    transform: rotateX(-120deg) translateY(-2em);
+  }
+  50% {
+    transform: rotateX(60deg) scale(1.4);
+  }
+  100%{
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0em);
+  }
+}
+
 
 a {
   user-select: none;
