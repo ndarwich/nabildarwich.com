@@ -12,7 +12,7 @@ let projects = require("./routes/projects");
 let bio = require("./routes/bio");
 
 //all the files under public are static
-app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

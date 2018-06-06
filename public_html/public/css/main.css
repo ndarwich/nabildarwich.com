@@ -68,7 +68,7 @@ nav {
     -ms-border-radius: 0px;
     -o-border-radius: 0px;
     border-radius: 0px;
-    min-width: 10rem; }
+    min-width: 8rem; }
     .nav-drop-down li:nth-child(1) {
       -webkit-animation: drop-down-animation 300ms 0ms ease-in-out forwards;
       -moz-animation: drop-down-animation 300ms 0ms ease-in-out forwards;

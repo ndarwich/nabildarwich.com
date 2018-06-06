@@ -71,7 +71,7 @@ nav {
     border-top: 50px;
     background: rgb(101, 101, 101);
     @include border-radius(0px);
-    min-width: 10rem; //10 letters is min width
+    min-width: 8rem; //8 letters is min width
     @for $i from 1 through 3 {
       &:nth-child(#{$i}) {
         @include customAnimation(drop-down-animation 300ms (300ms*$i)-300ms ease-in-out forwards);
