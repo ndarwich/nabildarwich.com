@@ -4,6 +4,11 @@ a {
   color: $bg-2;
 }
 
+.home-page-container {
+  display: grid;
+  grid-row-gap: 0;
+}
+
 .floating-home-selfie {
   min-height: 250px;
   shape-outside: polygon(59px 57px, 22.88% 38px, 39.67% 8.67%, 47.44% 13.33%, 52.56% 19.33%,
@@ -31,20 +36,26 @@ a {
   }
 }
 
-.home-image-and-text {
-  height: max-content;
-}
-
 .home-section {
-  margin: 1rem;
+  margin: 0.25rem 1rem;
+  &.with-image {
+    @media only screen and #{$device-s} {
+      margin: 1rem 0.25rem 1rem 0rem;
+    }
+  }
 }
 
 .home-text-container {
   font-size: 1.2rem;
 }
 
-.home-title {
+.home-section-title {
+  margin: 1rem;
   text-align: center;
+}
+
+.home-title {
+  margin-bottom: 0.2rem;
 }
 
 
