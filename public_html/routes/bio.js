@@ -7,4 +7,14 @@ router.get("/", (req, res) => {
   res.sendFile("/bio.html", { root: __dirname + "/../public" });
 });
 
+router.get("/faq", function(req, res){
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/bio.html", { root: __dirname + "/../public" });
+});
+
+router.get("/overview", function(req, res){
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/bio.html", { root: __dirname + "/../public" });
+});
+
 module.exports = router;

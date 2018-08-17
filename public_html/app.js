@@ -55,8 +55,7 @@ app.get("*/pages/:pageName", function(req, res){
 app.post("/sendMail", (req, res) => {
   const key = "6LeWHVsUAAAAAAcLySamR5oeIE2rm-25tZFMVXxu";
   let googleReq = "https://www.google.com/recaptcha/api/siteverify?secret="
-    + key + "&response=" + req.body["g-recaptcha-response"]
-    + "&remoteip=" + req.connection.remoteAddress;
+    + key + "&response=" + req.body["g-recaptcha-response"];
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -65,13 +64,16 @@ app.post("/sendMail", (req, res) => {
     }
   });
   let isBot = req.body["g-recaptcha-response"] === "" ? "BOT" : "Human";
+  console.log(JSON.stringify(req.headers));
   let mailOptions = {
     from: "nabildarwichdotcom@gmail.com",
     to: "dnabil1996@gmail.com",
     subject: req.body.subject,
     text: isBot + "\n" + req.connection.remoteAddress + "\n" +
-      req.body.email + " wrote:\n" + req.body.message
+      req.get("x-forwarded-for") + "\n" + req.body.email +
+      " wrote:\n" + req.body.message
   };
+  //X-Forwarded-For
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
