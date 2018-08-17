@@ -26,6 +26,8 @@ gulp.task("serve", ["nodemon"], function() {
     .on("change", browserSync.reload);
   gulp.watch("public_html/public/img/*")
     .on("change", browserSync.reload);
+  gulp.watch("public_html/public/*.html")
+    .on("change", browserSync.reload);
   gulp.watch("public_html/public/pages/*.html")
     .on("change", browserSync.reload);
   gulp.watch("public_html/public/js/*")

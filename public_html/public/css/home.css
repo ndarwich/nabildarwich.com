@@ -1,6 +1,24 @@
 a {
   color: #1c00ff; }
 
-.home-page-container {
+h3 {
+  font-size: 1.5rem;
+  margin: 0;
+  text-align: center; }
+
+.home-container {
   display: grid;
   grid-row-gap: 0; }
+
+.side-box {
+  float: right;
+  margin-right: 2rem;
+  border: 3px double black;
+  padding: 1rem;
+  font-size: 1.2rem; }
+
+.side-box-section {
+  padding-top: 0.3rem; }
+
+.padded-text {
+  padding-left: 2rem; }
