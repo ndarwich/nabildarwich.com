@@ -13,16 +13,29 @@ h3 {
 }
 
 .home-container {
-  display: grid;
-  grid-row-gap: 0;
+  margin: 0.5rem 1.5rem;
+  padding: 1rem;
+  border: 2px solid black;
+}
+
+.home-featured {
 }
 
 .side-box {
-  float: right;
-  margin-right: 2rem;
+  display: block;
   border: 3px double black;
   padding: 1rem;
   font-size: 1.2rem;
+  @media only screen and #{$device-xxs} {
+    margin: 0 auto;
+  }
+  @media only screen and #{$device-xs} {
+    margin: 0 auto;
+  }
+  @media only screen and #{$device-m} {
+    float: right;
+    margin-right: 1.5rem;
+  }
 }
 
 .side-box-section {
