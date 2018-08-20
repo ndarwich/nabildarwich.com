@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-let numVisits = 4954;
+let numVisits = 5043;
 
 //index router
 router.get("/", (req, res) => {
