@@ -52,3 +52,26 @@ h3 {
 .padded-text {
   padding-left: 2rem;
 }
+
+#featured-game, #mobile-message {
+  display: block;
+}
+
+.home-play-button {
+  @include border-radius(10px);
+  width: auto;
+  padding: 1.5rem 1rem;
+  font-size: 1.5rem;
+  font-family: arial;
+  background-color: $bg-2;
+  color: $fg-2;
+  cursor: pointer;
+  select: none;
+  width: 9rem;
+  &:hover {
+    background-color: rgb(31, 0, 182);
+  }
+  a {
+    color: white;
+  }
+}

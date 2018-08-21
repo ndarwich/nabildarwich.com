@@ -40,3 +40,26 @@ h3 {
 
 .padded-text {
   padding-left: 2rem; }
+
+#featured-game, #mobile-message {
+  display: block; }
+
+.home-play-button {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  width: auto;
+  padding: 1.5rem 1rem;
+  font-size: 1.5rem;
+  font-family: arial;
+  background-color: #1c00ff;
+  color: white;
+  cursor: pointer;
+  select: none;
+  width: 9rem; }
+  .home-play-button:hover {
+    background-color: #1f00b6; }
+  .home-play-button a {
+    color: white; }
