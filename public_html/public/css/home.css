@@ -58,8 +58,12 @@ h3 {
   color: white;
   cursor: pointer;
   select: none;
-  width: 9rem; }
+  width: 9rem;
+  margin: 0 auto; }
   .home-play-button:hover {
     background-color: #1f00b6; }
   .home-play-button a {
     color: white; }
+  @media only screen and (min-width: 768px) {
+    .home-play-button {
+      margin: 0; } }

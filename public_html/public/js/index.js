@@ -1,12 +1,8 @@
 $(window).on("load", function() {
   loadNavigation(0);
-  let storedCookie = $.cookie("magicCookie");
+  let storedCookie = $.cookie("visitorNum");
   let myNumber = -1;
   $("#featured-game").css("display", "none");
-  $("body").on("click", "#play-btn", () => {
-    console.info("clicked play");
-    playGame();
-  });
   $.get("/numVisitors", function(data, status){
     myNumber = data;
     //new visitors, therefore total visitors = this visitor's spot
@@ -14,14 +10,18 @@ $(window).on("load", function() {
       $("#myNumberSpan").text(myNumber.toLocaleString());
       let inTenYears = new Date();
       inTenYears.setDate(inTenYears.getDate() + 3652); //3652 days are added
-      $.cookie("magicCookie", "" + myNumber, { expires: inTenYears, path: "/"});
+      $.cookie("visitorNum", "" + myNumber, { expires: inTenYears, path: "/"});
     } else {
       //previous visitor, therefore this visitor's spot = saved cookie
-      $("#myNumberSpan").text($.cookie("magicCookie").toLocaleString());
+      $("#myNumberSpan").text($.cookie("visitorNum").toLocaleString());
     }
     //num visitors = get request output no matter what
     $("#numVisitorsSpan").text(myNumber.toLocaleString());
-    $("#mobile-message").css("display", "none");
+  });
+  $("#mobile-message").css("display", "none");
+  $("body").on("click", "#play-btn", () => {
+    console.info("clicked play");
+    playGame();
   });
 });
 

@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
-let numVisits = 5043;
+let numVisits = 0;
 
 //index router
 router.get("/", (req, res) => {
   let storedCookie = req.headers.cookie;
-  if (storedCookie == null || !storedCookie.includes("magicCookie")) {
-    console.info("Does not include magicCookie");
+  if (storedCookie == null || !storedCookie.includes("visitorNum")) {
+    console.info("Does not include visitorNum");
     numVisits++;
   }
-  console.info("Does include magicCookie");
+  console.info("Does include visitorNum");
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/index.html", { root: __dirname + "/../public" });
 });
