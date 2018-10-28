@@ -23,6 +23,7 @@ $(window).on("load", function() {
     console.info("clicked play");
     playGame();
   });
+  loadPhotos();
 });
 
 var playGame = () => {
@@ -37,4 +38,14 @@ var playGame = () => {
     $("#featured-game").css("display", "block");
     $("#play-btn").css("display", "none");
   }
+}
+
+
+loadPhotos = function() {
+  [].forEach.call(document.querySelectorAll("img[data-src]"), (img) => {
+    img.setAttribute("src", img.getAttribute("data-src"));
+    img.onload = function() {
+      img.removeAttribute("data-src");
+    };
+  });
 }

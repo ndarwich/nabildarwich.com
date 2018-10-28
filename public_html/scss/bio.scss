@@ -18,6 +18,7 @@
 
 .bio-container-container {
   @include border-radius(10px);
+  display: grid;
   margin: 1rem;
   border: 2px solid black;
 }
@@ -118,6 +119,10 @@
   }
 }
 
+.bio-header {
+
+}
+
 .bio-item {
   display: grid;
   grid-template-columns: 1fr;
@@ -142,6 +147,7 @@
   user-select: none;
   height: 200px;
   text-align: center;
+  margin: 0.2rem 0;
   img {
     @include border-radius(8px);
     grid-row: 1;

@@ -41,6 +41,12 @@ app.get("*/:imageFile.png", function(req, res){
     {root: __dirname });
 });
 
+app.get("*/:imageFile.jpg", function(req, res){
+  res.setHeader("Content-Type", "text/css");
+  res.sendFile("/public/img/" + req.params.imageFile + ".jpg",
+    {root: __dirname });
+});
+
 app.get("*/components/:componentName", function(req, res){
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/components/" + req.params.componentName,

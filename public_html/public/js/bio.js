@@ -25,6 +25,7 @@ loadItem = function (itemId) {
   }
 };
 
+
 loadPhotos = function() {
   [].forEach.call(document.querySelectorAll("img[data-src]"), (img) => {
     img.setAttribute("src", img.getAttribute("data-src"));

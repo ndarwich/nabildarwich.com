@@ -17,6 +17,7 @@
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
   border-radius: 10px;
+  display: grid;
   margin: 1rem;
   border: 2px solid black; }
 
@@ -135,7 +136,8 @@
   color: white;
   user-select: none;
   height: 200px;
-  text-align: center; }
+  text-align: center;
+  margin: 0.2rem 0; }
   .bio-item img {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
