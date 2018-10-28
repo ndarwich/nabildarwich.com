@@ -107,3 +107,16 @@ h3 {
   @media only screen and (min-width: 768px) {
     .home-play-button {
       margin: 0; } }
+
+.expandable-txt {
+  cursor: pointer;
+  color: gray; }
+  .expandable-txt:hover {
+    color: black; }
+
+.expanded-txt {
+  color: black; }
+
+.home-previous {
+  display: none;
+  transition: all .5s ease-in-out; }

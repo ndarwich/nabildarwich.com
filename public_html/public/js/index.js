@@ -1,3 +1,5 @@
+expanded = [false];
+
 $(window).on("load", function() {
   loadNavigation(0);
   let storedCookie = $.cookie("visitorNum");
@@ -18,6 +20,9 @@ $(window).on("load", function() {
     //num visitors = get request output no matter what
     $("#numVisitorsSpan").text(myNumber.toLocaleString());
   });
+  $("body").on("click", "#expand-previous0", (e) => {
+    expand(0, e);
+  });
   $("#mobile-message").css("display", "none");
   $("body").on("click", "#play-btn", () => {
     console.info("clicked play");
@@ -25,6 +30,21 @@ $(window).on("load", function() {
   });
   loadPhotos();
 });
+
+var expand = (expandIndex, event) => {
+  elementName = "#previous" + expandIndex;
+  expandElement = event.target;
+  console.info(expandElement);
+  if (!expanded[expandIndex]) {
+    $(elementName).css("display", "block");
+    $(expandElement).addClass("expanded-txt");
+  }
+  else {
+    $(elementName).css("display", "none");
+    $(expandElement).removeClass("expanded-txt");
+  }
+  expanded[expandIndex] = !expanded[expandIndex]
+}
 
 var playGame = () => {
   // if the user is using a mobile browser, do not display the game

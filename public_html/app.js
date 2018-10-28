@@ -36,13 +36,13 @@ app.get("*/:cascadingStyleSheet.css", function(req, res){
 });
 
 app.get("*/:imageFile.png", function(req, res){
-  res.setHeader("Content-Type", "text/css");
+  res.setHeader("Content-Type", "image/png");
   res.sendFile("/public/img/" + req.params.imageFile + ".png",
     {root: __dirname });
 });
 
 app.get("*/:imageFile.jpg", function(req, res){
-  res.setHeader("Content-Type", "text/css");
+  res.setHeader("Content-Type", "image/jpeg");
   res.sendFile("/public/img/" + req.params.imageFile + ".jpg",
     {root: __dirname });
 });
