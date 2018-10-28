@@ -2,9 +2,10 @@ expanded = [false];
 
 $(window).on("load", function() {
   loadNavigation(0);
-  let storedCookie = $.cookie("visitorNum");
+  //let storedCookie = $.cookie("visitorNum");
   let myNumber = -1;
   $("#featured-game").css("display", "none");
+  /* removed visitor number
   $.get("/numVisitors", function(data, status){
     myNumber = data;
     //new visitors, therefore total visitors = this visitor's spot
@@ -20,12 +21,13 @@ $(window).on("load", function() {
     //num visitors = get request output no matter what
     $("#numVisitorsSpan").text(myNumber.toLocaleString());
   });
+  */
   $("body").on("click", "#expand-previous0", (e) => {
     expand(0, e);
   });
   $("#mobile-message").css("display", "none");
-  $("body").on("click", "#play-btn", () => {
-    console.info("clicked play");
+  $("body").on("click", "#play-btn", (e) => {
+    e.preventDefault(); //don't scroll up
     playGame();
   });
   loadPhotos();
