@@ -175,6 +175,7 @@
   @include border-radius(5px);
   border: 4px double black;
   display: grid;
+  font-size: 1.2rem;
   grid-template-rows: auto auto 1fr;
   h2 {
     margin: 0 0 1rem 0;
@@ -218,6 +219,14 @@
     @media only screen and #{$device-xs} {
         width: 100%;
     }
+  }
+}
+.tw-float-right {
+  display: block;
+  @media only screen and #{$device-m} {
+    max-width: 400px;
+    margin: 0 0 0 1rem;
+    float: right;
   }
 }
 
