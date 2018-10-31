@@ -197,7 +197,7 @@ body {
   font-family: arial;
 
   @media only screen and #{$device-xs} {
-    font-size: 1rem;
+    font-size: 2rem;
     margin: 0.2rem;
   }
   @media only screen and #{$device-m} {
@@ -205,18 +205,18 @@ body {
     margin: 0.5rem;
   }
   @media only screen and #{$device-l} {
-    font-size: 3rem;
+    font-size: 1rem;
     margin: 1rem;
   }
 }
 
 #photo-caption {
   @media only screen and #{$device-xs} {
-    font-size: 0.5rem;
+    font-size: 1.25rem;
     margin: 0.1rem;
   }
   @media only screen and #{$device-m} {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin: 0.25rem;
   }
   @media only screen and #{$device-l} {
