@@ -7,42 +7,58 @@ loadNavigation = (p) => {
 
 baseUrl = "";
 numRegex = /\d+/;
-insideImage = true;
+insideImage = false;
 currentlyDisplaying = -1;
 maxIndex = -1;
 $(window).on("load", function() {
     $("#page-body").addClass("load-page");
     $("body").on("click", ".displayable-photo", (e) => {
-      console.info(e.target.src);
       loadImage(e.target.src);
     });
-    $(document).keypress(function(e){
+    $(document).keydown(function(e){
       if (insideImage == true) {
-        console.info(currentlyDisplaying);
-        if (e.keyCode==37) {
-          currentlyDisplaying -= 1;
-          if (currentlyDisplaying < 0){
-            currentlyDisplaying = maxIndex; //wrap
-          }
-          imgUrl = baseUrl + currentlyDisplaying + ".png";
-          loadImage(imgUrl);
-        } else if (e.keyCode == 39) {
-          currentlyDisplaying += 1;
-          if (currentlyDisplaying > maxIndex){
-            currentlyDisplaying = 0; //wrap
-          }
-          imgUrl = baseUrl + currentlyDisplaying + ".png";
-          loadImage(imgUrl);
+        e.preventDefault();
+        if (e.keyCode==37 || e.keyCode == 65) {
+          navigateLeft();
+        } else if (e.keyCode == 39 || e.keyCode == 68) {
+          navigateRight();
         }
       }
     });
-    $("body").on("click", "#page-overlay", () => {
-      exitImage();
+    $("body").on("click", "#page-overlay", (e) => {
+      //navigations do not exit out of the screen
+      if ($(e.target).hasClass("navigate-img")) {
+        return;
+      }
+      else {
+        exitImage();
+      }
     });
-    $("body").on("click", "#page-body", () => {
-      exitImage();
+    $("body").on("click", "#navigate-left", (e) => {
+      navigateLeft();
+    });
+    $("body").on("click", "#navigate-right", (e) => {
+      navigateRight();
     });
 });
+
+let navigateLeft = () => {
+  currentlyDisplaying -= 1;
+  if (currentlyDisplaying < 0){
+    currentlyDisplaying = maxIndex; //wrap
+  }
+  imgUrl = baseUrl + currentlyDisplaying + ".png";
+  loadImage(imgUrl);
+}
+
+let navigateRight = () => {
+  currentlyDisplaying += 1;
+  if (currentlyDisplaying > maxIndex){
+    currentlyDisplaying = 0; //wrap
+  }
+  imgUrl = baseUrl + currentlyDisplaying + ".png";
+  loadImage(imgUrl);
+}
 
 let loadImage = (imgUrl) => {
   $("#page-overlay").load("/components/image-page.html", () => {

@@ -214,6 +214,21 @@ body {
   max-height: 80vh;
   max-width: 80vw; }
 
+.navigate-img {
+  width: 6vmin;
+  height: 30vmin;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer; }
+
+#navigate-left {
+  left: 1vmin; }
+
+#navigate-right {
+  right: 1vmin; }
+
 #photo-title {
   font-weight: bold;
   font-family: arial; }
