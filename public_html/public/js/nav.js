@@ -13,7 +13,7 @@ maxIndex = -1;
 $(window).on("load", function() {
     $("#page-body").addClass("load-page");
     $("body").on("click", ".displayable-photo", (e) => {
-      loadImage(e.target.src);
+      loadImage($(".displayable-photo").index(e.target));
     });
     $(document).keydown(function(e){
       if (insideImage == true) {
@@ -47,8 +47,7 @@ let navigateLeft = () => {
   if (currentlyDisplaying < 0){
     currentlyDisplaying = maxIndex; //wrap
   }
-  imgUrl = baseUrl + currentlyDisplaying + ".png";
-  loadImage(imgUrl);
+  loadImage(currentlyDisplaying);
 }
 
 let navigateRight = () => {
@@ -56,21 +55,22 @@ let navigateRight = () => {
   if (currentlyDisplaying > maxIndex){
     currentlyDisplaying = 0; //wrap
   }
-  imgUrl = baseUrl + currentlyDisplaying + ".png";
-  loadImage(imgUrl);
+  loadImage(currentlyDisplaying);
 }
 
-let loadImage = (imgUrl) => {
+let loadImage = (index) => {
   $("#page-overlay").load("/components/image-page.html", () => {
-    $("#page-overlay").addClass("load-overlay");
-    $("#main-photo-img").attr("src", imgUrl);
-    if (insideImage == false) {
-      baseUrl = imgUrl.substring(0, imgUrl.lastIndexOf("-") + 1);
-      ending = imgUrl.substring(imgUrl.lastIndexOf("-") + 1);
-      currentlyDisplaying = parseInt(ending.match(numRegex));
+    if (maxIndex == -1) {
       maxIndex = $(".displayable-photo").length - 1;
-      insideImage = true;
     }
+    $("#page-overlay").addClass("load-overlay");
+    newImage = $($(".displayable-photo")[index % (maxIndex+1)]) //wrapping
+    currentlyDisplaying = index;
+    imgUrl = newImage.attr("src");
+    imgCaption = newImage.attr("alt");
+    $("#photo-caption").text(imgCaption);
+    $("#main-photo-img").attr("src", imgUrl);
+    insideImage = true;
   });
 }
 
