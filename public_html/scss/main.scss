@@ -176,18 +176,27 @@ body {
 .navigate-img {
   width: 6vmin;
   height: 30vmin;
-  background-color: white;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  background-repeat: no-repeat;
+  background-size: contain;
   cursor: pointer;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 #navigate-left {
+  background: url("./left-arrow.png");
+  background-size: 6vmin 30vmin;
   left: 1vmin;
 }
 
 #navigate-right {
+  background: url("./right-arrow.png");
+  background-size: 6vmin 30vmin;
   right: 1vmin;
 }
 
