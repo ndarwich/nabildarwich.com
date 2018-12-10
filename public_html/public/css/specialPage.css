@@ -1,0 +1,72 @@
+.gradeBoxes {
+  display: grid; }
+  @media only screen and (max-width: 320px) {
+    .gradeBoxes {
+      grid-template-columns: repeat(auto-fit, minmax(30vmin, 1fr)); } }
+  @media only screen and (min-width: 320px) {
+    .gradeBoxes {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
+  @media only screen and (min-width: 992px) {
+    .gradeBoxes {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
+  @media only screen and (min-width: 1200px) {
+    .gradeBoxes {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
+
+.gradeCategory {
+  position: relative;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  border: 3px solid #1c00ff;
+  padding-bottom: 2.5rem;
+  text-align: center; }
+
+.gradeCategoryItems {
+  display: grid; }
+  @media only screen and (max-width: 320px) {
+    .gradeCategoryItems {
+      grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); } }
+  @media only screen and (min-width: 320px) {
+    .gradeCategoryItems {
+      grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+      margin: 2vmin 3%; } }
+  @media only screen and (min-width: 992px) {
+    .gradeCategoryItems {
+      grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); } }
+  @media only screen and (min-width: 1200px) {
+    .gradeCategoryItems {
+      grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); } }
+
+.gradeInput {
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  width: 3rem;
+  margin: 0 auto;
+  background: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid black; }
+
+.categoryTotal {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  bottom: 1rem; }
+
+.gradeInputTitle {
+  font-size: 1.25rem;
+  font-weight: bold; }
+
+.finalGradeBox {
+  font-size: 2.0rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto; }

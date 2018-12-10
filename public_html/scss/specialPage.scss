@@ -1,0 +1,73 @@
+@import 'mixins';
+
+.gradeBoxes {
+  display: grid;
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(30vmin, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  @media only screen and #{$device-l} {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  @media only screen and #{$device-xl} {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+.gradeCategory {
+  position: relative;
+  @include border-radius(10px);
+  border: 3px solid  $bg-2;
+  padding-bottom: 2.5rem;
+  text-align: center;
+}
+
+.gradeCategoryItems {
+  display: grid;
+  @media only screen and #{$device-xxs} {
+    grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  }
+  @media only screen and #{$device-xs} {
+    grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+    margin: 2vmin 3%;
+  }
+  @media only screen and #{$device-l} {
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  }
+  @media only screen and #{$device-xl} {
+    grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  }
+}
+
+.gradeInput {
+ display: block;
+ text-align: center;
+ font-size: 1.5rem;
+ width: 3rem;
+ margin: 0 auto;
+ background: $fg-2;
+ @include border-radius(5px);
+ border: 1px solid $bg-3;
+}
+
+.categoryTotal {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  bottom: 1rem;
+}
+
+.gradeInputTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.finalGradeBox {
+  font-size: 2.0rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto;
+}
