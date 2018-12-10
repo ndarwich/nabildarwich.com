@@ -2,10 +2,9 @@ expanded = [false];
 
 $(window).on("load", function() {
   loadNavigation(0);
+  /* removed visitor number
   //let storedCookie = $.cookie("visitorNum");
   let myNumber = -1;
-  $("#featured-game").css("display", "none");
-  /* removed visitor number
   $.get("/numVisitors", function(data, status){
     myNumber = data;
     //new visitors, therefore total visitors = this visitor's spot
@@ -25,6 +24,7 @@ $(window).on("load", function() {
   $("body").on("click", "#expand-previous0", (e) => {
     expand(0, e);
   });
+  $("#featured-game").css("display", "none");
   $("#mobile-message").css("display", "none");
   $("body").on("click", "#play-btn", (e) => {
     e.preventDefault(); //don't scroll up
@@ -58,6 +58,7 @@ var playGame = () => {
   }
   else {
     $("#featured-game").css("display", "block");
+    $("#featured-game").attr("src", "https://ndarwich.github.io/HW10-Revised");
     $("#play-btn").css("display", "none");
   }
 }

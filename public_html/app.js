@@ -10,6 +10,7 @@ let index = require("./routes/index");
 let contact = require("./routes/contact");
 let projects = require("./routes/projects");
 let bio = require("./routes/bio");
+let specialPage = require("./routes/specialPage");
 
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
@@ -21,7 +22,7 @@ app.use("/", index);
 app.use("/contact", contact);
 app.use("/projects", projects);
 app.use("/bio", bio);
-
+app.use("/cs367", specialPage);
 
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "text/js");
