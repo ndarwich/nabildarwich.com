@@ -18,13 +18,13 @@ recalculateTotal = () => {
     $("#examTotal").text("" + parseFloat(exams).toFixed(2))
     projects = castToInt("#p1")/10 + castToInt("#p2")/7 + castToInt("#p3")/10
     $("#projectTotal").text("" + parseFloat(projects).toFixed(2))
-    quizzes =  castToInt("#q1")*0.0125 + castToInt("#q2")*0.0125 +
-      castToInt("#q3")*0.0125 + castToInt("#q4")/1.05*0.0125
+    quizzes =  castToInt("#q1")*0.015 + castToInt("#q2")*0.015 +
+      castToInt("#q3")*0.015 + castToInt("#q4")*0.015 + castToInt("#q5")*0.015
     $("#quizTotal").text("" + parseFloat(quizzes).toFixed(2))
     recitations = (castToInt("#a1") + castToInt("#a2") + castToInt("#a3") +
       castToInt("#a4") + castToInt("#a5") + castToInt("#a6") + castToInt("#a7") +
       castToInt("#a8") + castToInt("#a9") + castToInt("#a10") + castToInt("#a11") +
-      castToInt("#a12") + castToInt("#a13") + castToInt("#a14"))/14*10;
+      castToInt("#a12") + castToInt("#a13"))/13*7.5;
     $("#recitationTotal").text("" + parseFloat(recitations).toFixed(2))
     total =  recitations + projects + exams + quizzes;
     $("#finalGrade").text("" + parseFloat(total).toFixed(2))
