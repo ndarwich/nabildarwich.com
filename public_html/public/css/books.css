@@ -1,2 +1,51 @@
 h2 {
   text-align: center; }
+
+.book-collection-collection {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  display: grid;
+  margin: 1rem;
+  border: 2px solid black; }
+
+.book-collection {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  display: grid;
+  margin: 1rem;
+  border: 2px solid black; }
+
+.book-collection-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0.25rem; }
+
+.book-collection-content {
+  display: grid;
+  margin: 1rem;
+  grid-template-columns: repeat(auto-fit, 15rem); }
+
+.book {
+  display: block; }
+
+.book-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.1rem; }
+
+.book-image {
+  width: 10rem;
+  margin: 0 2.5rem; }
+
+.book-info {
+  font-size: 1rem;
+  padding: 0.05rem;
+  text-align: center; }
