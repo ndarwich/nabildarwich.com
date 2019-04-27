@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
+const emoji = require("emoji-dictionary");
 var https = require("https");
 var app = express();
 var router = express.Router();
@@ -11,6 +12,7 @@ let contact = require("./routes/contact");
 let projects = require("./routes/projects");
 let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
+let books = require("./routes/books");
 
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
@@ -23,6 +25,7 @@ app.use("/contact", contact);
 app.use("/projects", projects);
 app.use("/bio", bio);
 app.use("/cs367", specialPage);
+app.use("/books", books);
 
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "text/js");
