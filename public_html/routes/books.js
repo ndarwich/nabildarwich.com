@@ -31,6 +31,7 @@ router.get("/books/:bookType", function(req, res){
 
 router.get("/getBook/:bookType/:bookName", function(req, res){
   let header = "";
+  let bookPath = "/books/" + req.params.bookType + "/" + req.params.bookName;
   switch (req.params.bookType) {
     case "text":
       header = "text/html";
@@ -38,12 +39,22 @@ router.get("/getBook/:bookType/:bookName", function(req, res){
     case "image":
       header = "image/png";
       break;
+    case "audio":
+      header = "audio/mpeg";
+      break;
+    case "video":
+      header = "video/mp4";
+      break;
+    case "misc":
+      let book = __dirname + "/../public" + bookPath;
+      res.download(book);
+      return;
     default:
       header = "text/html";
       break;
   }
   res.setHeader("Content-Type", header);
-  res.sendFile("/books/" + req.params.bookType + "/" + req.params.bookName, { root: __dirname + "/../public" });
+  res.sendFile(bookPath, { root: __dirname + "/../public" });
 });
 
 module.exports = router;

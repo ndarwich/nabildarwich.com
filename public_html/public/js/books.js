@@ -8,7 +8,7 @@ $(window).on("load", function() {
 });
 
 loadBooks = () => {
-  const bookTypes = ["text", "image", "audio", "video", "custom"];
+  const bookTypes = ["text", "image", "audio", "video", "misc"];
   for (i in bookTypes) {
     let bookType = bookTypes[i];
     $.getJSON("/books/books/" + bookType, (books) => {
@@ -33,7 +33,7 @@ fillData = (bookSkeleton, book, bookType) => {
   let bookTitle = $(bookSkeleton).find(".book-title")[0];
   $(bookTitle).text(book.fileName);
   let bookInfo = $(bookSkeleton).find(".book-info")[0];
-  $(bookInfo).text("" + book.fileSize/1024 + " KB");
+  $(bookInfo).text("" + Math.floor(book.fileSize/1024) + " KB");
   let bookImage = $(bookSkeleton).find("img")[0];
   $(bookImage).attr("src", "book-" + bookType + ".png");
   $(bookSkeleton).data("fileName", book.fileName);
