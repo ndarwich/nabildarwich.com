@@ -12,11 +12,6 @@ h2 {
   border: 2px solid black; }
 
 .book-collection {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
   display: grid;
   margin: 1rem;
   border: 2px solid black; }
@@ -33,7 +28,15 @@ h2 {
   grid-template-columns: repeat(auto-fit, 15rem); }
 
 .book {
-  display: block; }
+  display: block;
+  cursor: pointer;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px; }
+  .book:hover {
+    border: 1px solid blue; }
 
 .book-title {
   text-align: center;

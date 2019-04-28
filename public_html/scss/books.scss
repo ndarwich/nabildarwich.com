@@ -14,7 +14,6 @@ h2 {
 }
 
 .book-collection {
-  @include border-radius(10px);
   display: grid;
   margin: 1rem;
   border: 2px solid black;
@@ -35,6 +34,11 @@ h2 {
 
 .book {
   display: block;
+  cursor: pointer;
+  @include border-radius(10px);
+  &:hover {
+    border: 1px solid blue;
+  }
 }
 
 .book-title {
