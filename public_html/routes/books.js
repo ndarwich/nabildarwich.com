@@ -33,11 +33,12 @@ router.get("/books/:bookType", function(req, res){
 
 let downloadBook = (bookType, bookName, res) => {
   clientId += 1;
+  let thisClient = clientId;
   let header = "";
   let timeStamp = new Date()/1000;
   let bookAddress = bookType + "/" + bookName;
   let bookPath = __dirname + "/../public/books/" + bookAddress;
-    console.info("" + timeStamp + ": " +  clientId + " request " + bookAddress);
+  console.info("" + timeStamp + ": " +  thisClient + " request " + bookAddress);
   switch (bookType) {
     case "text":
       header = "text/html";
@@ -48,17 +49,15 @@ let downloadBook = (bookType, bookName, res) => {
     case "audio":
       header = "audio/mpeg";
       break;
-    case "video":
-      header = "video/mp4";
-      break;
+    case "video": //videos and misc books are too large to display on browser with one request
     case "misc":
       res.download(bookPath, (err) => {
         timeStamp = new Date()/1000;
         if (err) {
-          console.error("" + timeStamp + ": " +  clientId + " fail " + bookAddress);
+          console.error("" + timeStamp + ": " +  thisClient + " fail " + bookAddress);
         }
         else {
-          console.info("" + timeStamp + ": " +  clientId + " success " + bookAddress);
+          console.info("" + timeStamp + ": " +  thisClient + " success " + bookAddress);
         }
       });
       return;
@@ -70,13 +69,32 @@ let downloadBook = (bookType, bookName, res) => {
   res.sendFile("/books/" + bookAddress, { root: __dirname + "/../public" }, (err) => {
       timeStamp = new Date()/1000;
       if (err) {
-        console.error("" + timeStamp + ": " +  clientId + " fail " + bookAddress);
+        console.error("" + timeStamp + ": " +  thisClient + " fail " + bookAddress);
       }
       else {
-        console.info("" + timeStamp + ": " +  clientId + " success " + bookAddress);
+        console.info("" + timeStamp + ": " +  thisClient + " success " + bookAddress);
       }
   });
 }
+
+router.get("/getRandomBook/:bookType", (req, res) => {
+  let bookType = req.params.bookType;
+  let directoryPath = "" + __dirname + "/../public/books/" + bookType;
+  let dirFiles = [];
+  fs.readdir(directoryPath, (err, files) => {
+    //error handling
+    if (err) {
+        return console.log("Error reading directory: " + err);
+    }
+    //go over every file, recording file size stat
+    files.forEach((fileName) => {
+      dirFiles.push(fileName);
+    });
+    let randomFileIndex = Math.floor(Math.random() * dirFiles.length);
+    let randomBook = dirFiles[randomFileIndex];
+    downloadBook(bookType, randomBook, res);
+  });
+});
 
 router.get("/getRandomBook", (req, res) => {
   const bookTypes = ["text", "image", "audio", "video", "misc"];
