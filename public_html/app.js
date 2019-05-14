@@ -27,7 +27,7 @@ app.use("/cs367", specialPage);
 app.use("/books", books);
 
 app.get("*/:scriptName.js", function(req, res){
-  res.setHeader("Content-Type", "text/js");
+  res.setHeader("Content-Type", "application/javascript");
   res.sendFile("/public/js/" + req.params.scriptName + ".js",
     {root: __dirname });
 });
@@ -79,8 +79,8 @@ app.post("/sendMail", (req, res) => {
     to: "dnabil1996@gmail.com",
     subject: req.body.subject,
     text: isBot + "\n" + req.connection.remoteAddress + "\n" +
-      req.get("x-forwarded-for") + "\n" + req.body.email +
-      " wrote:\n" + req.body.message
+      req.get("x-forwarded-for") + "\n" + req.body.email + "\n" + req.body.name
+      + " wrote:\n" + req.body.message
   };
   //X-Forwarded-For
   transporter.sendMail(mailOptions, function(error, info){

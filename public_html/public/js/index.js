@@ -24,6 +24,9 @@ $(window).on("load", function() {
   $("body").on("click", "#expand-previous0", (e) => {
     expand(0, e);
   });
+  $("body").on("click", "#expand-previous1", (e) => {
+    expand(1, e);
+  });
   $("#featured-game").css("display", "none");
   $("#mobile-message").css("display", "none");
   $("body").on("click", "#play-btn", (e) => {

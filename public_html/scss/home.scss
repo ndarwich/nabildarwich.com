@@ -67,6 +67,24 @@ h3 {
   }
 }
 
+.home-sub-block {
+  display: block;
+  margin: 0.5rem 0rem;
+  padding: 0.5rem;
+  border: 2px dashed black;
+}
+
+.home-sub-block-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.75rem;
+  padding: 0.25rem;
+}
+
+.home-sub-block-text {
+  padding: 0.25rem;
+}
+
 .side-box {
   display: block;
   border: 3px double black;
