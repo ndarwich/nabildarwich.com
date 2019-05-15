@@ -4,6 +4,7 @@ $bg-3: black;
 $bg-4: rgb(142, 0, 194);
 $bg-5: rgb(0, 255, 0);
 $bg-6: yellow;
+$bg-7: rgb(255, 100, 0);
 $fg-1: black;
 $fg-2: white;
 $device-xxs: "(max-width : 320px)";
@@ -13,6 +14,13 @@ $device-m:  "(min-width : 768px)";
 $device-l:  "(min-width : 992px)";
 $device-xl:  "(min-width : 1200px)";
 
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+     -moz-user-select: $value;
+      -ms-user-select: $value;
+       -o-user-select: $value;
+          user-select: $value;
+}
 
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
@@ -21,7 +29,6 @@ $device-xl:  "(min-width : 1200px)";
        -o-border-radius: $radius;
           border-radius: $radius;
 }
-
 
 //background-size: cover;
 

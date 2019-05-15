@@ -1,7 +1,5 @@
 @import 'mixins';
 
-
-
 a {
   color: $bg-2;
 }
@@ -114,16 +112,38 @@ h3 {
   display: block;
 }
 
-.home-play-button {
+.home-button {
   @include border-radius(10px);
   width: auto;
   padding: 1.5rem 1rem;
   font-size: 1.5rem;
   font-family: arial;
+  background-color: $bg-7;
+  color: $fg-2;
+  margin: 0 auto;
+  cursor: pointer;
+  text-align: center;
+  &:hover {
+    background-color: rgb(200, 100, 0);
+  }
+  a {
+    @include user-select(none);
+    color: white;
+  }
+  @media only screen and #{$device-m} {
+    width: 10rem;
+    margin: 0.75rem auto;
+  }
+  @media only screen and #{$device-l} {
+    width: 20rem;
+    margin: 1.5rem auto;
+  }
+}
+
+.home-play-button {
+  @extend .home-button;
   background-color: $bg-2;
   color: $fg-2;
-  cursor: pointer;
-  select: none;
   width: 9rem;
   &:hover {
     background-color: rgb(31, 0, 182);
@@ -131,7 +151,6 @@ h3 {
   a {
     color: white;
   }
-  margin: 0 auto;
   @media only screen and #{$device-m} {
     margin: 0;
   }

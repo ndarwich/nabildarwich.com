@@ -51,15 +51,23 @@ let downloadBook = (bookType, bookName, res) => {
       break;
     case "video": //videos and misc books are too large to display on browser with one request
     case "misc":
-      res.download(bookPath, (err) => {
-        timeStamp = new Date()/1000;
-        if (err) {
-          console.error("" + timeStamp + ": " +  thisClient + " fail " + bookAddress);
-        }
-        else {
-          console.info("" + timeStamp + ": " +  thisClient + " success " + bookAddress);
-        }
-      });
+      //special case, pdfs, open in browser
+      console.info("Nabil's Books pdf requested!")
+      if (bookPath.endsWith("pdf")) {
+        header = "application/pdf";
+        break;
+      }
+      else {
+        res.download(bookPath, (err) => {
+          timeStamp = new Date()/1000;
+          if (err) {
+            console.error("" + timeStamp + ": " +  thisClient + " fail " + bookAddress);
+          }
+          else {
+            console.info("" + timeStamp + ": " +  thisClient + " success " + bookAddress);
+          }
+        });
+      }
       return;
     default:
       header = "text/html";
