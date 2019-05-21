@@ -572,5 +572,48 @@
 
 .nb-btn {
   @extend .btn;
+}
 
+.nb-container {
+  background-image: url('../img/pine-bg.png');
+  background-repeat: repeat;
+  padding: 0.5rem;
+  @media only screen and #{$device-m} {
+    padding: 1rem;
+  }
+  @media only screen and #{$device-l} {
+    padding: 2rem;
+  }
+}
+
+.nb-shelf-title {
+  text-align: center;
+  font-weight: bold;
+  font-family: Lucida Calligraphy;
+  font-size: 2rem;
+}
+
+.nb-shelf {
+  font-size: 1.2rem;
+  background: white;
+  border: 2px solid black;
+  margin: 1rem;
+  padding: 0.5rem;
+}
+
+.nb-shelf-img {
+  margin: 0 auto;
+  width: 15rem;
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic;
+  img {
+    max-width: 100%;
+  }
+  @media only screen and #{$device-s} {
+    width: 22.5rem;
+  }
+  @media only screen and #{$device-m} {
+    width: 30rem;
+  }
 }

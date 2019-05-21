@@ -848,3 +848,42 @@ body {
   @media only screen and (min-width: 768px) {
     .db-landscape-img {
       max-width: 100%; } }
+
+.nb-container {
+  background-image: url("../img/pine-bg.png");
+  background-repeat: repeat;
+  padding: 0.5rem; }
+  @media only screen and (min-width: 768px) {
+    .nb-container {
+      padding: 1rem; } }
+  @media only screen and (min-width: 992px) {
+    .nb-container {
+      padding: 2rem; } }
+
+.nb-shelf-title {
+  text-align: center;
+  font-weight: bold;
+  font-family: Lucida Calligraphy;
+  font-size: 2rem; }
+
+.nb-shelf {
+  font-size: 1.2rem;
+  background: white;
+  border: 2px solid black;
+  margin: 1rem;
+  padding: 0.5rem; }
+
+.nb-shelf-img {
+  margin: 0 auto;
+  width: 15rem;
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic; }
+  .nb-shelf-img img {
+    max-width: 100%; }
+  @media only screen and (min-width: 600px) {
+    .nb-shelf-img {
+      width: 22.5rem; } }
+  @media only screen and (min-width: 768px) {
+    .nb-shelf-img {
+      width: 30rem; } }
