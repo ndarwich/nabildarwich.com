@@ -130,13 +130,17 @@ h3 {
     @include user-select(none);
     color: white;
   }
-  @media only screen and #{$device-m} {
+  @media only screen and #{$device-xs} {
     width: 10rem;
-    margin: 0.75rem auto;
+    margin: 0.2rem auto;
+  }
+  @media only screen and #{$device-s} {
+    width: 10rem;
+    margin: 0.2rem auto;
   }
   @media only screen and #{$device-l} {
     width: 20rem;
-    margin: 1.5rem auto;
+    margin: 0.5rem auto;
   }
 }
 

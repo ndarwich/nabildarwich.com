@@ -22,6 +22,11 @@ router.get("/javaGames", function(req, res){
   res.sendFile("/projects.html", { root: __dirname + "/../public" });
 });
 
+router.get("/nabilsBooks", function(req, res){
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/projects.html", { root: __dirname + "/../public" });
+});
+
 router.get("/dormBuddy/overview", function(req, res){
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/projects.html", { root: __dirname + "/../public" });
