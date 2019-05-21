@@ -1,4 +1,5 @@
 @import 'mixins';
+@import 'main';
 
 .project-container {
   display: grid;
@@ -52,6 +53,10 @@
 
 #javagames {
   background-image: url('../img/javagames.png');
+}
+
+#nabilsbooks {
+  background-image: url('../img/nabilsbooks.png');
 }
 
 //css for specific pages
@@ -563,4 +568,9 @@
   @media only screen and #{$device-m} {
     max-width: 100%;
   }
+}
+
+.nb-btn {
+  @extend .btn;
+
 }

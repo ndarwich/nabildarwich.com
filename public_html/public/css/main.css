@@ -87,6 +87,12 @@ nav {
       -ms-animation: drop-down-animation 300ms 600ms ease-in-out forwards;
       -o-animation: drop-down-animation 300ms 600ms ease-in-out forwards;
       animation: drop-down-animation 300ms 600ms ease-in-out forwards; }
+    .nav-drop-down li:nth-child(4) {
+      -webkit-animation: drop-down-animation 300ms 900ms ease-in-out forwards;
+      -moz-animation: drop-down-animation 300ms 900ms ease-in-out forwards;
+      -ms-animation: drop-down-animation 300ms 900ms ease-in-out forwards;
+      -o-animation: drop-down-animation 300ms 900ms ease-in-out forwards;
+      animation: drop-down-animation 300ms 900ms ease-in-out forwards; }
   @media only screen and (min-width: 768px) {
     .nav-drop-down {
       margin-top: 1rem; } }
@@ -267,3 +273,40 @@ body {
   #photo-caption {
     font-size: 1.5rem;
     margin: 0.5rem; } }
+
+.btn {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  width: auto;
+  padding: 1.5rem 1rem;
+  font-size: 1.5rem;
+  font-family: arial;
+  background-color: #ff6400;
+  color: white;
+  margin: 0 auto;
+  cursor: pointer;
+  text-align: center; }
+  .btn:hover {
+    background-color: #c86400; }
+  .btn a {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    color: white; }
+  @media only screen and (min-width: 320px) {
+    .btn {
+      width: 10rem;
+      margin: 0.2rem auto; } }
+  @media only screen and (min-width: 600px) {
+    .btn {
+      width: 10rem;
+      margin: 0.2rem auto; } }
+  @media only screen and (min-width: 992px) {
+    .btn {
+      width: 20rem;
+      margin: 0.5rem auto; } }
