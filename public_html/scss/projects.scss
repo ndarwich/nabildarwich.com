@@ -572,6 +572,19 @@
 
 .nb-btn {
   @extend .btn;
+  margin: 0 auto;
+  @media only screen and #{$device-xs} {
+    width: 10rem;
+    margin: 0.5rem auto;
+  }
+  @media only screen and #{$device-s} {
+    width: 15rem;
+    margin: 0.5rem auto;
+  }
+  @media only screen and #{$device-m} {
+    width: 20rem;
+    margin: 0.75rem auto;
+  }
 }
 
 .nb-container {
@@ -599,21 +612,53 @@
   border: 2px solid black;
   margin: 1rem;
   padding: 0.5rem;
+  overflow: auto;
+}
+
+.nb-shelf-text {
+  padding: 0.5rem;
 }
 
 .nb-shelf-img {
-  margin: 0 auto;
-  width: 15rem;
   text-align: center;
   font-size: 1.3rem;
   font-style: italic;
+  width: 10rem;
   img {
     max-width: 100%;
   }
+}
+
+.nb-shelf-img-large {
+  @extend .nb-shelf-img;
+  margin: 0 auto;
+  width: 15rem;
   @media only screen and #{$device-s} {
     width: 22.5rem;
   }
   @media only screen and #{$device-m} {
     width: 30rem;
+  }
+}
+
+.nb-float-left {
+  margin: 0 auto;
+  @media only screen and #{$device-m} {
+    float: left;
+  }
+}
+
+.nb-shelf-subshelf {
+  overflow: auto;
+  padding: 1rem;
+}
+
+.nb-shelf-subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.2rem;
+  text-align: center;
+  @media only screen and #{$device-m} {
+    text-align: left;
   }
 }

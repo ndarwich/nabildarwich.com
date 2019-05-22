@@ -286,7 +286,6 @@ body {
   font-family: arial;
   background-color: #ff6400;
   color: white;
-  margin: 0 auto;
   cursor: pointer;
   text-align: center; }
   .btn:hover, .nb-btn:hover {
@@ -298,18 +297,6 @@ body {
     -o-user-select: none;
     user-select: none;
     color: white; }
-  @media only screen and (min-width: 320px) {
-    .btn, .nb-btn {
-      width: 10rem;
-      margin: 0.2rem auto; } }
-  @media only screen and (min-width: 600px) {
-    .btn, .nb-btn {
-      width: 10rem;
-      margin: 0.2rem auto; } }
-  @media only screen and (min-width: 992px) {
-    .btn, .nb-btn {
-      width: 20rem;
-      margin: 0.5rem auto; } }
 
 .project-container {
   display: grid;
@@ -849,6 +836,21 @@ body {
     .db-landscape-img {
       max-width: 100%; } }
 
+.nb-btn {
+  margin: 0 auto; }
+  @media only screen and (min-width: 320px) {
+    .nb-btn {
+      width: 10rem;
+      margin: 0.5rem auto; } }
+  @media only screen and (min-width: 600px) {
+    .nb-btn {
+      width: 15rem;
+      margin: 0.5rem auto; } }
+  @media only screen and (min-width: 768px) {
+    .nb-btn {
+      width: 20rem;
+      margin: 0.75rem auto; } }
+
 .nb-container {
   background-image: url("../img/pine-bg.png");
   background-repeat: repeat;
@@ -871,19 +873,45 @@ body {
   background: white;
   border: 2px solid black;
   margin: 1rem;
+  padding: 0.5rem;
+  overflow: auto; }
+
+.nb-shelf-text {
   padding: 0.5rem; }
 
-.nb-shelf-img {
-  margin: 0 auto;
-  width: 15rem;
+.nb-shelf-img, .nb-shelf-img-large {
   text-align: center;
   font-size: 1.3rem;
-  font-style: italic; }
-  .nb-shelf-img img {
+  font-style: italic;
+  width: 10rem; }
+  .nb-shelf-img img, .nb-shelf-img-large img {
     max-width: 100%; }
+
+.nb-shelf-img-large {
+  margin: 0 auto;
+  width: 15rem; }
   @media only screen and (min-width: 600px) {
-    .nb-shelf-img {
+    .nb-shelf-img-large {
       width: 22.5rem; } }
   @media only screen and (min-width: 768px) {
-    .nb-shelf-img {
+    .nb-shelf-img-large {
       width: 30rem; } }
+
+.nb-float-left {
+  margin: 0 auto; }
+  @media only screen and (min-width: 768px) {
+    .nb-float-left {
+      float: left; } }
+
+.nb-shelf-subshelf {
+  overflow: auto;
+  padding: 1rem; }
+
+.nb-shelf-subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.2rem;
+  text-align: center; }
+  @media only screen and (min-width: 768px) {
+    .nb-shelf-subtitle {
+      text-align: left; } }

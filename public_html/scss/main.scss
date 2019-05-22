@@ -242,7 +242,6 @@ body {
   font-family: arial;
   background-color: $bg-7;
   color: $fg-2;
-  margin: 0 auto;
   cursor: pointer;
   text-align: center;
   &:hover {
@@ -251,17 +250,5 @@ body {
   a {
     @include user-select(none);
     color: white;
-  }
-  @media only screen and #{$device-xs} {
-    width: 10rem;
-    margin: 0.2rem auto;
-  }
-  @media only screen and #{$device-s} {
-    width: 10rem;
-    margin: 0.2rem auto;
-  }
-  @media only screen and #{$device-l} {
-    width: 20rem;
-    margin: 0.5rem auto;
   }
 }
