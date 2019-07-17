@@ -617,6 +617,10 @@
 
 .nb-shelf-text {
   padding: 0.5rem;
+  a {
+    color: blue;
+    text-decoration: underline;
+  }
 }
 
 .nb-shelf-img {

@@ -878,6 +878,9 @@ body {
 
 .nb-shelf-text {
   padding: 0.5rem; }
+  .nb-shelf-text a {
+    color: blue;
+    text-decoration: underline; }
 
 .nb-shelf-img, .nb-shelf-img-large {
   text-align: center;
