@@ -62,15 +62,16 @@ app.get("*/pages/:pageName", function(req, res){
 });
 
 app.post("/sendMail", (req, res) => {
-  const key = "6LeWHVsUAAAAAAcLySamR5oeIE2rm-25tZFMVXxu";
+  const key = "6LcgkLMUAAAAAP04M4TSXtW8IBleHIETBKTslfre";
   let googleReq = "https://www.google.com/recaptcha/api/siteverify?secret="
     + key + "&response=" + req.body["g-recaptcha-response"];
+    auth = {
+      user: "nabildarwichdotcom@gmail.com",
+      pass: process.env.nabilddotcom
+    };
   let transporter = nodemailer.createTransport({
     service: "gmail",
-    auth: {
-      user: "nabildarwichdotcom@gmail.com",
-      pass: process.env.nabildarwichdotcom
-    }
+    auth: auth
   });
   let isBot = req.body["g-recaptcha-response"] === "" ? "BOT" : "Human";
   console.log(JSON.stringify(req.headers));
@@ -86,6 +87,7 @@ app.post("/sendMail", (req, res) => {
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
+      console.log(mailOptions);
     } else {
       res.setHeader("Content-Type", "text/html");
       let botResponse = isBot === "BOT" ? "... You are a bot though" : "";
