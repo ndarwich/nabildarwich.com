@@ -68,10 +68,29 @@ let loadImage = (index) => {
     currentlyDisplaying = index;
     imgUrl = newImage.attr("src");
     imgCaption = newImage.attr("alt");
-    $("#photo-caption").text(imgCaption);
+    $("#photo-caption").html(parseLinks(imgCaption));
     $("#main-photo-img").attr("src", imgUrl);
     insideImage = true;
   });
+}
+
+//use regex to extract links from the string, my linking convention is <a link>text</a>
+let parseLinks = (stringWithLinks) => {
+	let newString = stringWithLinks;
+	let linkRegex = /<a [^>^<]+>[^<^>]+<\/a>/g;
+	//collect all links in an array
+	let allLinks = stringWithLinks.match(linkRegex)
+	//replace the marked up links with actual hyperlinks
+	for (i in allLinks) {
+		let markedLink = allLinks[i];
+		console.info("marked link: " + markedLink);
+		let extractedLink = markedLink.match(/<a [^>^<]+>/g)[0].replace("<a ", "").replace(">", "")
+		console.info("Extracted link: " + extractedLink);
+		let extractedText = markedLink.match(/>[^<^>]+</)[0].replace("<", "").replace(">", "")
+		console.info("Extracted text: " + extractedText);
+		newString = newString.replace(markedLink, extractedText.link(extractedLink))
+	}
+	return newString;
 }
 
 let exitImage = () => {
