@@ -68,12 +68,13 @@ let loadImage = (index) => {
     currentlyDisplaying = index;
     imgUrl = newImage.attr("src");
     imgCaption = newImage.attr("alt");
-    $("#photo-caption").html(parseLinks(imgCaption));
+    $("#photo-caption").html(imgCaption);
     $("#main-photo-img").attr("src", imgUrl);
     insideImage = true;
   });
 }
 
+//deprecated, but cool that it worked
 //use regex to extract links from the string, my linking convention is <a link>text</a>
 let parseLinks = (stringWithLinks) => {
 	let newString = stringWithLinks;
