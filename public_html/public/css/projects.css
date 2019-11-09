@@ -585,7 +585,7 @@ body {
 .tw-flex {
   display: flex; }
 
-#play-tw, #get-db {
+#play-tw, #try-db {
   color: white;
   text-align: center;
   cursor: pointer;
@@ -600,24 +600,24 @@ body {
   border-radius: 20px;
   border: 2px solid black; }
   @media only screen and (max-width: 320px) {
-    #play-tw, #get-db {
+    #play-tw, #try-db {
       font-size: 1rem;
       margin: 0.5rem auto; } }
   @media only screen and (min-width: 320px) {
-    #play-tw, #get-db {
+    #play-tw, #try-db {
       font-size: 2rem;
       padding: 0.5rem;
       margin: 0.5rem auto; } }
   @media only screen and (min-width: 768px) {
-    #play-tw, #get-db {
+    #play-tw, #try-db {
       font-size: 3rem; } }
   @media only screen and (min-width: 992px) {
-    #play-tw, #get-db {
+    #play-tw, #try-db {
       font-size: 4rem;
       padding: 1rem 2rem;
       margin: 1rem auto; } }
 
-#get-db {
+#try-db {
   color: yellow;
   background-color: lime;
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; }

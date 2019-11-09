@@ -12,6 +12,7 @@ let projects = require("./routes/projects");
 let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
+let pente = require("./routes/pente");
 
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
@@ -25,6 +26,7 @@ app.use("/projects", projects);
 app.use("/bio", bio);
 app.use("/cs367", specialPage);
 app.use("/books", books);
+app.use("/pente", pente);
 
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "application/javascript");

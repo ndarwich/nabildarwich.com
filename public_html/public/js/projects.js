@@ -23,7 +23,7 @@ $(window).on("load", function() {
   $("body").on("click", "#play-tw", function () {
     window.open(twURL);
   });
-  $("body").on("click", "#get-db", function () {
+  $("body").on("click", "#try-db", function () {
     window.open(dbURL);
   });
   $("body").on("click", "#nb", function () {
