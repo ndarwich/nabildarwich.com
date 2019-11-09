@@ -29,7 +29,7 @@
     "gulp": "^4.0.2",
     "gulp-exec": "^3.0.2",
     "gulp-sass": "^4.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "node-sass": "^4.13.0",
     "nodemailer": "^4.6.5",
     "nodemon": "^1.17.5"
