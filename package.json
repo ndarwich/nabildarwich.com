@@ -23,11 +23,11 @@
   "dependencies": {
     "babel-eslint": "^8.2.3",
     "body-parser": "^1.18.3",
-    "browser-sync": "^2.24.4",
+    "browser-sync": "^2.26.7",
     "emoji-dictionary": "^1.0.10",
     "express": "^4.16.3",
     "gulp": "^4.0.2",
-    "gulp-exec": "^3.0.1",
+    "gulp-exec": "^3.0.2",
     "gulp-sass": "^4.0.1",
     "jquery": "^3.3.1",
     "node-sass": "^4.13.0",
