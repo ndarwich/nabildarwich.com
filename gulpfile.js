@@ -11,8 +11,18 @@ gulp.task("sass", function() {
       .pipe(gulp.dest("public_html/public/css"))
       .pipe(browserSync.stream());
 });
+gulp.task("nodemon", function (cb) {
+    var cbCalled = false;
+    return nodemon({script: "./public_html/app.js"}).on("start", function (){
+        if (!cbCalled) {
+          cbCalled = true;
+          cb();
+          console.info("Nodemon callback called successfully");
+        }
+    });
+});
 
-gulp.task("serve", ["nodemon"], function() {
+gulp.task("serve", gulp.series("nodemon"), function() {
   //proxy serves what's in the express node server
   browserSync.init(null, {
         proxy: "http://localhost:3002", // port of node server
@@ -38,15 +48,4 @@ gulp.task("serve", ["nodemon"], function() {
     .on("change", browserSync.reload);
 });
 
-gulp.task("nodemon", function (cb) {
-    var cbCalled = false;
-    return nodemon({script: "./public_html/app.js"}).on("start", function (){
-        if (!cbCalled) {
-          cbCalled = true;
-          cb();
-          console.info("Nodemon callback called successfully");
-        }
-    });
-});
-
-gulp.task("default", ["serve"]); //default gulp is gulp serve
+gulp.task("default", gulp.series("serve")); //default gulp is gulp serve
