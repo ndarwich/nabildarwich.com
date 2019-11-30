@@ -2,3 +2,44 @@
   font-size: 1.5em;
   margin: 1em;
 }
+
+.pente-login-container {
+    margin: 0.5rem auto;
+    padding: 1rem;
+    font-size: 1.5rem;
+    max-width: 20em;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.pente-input-field {
+  display: block;
+  text-align: center;
+  font-size: 1em;
+  background-color: rgb(251, 251, 251);
+  width: 90%;
+  margin: 0.5rem auto;
+}
+
+.pente-field {
+  font-weight: bold;
+
+}
+
+.pente-combo-box {
+  margin: 1rem;
+}
+
+.pente-button {
+  background-color: brown;
+  border: 2px solid black;
+  color: white;
+  font-weight: bold;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  max-width: 8rem;
+  &:hover {
+    background-color: rgb(143, 82, 0);
+    cursor: pointer;
+  }
+}
