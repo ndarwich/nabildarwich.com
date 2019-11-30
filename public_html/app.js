@@ -13,6 +13,7 @@ let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
+let crypto = require('crypto');
 
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
@@ -99,11 +100,36 @@ app.post("/sendMail", (req, res) => {
   });
 });
 
+app.post('/login',function(req, res){
+  var user_name = req.body.username;
+  var password = req.body.password;
+  var salt = genRandomString(16);
+  var encrypted_password = sha512(password, salt);
+  console.log(encrypted_password);
+  console.log("User name = "+user_name+", password is "+password);
+});
+
 app.get("*", function(req, res){
   res.status(404);
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/error.html", {root: __dirname });
 });
+
+var sha512 = function(password, salt){
+    var hash = crypto.createHmac('sha512', salt);
+    hash.update(password);
+    var value = hash.digest('hex');
+    return {
+        salt: salt,
+        hash: value
+    };
+};
+
+var genRandomString = function(length){
+    return crypto.randomBytes(Math.ceil(length/2))
+            .toString('hex')
+            .slice(0,length);
+};
 
 //port for express server
 app.listen(3002, function () {
