@@ -13,6 +13,7 @@ let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
+let createAccount = require("./routes/createAccount");
 let crypto = require('crypto');
 
 //all the files under public are static
@@ -28,6 +29,7 @@ app.use("/bio", bio);
 app.use("/cs367", specialPage);
 app.use("/books", books);
 app.use("/pente", pente);
+app.use('/createAccount', createAccount);
 
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "application/javascript");
@@ -107,6 +109,12 @@ app.post('/login',function(req, res){
   var encrypted_password = sha512(password, salt);
   console.log(encrypted_password);
   console.log("User name = "+user_name+", password is "+password);
+});
+
+app.post('/createAccount',function(req, res){
+  var user_name = req.body.username;
+  var password = req.body.password;
+  console.log("Submitted User name = "+user_name+", password is "+password);
 });
 
 app.get("*", function(req, res){
