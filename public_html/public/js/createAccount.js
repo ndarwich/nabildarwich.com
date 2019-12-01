@@ -2,9 +2,35 @@ $(window).on("load", function() {
   loadNavigation(4);
   $("body").on("click", "#pente-submit-btn", (e) => {
     e.preventDefault(); //don't scroll up
+    inputValidation(e);
     penteSubmit(e);
   });
 });
+
+let inputValidation = (e) => {
+  console.info(e);
+  var usernameregex = /^[a-zA-Z0-9]+$/;
+  var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  var username = $("#pente-username").val();
+  var password = $("#pente-password").val();
+  var reenteredpassword = $("#pente-renetered-password").val();
+  console.info(reenteredpassword);
+  if (!username.match(usernameregex)){
+    console.info("Username contained illegal characters");
+    window.alert("Username contained one or more illegal characters!");
+    return false;
+  }
+  if (!password.match(passwordregex)){
+    console.info("Password cdoes not meet requirements");
+    window.alert("Password should contain at least one digit"
+            + "one upper and lower case character, and be 8 characters long");
+    return false;
+  }
+  else if (!(password === reenteredpassword)){
+    window.alert("Passwords do not match!");
+    console.info("Passwords dont match!");
+  }
+}
 
 let penteSubmit = (e) => {
   console.info("Login Clicked");
