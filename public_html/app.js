@@ -114,7 +114,21 @@ app.post('/login',function(req, res){
 app.post('/createAccount',function(req, res){
   var user_name = req.body.username;
   var password = req.body.password;
+  var reneteredpassword = req.body.reneteredpassword;
+  var usernameregex = /^[a-zA-Z0-9]{5,}$/;
+  var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   console.log("Submitted User name = "+user_name+", password is "+password);
+  var username_meets_req = user_name.match(usernameregex);
+  if (!(user_name.match(usernameregex))){
+    console.log("Username did not meet requirements!");
+     return res.status(406).send({
+        message: 'Entered username does not meet the requirements.'
+    });
+  }
+// code to send an error to the AJAX call
+//  return res.status(400).send({
+//     message: 'This is an error!'
+//});
 });
 
 app.get("*", function(req, res){

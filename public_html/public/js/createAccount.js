@@ -9,15 +9,15 @@ $(window).on("load", function() {
 
 let inputValidation = (e) => {
   console.info(e);
-  var usernameregex = /^[a-zA-Z0-9]+$/;
+  var usernameregex = /^[a-zA-Z0-9]{5,}$/;
   var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   var username = $("#pente-username").val();
   var password = $("#pente-password").val();
   var reenteredpassword = $("#pente-renetered-password").val();
   console.info(reenteredpassword);
   if (!username.match(usernameregex)){
-    console.info("Username contained illegal characters");
-    window.alert("Username contained one or more illegal characters!");
+    console.info("Username contained illegal characters or did not meet length requirements");
+    window.alert("Username contained illegal characters or did not meet length requirements");
     return false;
   }
   if (!password.match(passwordregex)){
@@ -43,7 +43,8 @@ let penteSubmit = (e) => {
     dataType: "html",
     data: {
         username: $("#pente-username").val(),
-        password: $("#pente-password").val()
+        password: $("#pente-password").val(),
+        reenteredpassword: $("#pente-renetered-password").val()
     },
     success: function(data) {
         console.log('Success');
