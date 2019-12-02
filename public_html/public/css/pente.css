@@ -36,6 +36,12 @@
     background-color: #8f5200;
     cursor: pointer; }
 
+.pente-warning {
+  font-size: 1.1rem;
+  color: red;
+  text-align: center;
+  display: none; }
+
 #pente-game {
   background-color: #673400;
   display: inline-block; }

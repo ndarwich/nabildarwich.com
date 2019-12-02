@@ -25,7 +25,7 @@ router.post('/login',function(req, res){
 router.post('/createAccount',function(req, res){
   var user_name = req.body.username;
   var password = req.body.password;
-  var reneteredpassword = req.body.reneteredpassword;
+  var reenteredpassword = req.body.reenteredpassword;
   var usernameregex = /^[a-zA-Z0-9]{5,}$/;
   var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   console.log("Submitted User name = "+user_name+", password is "+password);

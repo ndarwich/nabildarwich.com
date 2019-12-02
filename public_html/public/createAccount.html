@@ -25,16 +25,27 @@
               Username
             </div>
             <input class ="pente-input-field" id="pente-username" />
+            <div class="pente-warning" id="username-criteria-error">
+              Usernames must be at least 5 characters. Allowed characters are
+              A-Z, a-z, and 0-9.
+            </div>
           </div>
           <div class="pente-combo-box">
             <div class="pente-field">
               Password
             </div>
             <input class ="pente-input-field" type="password" id="pente-password" />
+            <div class="pente-warning" id="password-criteria-error">
+              Passwords must contain at least one digit, one upper, and one lower case characters.
+              Passwords should also be at least 8 characters long.
+            </div>
             <div class="pente-field">
               Re-enter Password
             </div>
-            <input class ="pente-input-field" type="password" id="pente-renetered-password" />
+            <input class ="pente-input-field" type="password" id="pente-reentered-password" />
+            <div class="pente-warning" id="password-match-error">
+              Entered passwords must match.
+            </div>
             </div>
           <div class="pente-button" id="pente-submit-btn">
             SUBMIT

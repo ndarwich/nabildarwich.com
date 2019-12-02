@@ -25,7 +25,6 @@
 
 .pente-field {
   font-weight: bold;
-
 }
 
 .pente-combo-box {
@@ -44,6 +43,13 @@
     background-color: rgb(143, 82, 0);
     cursor: pointer;
   }
+}
+
+.pente-warning {
+  font-size: 1.1rem;
+  color: red;
+  text-align: center;
+  display: none; //warnings by default do not display
 }
 
 #pente-game {

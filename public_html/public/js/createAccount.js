@@ -17,22 +17,25 @@ $(window).on("load", function() {
   var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   var username = $("#pente-username").val();
   var password = $("#pente-password").val();
-  var reenteredpassword = $("#pente-renetered-password").val();
+  var reenteredpassword = $("#pente-reentered-password").val();
+  //hide the errors, showing them only when a criterion is not met
+  $("#username-criteria-error").css("display", "none");
+  $("#password-criteria-error").css("display", "none");
+  $("#password-match-error").css("display", "none");
   console.info("Input val " + reenteredpassword);
   if (!username.match(usernameregex)){
     console.info("Username contained illegal characters or did not meet length requirements");
-    window.alert("Username contained illegal characters or did not meet length requirements");
+    $("#username-criteria-error").css("display", "block");
     return false;
   }
   if (!password.match(passwordregex)){
-    console.info("Password cdoes not meet requirements");
-    window.alert("Password should contain at least one digit"
-            + "one upper and lower case character, and be 8 characters long");
+    console.info("Password does not meet requirements");
+    $("#password-criteria-error").css("display", "block");
     return false;
   }
-  else if (!(password === reenteredpassword)){
-    window.alert("Passwords do not match!");
+  else if (!(password === reenteredpassword)) {
     console.info("Passwords dont match!");
+    $("#password-match-error").css("display", "block");
     return false;
   }
 }
@@ -49,7 +52,7 @@ let penteSubmit = (e) => {
     data: {
         username: $("#pente-username").val(),
         password: $("#pente-password").val(),
-        reenteredpassword: $("#pente-renetered-password").val()
+        reenteredpassword: $("#pente-reentered-password").val()
     },
     success: function(data) {
         console.log('Success');
