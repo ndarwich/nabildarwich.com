@@ -125,6 +125,17 @@ app.post('/createAccount',function(req, res){
         message: 'Entered username does not meet the requirements.'
     });
   }
+  if (!password.match(passwordregex)){
+    console.log("Password did not meet the criteria!");
+     return res.status(406).send({
+        message: 'Password did not meet the criteria!'
+    });  }
+  else if (!(password === reenteredpassword)){
+    console.log("Passwords did not match");
+     return res.status(406).send({
+        message: 'Passwords did not match'
+    });
+  }
 // code to send an error to the AJAX call
 //  return res.status(400).send({
 //     message: 'This is an error!'

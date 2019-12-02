@@ -2,19 +2,23 @@ $(window).on("load", function() {
   loadNavigation(4);
   $("body").on("click", "#pente-submit-btn", (e) => {
     e.preventDefault(); //don't scroll up
-    inputValidation(e);
+    var bool = inputValidation(e);
+    if (bool == false){
+      return;
+    }
     penteSubmit(e);
   });
 });
 
-let inputValidation = (e) => {
+
+ let inputValidation = (e) => {
   console.info(e);
   var usernameregex = /^[a-zA-Z0-9]{5,}$/;
   var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   var username = $("#pente-username").val();
   var password = $("#pente-password").val();
   var reenteredpassword = $("#pente-renetered-password").val();
-  console.info(reenteredpassword);
+  console.info("Input val " + reenteredpassword);
   if (!username.match(usernameregex)){
     console.info("Username contained illegal characters or did not meet length requirements");
     window.alert("Username contained illegal characters or did not meet length requirements");
@@ -29,6 +33,7 @@ let inputValidation = (e) => {
   else if (!(password === reenteredpassword)){
     window.alert("Passwords do not match!");
     console.info("Passwords dont match!");
+    return false;
   }
 }
 
@@ -51,6 +56,8 @@ let penteSubmit = (e) => {
     },
     error: function(err) {
         console.log('Error', err);
+        var err2 = JSON.parse(err.responseText);
+        window.alert(err2.message);
   }
 });
 }
