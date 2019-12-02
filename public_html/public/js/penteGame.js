@@ -6,8 +6,8 @@ class PenteGame {
    * Constructor.
    */
   constructor() {
-    this.NUM_ROWS = 18;
-    this.NUM_COLS = 18;
+    this.NUM_ROWS = 19;
+    this.NUM_COLS = 19;
     this.currentTurn = "WHITE";
     this.isDone = false;
     this.playerTurn = () => {};

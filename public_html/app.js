@@ -13,8 +13,6 @@ let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
-let createAccount = require("./routes/createAccount");
-let crypto = require('crypto');
 
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
@@ -29,7 +27,6 @@ app.use("/bio", bio);
 app.use("/cs367", specialPage);
 app.use("/books", books);
 app.use("/pente", pente);
-app.use('/createAccount', createAccount);
 
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "application/javascript");
@@ -102,67 +99,11 @@ app.post("/sendMail", (req, res) => {
   });
 });
 
-app.post('/login',function(req, res){
-  var user_name = req.body.username;
-  var password = req.body.password;
-  var salt = genRandomString(16);
-  var encrypted_password = sha512(password, salt);
-  console.log(encrypted_password);
-  console.log("User name = "+user_name+", password is "+password);
-});
-
-app.post('/createAccount',function(req, res){
-  var user_name = req.body.username;
-  var password = req.body.password;
-  var reneteredpassword = req.body.reneteredpassword;
-  var usernameregex = /^[a-zA-Z0-9]{5,}$/;
-  var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-  console.log("Submitted User name = "+user_name+", password is "+password);
-  var username_meets_req = user_name.match(usernameregex);
-  if (!(user_name.match(usernameregex))){
-    console.log("Username did not meet requirements!");
-     return res.status(406).send({
-        message: 'Entered username does not meet the requirements.'
-    });
-  }
-  if (!password.match(passwordregex)){
-    console.log("Password did not meet the criteria!");
-     return res.status(406).send({
-        message: 'Password did not meet the criteria!'
-    });  }
-  else if (!(password === reenteredpassword)){
-    console.log("Passwords did not match");
-     return res.status(406).send({
-        message: 'Passwords did not match'
-    });
-  }
-// code to send an error to the AJAX call
-//  return res.status(400).send({
-//     message: 'This is an error!'
-//});
-});
-
 app.get("*", function(req, res){
   res.status(404);
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/error.html", {root: __dirname });
 });
-
-var sha512 = function(password, salt){
-    var hash = crypto.createHmac('sha512', salt);
-    hash.update(password);
-    var value = hash.digest('hex');
-    return {
-        salt: salt,
-        hash: value
-    };
-};
-
-var genRandomString = function(length){
-    return crypto.randomBytes(Math.ceil(length/2))
-            .toString('hex')
-            .slice(0,length);
-};
 
 //port for express server
 app.listen(3002, function () {

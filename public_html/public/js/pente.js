@@ -27,7 +27,7 @@ let penteLogin = (e) => {
   console.info("Password: " + $("#pente-password").val());
   console.info($('#pente-login-container').serialize());
   $.ajax({
-    url: '/login',
+    url: '/pente/login',
     type: "POST",
     dataType: "html",
     data: {
