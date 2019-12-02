@@ -8,6 +8,10 @@ $(window).on("load", function() {
     }
     penteSubmit(e);
   });
+  $("body").on("click", "#pente-back-btn", (e) => {
+    e.preventDefault(); //don't scroll up
+    window.location.href = "/pente";
+  });
 });
 
 
