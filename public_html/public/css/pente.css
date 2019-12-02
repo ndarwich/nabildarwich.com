@@ -8,7 +8,7 @@
   font-size: 1.5rem;
   max-width: 20em;
   text-align: center;
-  border: 2px solid black; }
+  border: 2px solid BLACK; }
 
 .pente-input-field {
   display: block;
@@ -26,7 +26,7 @@
 
 .pente-button {
   background-color: brown;
-  border: 2px solid black;
+  border: 2px solid BLACK;
   color: white;
   font-weight: bold;
   margin: 1rem auto;
@@ -35,3 +35,40 @@
   .pente-button:hover {
     background-color: #8f5200;
     cursor: pointer; }
+
+#pente-game {
+  background-color: #673400;
+  display: inline-block; }
+
+.pente-game-container {
+  text-align: center; }
+
+.pente-turn-description {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold; }
+
+.piece {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  background-color: #7b3e00;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+  border: 2px solid #000000;
+  margin: 0px; }
+  .piece.available {
+    cursor: pointer; }
+  .piece.shadow.WHITE {
+    background-color: rgba(200, 200, 200, 0.2); }
+  .piece.shadow.BLACK {
+    background-color: rgba(0, 0, 0, 0.2); }
+  .piece.color.WHITE {
+    border: 2px double black;
+    background-color: #c8c8c8; }
+  .piece.color.BLACK {
+    border: 2px double #c8c8c8;
+    background-color: BLACK; }

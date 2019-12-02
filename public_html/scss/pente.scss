@@ -1,3 +1,5 @@
+@import 'mixins';
+
 .pente-body {
   font-size: 1.5em;
   margin: 1em;
@@ -9,7 +11,7 @@
     font-size: 1.5rem;
     max-width: 20em;
     text-align: center;
-    border: 2px solid black;
+    border: 2px solid BLACK;
 }
 
 .pente-input-field {
@@ -32,7 +34,7 @@
 
 .pente-button {
   background-color: brown;
-  border: 2px solid black;
+  border: 2px solid BLACK;
   color: white;
   font-weight: bold;
   margin: 1rem auto;
@@ -41,5 +43,51 @@
   &:hover {
     background-color: rgb(143, 82, 0);
     cursor: pointer;
+  }
+}
+
+#pente-game {
+  background-color: rgb(103, 52, 0);
+  display: inline-block;
+}
+
+.pente-game-container {
+  text-align: center;
+}
+
+.pente-turn-description {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.piece {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  background-color: rgb(123, 62, 0);
+  @include border-radius(100%);
+  border: 2px solid #000000; //initial border transparent to leave room for actual border
+  margin: 0px;
+  &.available {
+    cursor: pointer;
+  }
+  &.shadow {
+    &.WHITE{
+      background-color: rgba(200, 200, 200, 0.2);
+    }
+    &.BLACK {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+  &.color {
+    &.WHITE {
+      border: 2px double black;
+      background-color: rgb(200, 200, 200);
+    }
+    &.BLACK {
+      border: 2px double rgb(200, 200, 200);
+      background-color: BLACK;
+    }
   }
 }
