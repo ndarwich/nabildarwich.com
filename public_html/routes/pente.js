@@ -37,7 +37,12 @@ router.get("/", (req, res) => {
 
 router.get("/createAccount", (req, res) => {
   res.setHeader("Content-Type", "text/html");
-  res.sendFile("/createAccount.html", { root: __dirname + "/../public" });
+  res.sendFile("/createAccount.html", { root: __dirname + "/../public/pages/pente" });
+});
+
+router.get("/game", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
 });
 
 router.post('/login',function(req, res){
