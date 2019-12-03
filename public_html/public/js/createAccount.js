@@ -50,7 +50,7 @@ let penteSubmit = (e) => {
   console.info("Password: " + $("#pente-password").val());
   console.info($('#pente-login-container').serialize());
   $.ajax({
-    url: '/createAccount',
+    url: '/pente/createAccount',
     type: "POST",
     dataType: "html",
     data: {
@@ -64,7 +64,9 @@ let penteSubmit = (e) => {
     error: function(err) {
         console.log('Error', err);
         var err2 = JSON.parse(err.responseText);
-        window.alert(err2.message);
+      //  window.alert(err2.message);
+      $('#username-criteria-error').text(err2.message);
+      $("#username-criteria-error").css("display", "block");
   }
 });
 }

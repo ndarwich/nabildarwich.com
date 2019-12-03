@@ -1,3 +1,8 @@
+var socket = io.connect('http://localhost:4200');
+socket.on('connect', function(data) {
+  socket.emit('join', 'Hello World from client');
+});
+
 $(window).on("load", function() {
   loadNavigation(4);
   $("body").on("click", "#pente-login-btn", (e) => {
