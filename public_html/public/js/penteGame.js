@@ -107,10 +107,12 @@ class PenteGame {
     if (currentColor != "WHITE" && currentColor != "BLACK") {
       return;
     }
-    let newColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
+    let newColor = "available";
     existingPiece.data("state", newColor);
     existingPiece.removeClass(currentColor);
+    existingPiece.removeClass("color");
     existingPiece.addClass(newColor);
+    existingPiece.addClass("shadow");
   }
 
   /**
@@ -118,14 +120,26 @@ class PenteGame {
    */
   flipColorsInDirection(row, col, color, xOffset, yOffset) {
     let multiplier = 1;
+    let numOppositePieces = 0;
     //traverse until we are out of bounds/the stopping conditions are met
     while (row + yOffset*multiplier >= 0 && row + yOffset*multiplier < this.NUM_ROWS &&
            col + xOffset*multiplier >= 0 && col + xOffset*multiplier < this.NUM_COLS) {
       let existingPiece = $(this.getPiece(row + yOffset*multiplier, col + xOffset*multiplier));
       if ($(existingPiece).hasClass("available") || $(existingPiece).hasClass(color)) {
-        break;
+        if (numOppositePieces == 2 && $(existingPiece).hasClass(color)) {
+          //these are the pieces in between
+          let piece1 = $(this.getPiece(row + yOffset*1, col + xOffset*1));
+          let piece2 = $(this.getPiece(row + yOffset*2, col + xOffset*2));
+          this.flipColor(piece1);
+          this.flipColor(piece2);
+          return;
+        }
       }
-      this.flipColor(existingPiece);
+      numOppositePieces++;
+      //do not flip colors if more than 2 opposite pieces are in between
+      if (numOppositePieces > 2) {
+        return;
+      }
       //increment the multiplier
       multiplier++;
     }
@@ -186,7 +200,7 @@ class PenteGame {
   }
 
   /**
-   * Othello Logic to check if piece colors can be flipped.
+   * Pente Logic to check if opponent pieces can be removed from board.
    */
   checkColorsToFlip(row, column, color) {
     this.traverseAllDirections(row, column, color, true);
