@@ -60,6 +60,7 @@ let penteSubmit = (e) => {
     },
     success: function(data) {
         console.log('Success');
+        window.location.href = "/pente";
     },
     error: function(err) {
         console.log('Error', err);
