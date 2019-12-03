@@ -1,5 +1,6 @@
 const express = require("express");
 const crypto = require('crypto');
+const path = require("path");
 const router = express.Router();
 const fs = require('fs');
 var server = require('http').createServer(express);
@@ -7,8 +8,9 @@ var io = require('socket.io')(server);
 var registered_users = {};
 
 server.listen(8200);
+const databaseFilePath = path.join(__dirname, '../database/database.json');
 
-fs.readFile('public_html/database/database.json', 'utf8', (err, jsonString) => {
+fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
   if (err) {
       console.log("File read failed:", err)
       return
@@ -96,7 +98,7 @@ router.post('/createAccount',function(req, res){
     registered_users[user_name] = encrypted_password;
     var jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
   //  console.log(jsonString);
-    fs.writeFile('public_html/database/database.json', JSON.stringify(registered_users),
+    fs.writeFile(databaseFilePath, JSON.stringify(registered_users),
     function(err){
         if(err) throw err;
       })
