@@ -6,7 +6,19 @@ var server = require('http').createServer(express);
 var io = require('socket.io')(server);
 var registered_users = {};
 
-server.listen(4200);
+server.listen(8200);
+
+fs.readFile('public_html/database/database.json', 'utf8', (err, jsonString) => {
+  if (err) {
+      console.log("File read failed:", err)
+      return
+  }
+  const users = JSON.parse(jsonString);
+  for (var user in users){
+    registered_users[user] = users[user];
+  }
+});
+
 io.on('connection', function(client) {
     console.log('Client connected...');
 
@@ -27,6 +39,7 @@ router.get("/createAccount", (req, res) => {
 });
 
 router.post('/login',function(req, res){
+
   var user_name = req.body.username;
   var password = req.body.password;
 //  console.log(encrypted_password);
@@ -83,7 +96,7 @@ router.post('/createAccount',function(req, res){
     registered_users[user_name] = encrypted_password;
     var jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
   //  console.log(jsonString);
-    fs.writeFile('./public_html/public/database/database.json', JSON.stringify(registered_users),
+    fs.writeFile('public_html/database/database.json', JSON.stringify(registered_users),
     function(err){
         if(err) throw err;
       })
