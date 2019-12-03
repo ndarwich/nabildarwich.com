@@ -132,8 +132,8 @@ class PenteGame {
           let piece2 = $(this.getPiece(row + yOffset*2, col + xOffset*2));
           this.flipColor(piece1);
           this.flipColor(piece2);
-          return;
         }
+        return;
       }
       numOppositePieces++;
       //do not flip colors if more than 2 opposite pieces are in between
