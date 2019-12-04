@@ -21,7 +21,7 @@ let penteLogin = (e) => {
     },
     success: function(data) {
         console.log('Success');
-        window.location.href = "/pente/game";
+        window.location.href = "/pente/home";
     },
     error: function(err) {
         console.log('Error', err);

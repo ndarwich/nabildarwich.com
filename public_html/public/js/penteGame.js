@@ -1,7 +1,19 @@
 var socket = io.connect('http://localhost:8200');
 socket.on('connect', function(data) {
+   console.log('Player connected!', socket.id);
   socket.emit('join', 'Hello World from client');
 });
+
+socket.on('client-connected', function(player) {
+
+  console.log("Player joined with id " + player);
+});
+
+
+
+//setInterval(function() {
+//  socket.emit('movement', "5");
+//}, 1000 / 60);
 
 $(window).on("load", function() {
   loadNavigation(4);
@@ -11,6 +23,30 @@ $(window).on("load", function() {
   });
   //////////////////////PENTE GAME LOADING LOGIC///////////////////
   const penteGame = new PenteGame(); //create a new pente game
+
+  socket.on('piece-played', function(pieceplayed) {
+    if(socket.id != pieceplayed.clientid){
+  var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
+  penteGame.flipColor(piece);
+    piece.addClass("color");
+    piece.addClass(penteGame.currentTurn); //readd the current color just in case
+    piece.removeClass("shadow");
+    piece.removeClass("available");
+    piece.data("state", pieceplayed.opposingplayer); //update the piece state
+
+    }
+    console.log(pieceplayed.pieceinfo + " with socket id " + pieceplayed.clientid);
+  //  console.log(piece.id);
+  });
+
+  socket.on('state', function(players) {
+    console.log(players);
+  });
+
+  socket.on('clearPiece', function(piece) {
+    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
+    penteGame.flipColor(piece);
+  });
 
   //indicate whose player's turn it is
   penteGame.playerTurn = () => {
@@ -25,8 +61,9 @@ $(window).on("load", function() {
   });
   /////////////////END PENTE GAME LOADING LOGIC///////////////////
   $("body").on("click", "#pente-back-btn", (e) => {
+     socket.emit('client_disconnected', "Client has left room");
     e.preventDefault(); //don't scroll up
-    window.location.href = "/pente";
+    window.location.href = "/pente/home";
   });
 });
 
@@ -65,6 +102,7 @@ class PenteGame {
         newCol.data("column", colNumber);
         newCol.data("state", "available");
         newCol.addClass("piece available");
+        newCol.attr('id', rowNumber+""+colNumber);
         newRow.append(newCol);
       }
       board.append(newRow);
@@ -120,6 +158,7 @@ class PenteGame {
       piece.removeClass("shadow");
       piece.removeClass("available");
       piece.data("state", game.currentTurn); //update the piece state
+      socket.emit('movement', [piece.data("row"), piece.data("column"), piece.data("state"), piece]);
       //apply Othello game logic
       game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
       //check if five in a row achieved
@@ -163,6 +202,8 @@ class PenteGame {
           //these are the pieces in between
           let piece1 = $(this.getPiece(row + yOffset*1, col + xOffset*1));
           let piece2 = $(this.getPiece(row + yOffset*2, col + xOffset*2));
+          socket.emit('clearpiece', [piece1.data("row"), piece1.data("column")]);
+          socket.emit('clearpiece', [piece2.data("row"), piece2.data("column")]);
           this.flipColor(piece1);
           this.flipColor(piece2);
         }

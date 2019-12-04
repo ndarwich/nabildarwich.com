@@ -7,12 +7,29 @@ var server = require('http').createServer(express);
 var io = require('socket.io')(server);
 var registered_users = {};
 
+var cookieParser = require('cookie-parser');
+const session = require('express-session');
+const app = express();
+
+var room = 1; // placeholder
+var ongoinggames = {};
+app.use(session({
+  genid: (req) => {
+    console.log('Inside the session middleware')
+    console.log(req.sessionID)
+    return uuid()
+  },
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
 server.listen(8200);
 const databaseFilePath = path.join(__dirname, '../database/database.json');
 
 fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
   if (err) {
-      console.log("File read failed:", err)
+      console.log("File read failed probably because it does not exit...yet", err)
       return
   }
   const users = JSON.parse(jsonString);
@@ -22,15 +39,43 @@ fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
 });
 
 io.on('connection', function(client) {
-    console.log('Client connected...');
-
+    console.log('Client connected... with id ' + client.id);
     client.on('join', function(data) {
     	console.log(data);
+      io.sockets.emit('client-connected', client.id);
+    });
+    client.on('client_disconnected', function (data) {
+        console.log(data);
+    });
+    client.on('movement', function (data) {
+      console.log(data[3]);
+        console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
+        let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
+        var otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
+        io.sockets.emit('piece-played', {row: data[0], col:data[1], clientid:client.id, piece:data[3], opposingplayer: otherplayer});
+    });
+    client.on('clearpiece', function (data) {
+        io.sockets.emit('clearPiece', {row: data[0], col:data[1]});
     });
 
+    setInterval(function() {
+      io.sockets.emit('state', "players");
+      }, 1000 / 60);
+//    client.on('movement', function(data) {
+//      console.log(data);
+//    });setInterval(function() {
+//      io.sockets.emit('state', "players");
+//    }, 1000 / 60);
 });
+
+io.on('disconnect', function() {
+    console.log(`Player Disconnected`);
+  });
+
 //pente router
 router.get("/", (req, res) => {
+  console.log(req.sessionID)
+   res.cookie('cart', 'test', {maxAge: 900000, httpOnly: true});
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/pente.html", { root: __dirname + "/../public" });
 });
@@ -44,6 +89,31 @@ router.get("/game", (req, res) => {
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
 });
+
+router.get("/home", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/home.html", { root: __dirname + "/../public/pages/pente" });
+});
+
+router.get("/leaderboards", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/leaderboards.html", { root: __dirname + "/../public/pages/pente" });
+});
+
+router.post('/getTable',function(req, res){
+  let result = '<table style="width:100%">';
+  result+="<th>Username</th>";
+  result+="<th>Win/Loss/Tie Ratio</th>";
+  for (user in registered_users){
+    result += "<tr><td>" + user + "</td><td>" + registered_users[user].wins + "/" + registered_users[user].losses + "/" + registered_users[user].ties + "</td></tr>";
+  }
+
+  result += '</table>';
+
+  res.send(result);
+});
+
+
 
 router.post('/login',function(req, res){
 
@@ -64,9 +134,9 @@ router.post('/login',function(req, res){
     }
   }
   else {
-    console.log("Username already registered");
+    console.log("Username or password is incorrect");
      return res.status(406).send({
-        message: 'Username ' + user_name + ' already registered'
+        message: 'Username ' + user_name + ' or password entered is incorrect'
     });
   }
 
@@ -100,6 +170,9 @@ router.post('/createAccount',function(req, res){
   if(!(user_name in registered_users)){
     var salt = genRandomString(16);
     var encrypted_password = sha512(password, salt);
+    encrypted_password.wins = 0;
+    encrypted_password.losses = 0;
+    encrypted_password.ties = 0;
     registered_users[user_name] = encrypted_password;
     var jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
   //  console.log(jsonString);

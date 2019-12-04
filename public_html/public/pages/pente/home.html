@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Nabil Darwich - Pente (ft. Hamza Mughal)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pente.css">
+    <link rel="icon" sizes="192x192" href="img/nd-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/pente.js"></script>
+    <script src="js/home.js"></script>
+  </head>
+  <body>
+    <header>
+      <div id="navigation"></div>
+    </header>
+    <div id="page-overlay"></div>
+    <div id="page-body">
+      <h1>Welcome User</h1>
+      <div class="pente-body">
+        <div class="pente-login-container">
+          <div class="pente-button" id="pente-creategame-btn">
+            <a href="/pente/game">CREATE GAME</a>
+          </div>
+          <div class="pente-button" id="pente-createaccount-btn">
+            <a href="/pente/createAccount">JOIN GAME</a>
+          </div>
+          <div class="pente-button" id="pente-leaderboards-btn">
+            <a href="/pente/leaderboards">PLAYER STATS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
