@@ -41,7 +41,7 @@ $(window).on("load", function() {
   });
 
   socket.on('clearPiece', function(piece) {
-    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
+    var piece = $(penteGame.getPiece(piece.row, piece.col));
     penteGame.flipColor(piece);
   });
 
@@ -165,7 +165,7 @@ class PenteGame {
       piece.removeClass("shadow");
       piece.removeClass("available");
       piece.data("state", game.currentTurn); //update the piece state
-      this.pieceMoved(piece);
+      pieceMoved(piece);
       //apply Othello game logic
       game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
       //check if five in a row achieved
