@@ -5,11 +5,8 @@ socket.on('connect', function(data) {
 });
 
 socket.on('client-connected', function(player) {
-
   console.log("Player joined with id " + player);
 });
-
-
 
 //setInterval(function() {
 //  socket.emit('movement', "5");
@@ -54,6 +51,14 @@ $(window).on("load", function() {
     $("#pente-player-move").text("" + penteGame.currentTurn + "'s move...");
   }
 
+  //initialize socket related functions
+  penteGame.pieceMoved = function(piece) {
+    socket.emit("movement", [piece.data("row"), piece.data("column"), piece.data("state"), piece]);
+  }
+  penteGame.pieceCleared = function(piece) {
+    socket.emit("clearpiece", [piece.data("row"), piece.data("column")]);
+  }
+
   //play again button click
   $("body").on("click", "#play-again-btn", (e) => {
     e.preventDefault(); //don"t scroll up
@@ -81,6 +86,8 @@ class PenteGame {
     this.currentTurn = "WHITE";
     this.isDone = false;
     this.playerTurn = () => {};
+    this.pieceMoved = (piece) => {};
+    this.pieceCleared = (piece) => {};
     this.initializeGame();
     this.listenToInputs();
   }
@@ -158,7 +165,7 @@ class PenteGame {
       piece.removeClass("shadow");
       piece.removeClass("available");
       piece.data("state", game.currentTurn); //update the piece state
-      socket.emit('movement', [piece.data("row"), piece.data("column"), piece.data("state"), piece]);
+      pieceMoved(piece);
       //apply Othello game logic
       game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
       //check if five in a row achieved
@@ -202,8 +209,8 @@ class PenteGame {
           //these are the pieces in between
           let piece1 = $(this.getPiece(row + yOffset*1, col + xOffset*1));
           let piece2 = $(this.getPiece(row + yOffset*2, col + xOffset*2));
-          socket.emit('clearpiece', [piece1.data("row"), piece1.data("column")]);
-          socket.emit('clearpiece', [piece2.data("row"), piece2.data("column")]);
+          this.pieceCleared(piece1);
+          this.pieceCleared(piece2);
           this.flipColor(piece1);
           this.flipColor(piece2);
         }
