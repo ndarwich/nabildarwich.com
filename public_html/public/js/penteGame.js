@@ -165,7 +165,7 @@ class PenteGame {
       piece.removeClass("shadow");
       piece.removeClass("available");
       piece.data("state", game.currentTurn); //update the piece state
-      pieceMoved(piece);
+      this.pieceMoved(piece);
       //apply Othello game logic
       game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
       //check if five in a row achieved
