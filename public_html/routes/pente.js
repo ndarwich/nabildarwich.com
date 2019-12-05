@@ -5,6 +5,7 @@ const router = express.Router();
 const fs = require('fs');
 var server = require('http').createServer(express);
 var io = require('socket.io')(server);
+const uuid = require('uuid/v4')
 var registered_users = {};
 //dictionary to hold the active games to the players that are in them (max 2 players)
 var activeGamesToPlayers = { };
@@ -19,7 +20,7 @@ router.use(session({
   genid: (req) => {
     console.log('Inside the session middleware')
     console.log(req.sessionID)
-    return req.uuid
+    return uuid()
   },
   secret: 'keyboard cat',
   resave: false,
@@ -86,7 +87,6 @@ io.on('disconnect', function(clientSocket) {
 
 //pente router
 router.get("/", (req, res) => {
-  console.log(req.sessionID)
    res.cookie('cart', 'test', {maxAge: 900000, httpOnly: true});
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/pente.html", { root: __dirname + "/../public" });
@@ -128,7 +128,8 @@ router.post('/getTable',function(req, res){
 
 
 router.post('/login',function(req, res){
-
+  console.log(req.session)
+  console.log("SESSION ID " + req.sessionID)
   var user_name = req.body.username;
   var password = req.body.password;
 //  console.log(encrypted_password);
