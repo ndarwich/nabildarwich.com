@@ -13,14 +13,13 @@ var playersToActiveGames = { };
 
 var cookieParser = require('cookie-parser');
 const session = require('express-session');
-const app = express();
 
 var room = 1; // placeholder
-app.use(session({
+router.use(session({
   genid: (req) => {
     console.log('Inside the session middleware')
     console.log(req.sessionID)
-    return uuid()
+    return req.uuid
   },
   secret: 'keyboard cat',
   resave: false,
