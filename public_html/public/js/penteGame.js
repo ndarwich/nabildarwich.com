@@ -8,28 +8,20 @@ socket.on('client-connected', function(player) {
   console.log("Player joined with id " + player);
 });
 
-//setInterval(function() {
-//  socket.emit('movement', "5");
-//}, 1000 / 60);
-
-$(window).on("load", function() {
-  loadNavigation(4);
-  $("body").on("click", "#pente-login-btn", (e) => {
-    e.preventDefault(); //don"t scroll up
-    penteLogin(e);
-  });
-  //
-  $.get("/pente/getPenteUsername", function(data, status) {
-    //register the socket with the client username
-    socket.emit("client-login", data); //link socket io and our username
-  });
+var loadPenteGame = (gameId) => {
+  console.info("Game ID: " + gameId);
   //////////////////////PENTE GAME LOADING LOGIC///////////////////
   const penteGame = new PenteGame(); //create a new pente game
-
+  //indicate whose player's turn it is
+  penteGame.playerTurn = () => {
+    $("#pente-player-move").text("" + penteGame.currentTurn + "'s move...");
+  }
+  penteGame.playerTurn();
+  ///////////////////////SOCKET LOGIC//////////////////////////////
   socket.on('piece-played', function(pieceplayed) {
     if(socket.id != pieceplayed.clientid){
-  var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
-  penteGame.flipColor(piece);
+    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
+    penteGame.flipColor(piece);
     piece.addClass("color");
     piece.addClass(penteGame.currentTurn); //readd the current color just in case
     piece.removeClass("shadow");
@@ -50,12 +42,6 @@ $(window).on("load", function() {
     penteGame.flipColor(piece);
   });
 
-  //indicate whose player's turn it is
-  penteGame.playerTurn = () => {
-    console.info("Clicked");
-    $("#pente-player-move").text("" + penteGame.currentTurn + "'s move...");
-  }
-
   //initialize socket related functions
   penteGame.pieceMoved = function(piece) {
     socket.emit("movement", [piece.data("row"), piece.data("column"), piece.data("state"), piece]);
@@ -74,6 +60,19 @@ $(window).on("load", function() {
     //socket.emit("client_disconnected", "Client has left room");
     e.preventDefault(); //don't scroll up
     window.location.href = "/pente/home";
+  });
+}
+
+$(window).on("load", function() {
+  loadNavigation(4);
+  //request our pente username
+  $.get("/pente/getPenteUsername", function(data, status) {
+    //register the socket with the client username
+    socket.emit("client-login", data); //link socket io and our username
+    //now that we have a username we can request a unique game id
+    $.get("/pente/getUniqueGameId", function(ganeId, status) {
+      loadPenteGame(ganeId);
+    })
   });
 });
 

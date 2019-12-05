@@ -49,6 +49,9 @@ io.on('connection', function(clientSocket) {
       console.log('Client created game... with id ' + clientSocket.id);
       //the socket needs to have the client's username in all subsequent interactions
       clientSocket.on('client-login', function(username) {
+        if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
+          playersToActiveGames[username] = []; //initialize their game to an empty list
+        }
         clientSocket.clientUsername = username;
         console.info("Client Login From " + username);
       });
@@ -113,9 +116,22 @@ router.get("/game", (req, res) => {
 
 //helper route to retrieve the user's Pente username
 router.get("/getPenteUsername", (req, res) => {
-  console.log("ID IS " + req.sessionID);
   res.setHeader("Content-Type", "text/html");
   res.send(req.session.username);
+});
+
+//helper route to generate a unique game ID to the user
+router.get("/getUniqueGameId", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  var gameId = "";
+  for (let i = 0; i < 5; i++ ) {
+      gameId += chars.charAt(Math.floor(Math.random()*chars.length));
+  }
+  //update our data structures with game info
+  activeGamesToPlayers[gameId] = { "WHITE": req.session.username };
+  playersToActiveGames[req.session.username].push(gameId);
+  res.send(gameId);
 });
 
 router.get("/home", (req, res) => {
