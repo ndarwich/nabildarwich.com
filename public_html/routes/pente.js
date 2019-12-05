@@ -43,6 +43,11 @@ fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
 
 io.on('connection', function(clientSocket) {
     console.log('Client created game... with id ' + clientSocket.id);
+    //the socket needs to have the client's username in all subsequent interactions
+    clientSocket.on('client-login', function(username) {
+      clientSocket.clientUsername = username;
+      console.info("Client Login From " + username);
+    });
     clientSocket.on('join', function(data) {
     	console.log(data);
       io.sockets.emit('client-connected', clientSocket.id);

@@ -1,3 +1,5 @@
+var socket = io.connect('http://localhost:8200');
+
 $(window).on("load", function() {
   loadNavigation(4);
   $("body").on("click", "#pente-login-btn", (e) => {
@@ -21,6 +23,9 @@ let penteLogin = (e) => {
     },
     success: function(data) {
         console.log('Success');
+        //establish a socket on successful login
+        socket.emit("client-login", $("#pente-username").val());
+        console.info("client login emitted")
         window.location.href = "/pente/home";
     },
     error: function(err) {
