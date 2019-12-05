@@ -30,6 +30,7 @@ router.use(session({
   saveUninitialized: true
 }));
 
+
 server.listen(8200);
 const databaseFilePath = path.join(__dirname, '../database/database.json');
 
@@ -179,12 +180,20 @@ router.post("/getGameStatus", (req, res) => {
 });
 
 router.get("/home", (req, res) => {
+  if (req.session.username == undefined){
+    console.log("User has no active session");
+    return res.redirect('/pente');
+  }
   console.log("USERNAME IS " + req.session.username);
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/home.html", { root: __dirname + "/../public/pages/pente" });
 });
 
 router.get("/leaderboards", (req, res) => {
+  if (req.session.username == undefined){
+    console.log("User has no active session");
+    return res.redirect('/pente');
+  }
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/leaderboards.html", { root: __dirname + "/../public/pages/pente" });
 });
@@ -202,7 +211,22 @@ router.post('/getTable',function(req, res){
   res.send(result);
 });
 
+router.post('/logout', function(req, res, next) {
+  if (req.session) {
+    console.log("Session was " + req.session);
+    // delete session object
+    req.session.destroy(function(err) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      } else {
+        console.log("Destroyed session cookie " + req.session);
+        return res.redirect('/pente');
+      }
+    });
+  }
 
+});
 
 router.post('/login',function(req, res){
   console.log("SESSION ID " + req.sessionID)
