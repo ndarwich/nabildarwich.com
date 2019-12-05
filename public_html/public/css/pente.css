@@ -47,6 +47,11 @@
   background-color: #673400;
   display: inline-block; }
 
+#pente-game-placeholder {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center; }
+
 .pente-game-container {
   text-align: center; }
 

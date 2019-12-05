@@ -70,8 +70,12 @@ $(window).on("load", function() {
     //register the socket with the client username
     socket.emit("client-login", data); //link socket io and our username
     //now that we have a username we can request a unique game id
-    $.get("/pente/getUniqueGameId", function(ganeId, status) {
-      loadPenteGame(ganeId);
+    $.get("/pente/getUniqueGameId", function(gameId, status) {
+      $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
+      socket.on("BLACK-joined", function(data) {
+        //once black joins, start the game
+        loadPenteGame(gameId);
+      });
     })
   });
 });

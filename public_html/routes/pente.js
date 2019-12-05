@@ -123,6 +123,10 @@ router.get("/getPenteUsername", (req, res) => {
 //helper route to generate a unique game ID to the user
 router.get("/getUniqueGameId", (req, res) => {
   res.setHeader("Content-Type", "text/html");
+  if (req.session.username == null) {
+    res.status(404).send({ error: "Not Logged In, Please log in" });
+    return;
+  }
   var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   var gameId = "";
   for (let i = 0; i < 5; i++ ) {
@@ -130,7 +134,11 @@ router.get("/getUniqueGameId", (req, res) => {
   }
   //update our data structures with game info
   activeGamesToPlayers[gameId] = { "WHITE": req.session.username };
-  playersToActiveGames[req.session.username].push(gameId);
+  if (playersToActiveGames[req.session.username]) {
+    playersToActiveGames[req.session.username].push(gameId);
+  } else {
+    playersToActiveGames[req.session.username] = [gameId];
+  }
   res.send(gameId);
 });
 
