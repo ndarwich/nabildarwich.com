@@ -103,6 +103,7 @@ router.get("/game", (req, res) => {
 });
 
 router.get("/home", (req, res) => {
+  console.log("USERNAME IS " + req.session.username);
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/home.html", { root: __dirname + "/../public/pages/pente" });
 });
@@ -140,6 +141,7 @@ router.post('/login',function(req, res){
     var user_salt = registered_users[user_name].salt;
     var encrypted_password = sha512(password, user_salt);
     if(registered_users[user_name].hash == encrypted_password.hash){
+          req.session.username = user_name;
       console.log("SUccessful login from " + user_name);
       return res.status(200).send({
          message: 'Successful login from ' + user_name
