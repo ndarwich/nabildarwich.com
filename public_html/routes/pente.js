@@ -105,8 +105,9 @@ router.get("/game", (req, res) => {
   console.log("USERNAME IS " + req.session.username);
   console.log("ID IS " + req.sessionID);
   res.setHeader("Content-Type", "text/html");
-  res.send(req.session.username);
-  //res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
+  //res.send(req.session.username);
+  res.cookie("pente-username", req.session.username, { maxAge: 900000, httpOnly: false});
+  res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
 });
 
 router.get("/home", (req, res) => {
