@@ -5,12 +5,16 @@ const router = express.Router();
 const fs = require('fs');
 var server = require('http').createServer(express);
 var io = require('socket.io')(server);
-const uuid = require('uuid/v4')
+
+
+const uuid = require('uuid/v4');
 var registered_users = {};
 //dictionary to hold the active games to the players that are in them (max 2 players)
 var activeGamesToPlayers = { };
 //dictionary to hold players to active games they're in (no max)
 var playersToActiveGames = { };
+
+var activeSessions = []; //list of active sessions
 
 var cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -98,8 +102,11 @@ router.get("/createAccount", (req, res) => {
 });
 
 router.get("/game", (req, res) => {
+  console.log("USERNAME IS " + req.session.username);
+  console.log("ID IS " + req.sessionID);
   res.setHeader("Content-Type", "text/html");
-  res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
+  res.send(req.session.username);
+  //res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
 });
 
 router.get("/home", (req, res) => {
