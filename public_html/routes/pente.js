@@ -14,7 +14,6 @@ var activeGamesToPlayers = { };
 //dictionary to hold players to active games they're in (no max)
 var playersToActiveGames = { };
 
-var activeSessions = []; //list of active sessions
 
 var cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -26,7 +25,7 @@ router.use(session({
     console.log(req.sessionID)
     return uuid()
   },
-  secret: 'keyboard cat',
+  secret: "key cat",
   resave: false,
   saveUninitialized: true
 }));
@@ -55,9 +54,9 @@ io.on('connection', function(clientSocket) {
         clientSocket.clientUsername = username;
         console.info("Client Login From " + username);
       });
-    clientSocket.on('join', function(data) {
+    clientSocket.on("join-game", function(data) {
     	console.log(data);
-      io.sockets.emit('client-connected', clientSocket.id);
+
     });
     clientSocket.on('client_disconnected', function (data) {
       console.info("client disconnect event")
@@ -105,6 +104,11 @@ router.get("/createAccount", (req, res) => {
   res.sendFile("/createAccount.html", { root: __dirname + "/../public/pages/pente" });
 });
 
+router.get("/joinGame", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/joinGame.html", { root: __dirname + "/../public/pages/pente" });
+});
+
 router.get("/game", (req, res) => {
   console.log("USERNAME IS " + req.session.username);
   console.log("ID IS " + req.sessionID);
@@ -116,8 +120,12 @@ router.get("/game", (req, res) => {
 
 //helper route to retrieve the user's Pente username
 router.get("/getPenteUsername", (req, res) => {
+if (req.session.username == null) {
+  res.status(404).send({ error: "Not Logged In, Please log in" });
+    return;
+  }
   res.setHeader("Content-Type", "text/html");
-  res.send(req.session.username);
+  res.status(200).send(req.session.username);
 });
 
 //helper route to generate a unique game ID to the user
@@ -139,7 +147,35 @@ router.get("/getUniqueGameId", (req, res) => {
   } else {
     playersToActiveGames[req.session.username] = [gameId];
   }
-  res.send(gameId);
+  res.status(200).send(gameId);
+});
+
+//helper route to retrieve status of a game if we are able to join it
+router.post("/getGameStatus", (req, res) => {
+  if (req.session.username == null) {
+    res.status(404).send({ error: "Not Logged In, Please log in" });
+      return;
+  }
+  res.setHeader("Content-Type", "text/html");
+  res.status(200);
+  var gameId = req.body.gameId;
+  if (gameId in activeGamesToPlayers) {
+    var activeGame = activeGamesToPlayers[gameId];
+    if (activeGame["BLACK"] == null && activeGame["WHITE"] != null) { //if second player hasn't joined yet
+      activeGame["BLACK"] = req.session.username; //black joins the game
+      playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
+      res.send("Game with id " + gameId + " Found, joining as BLACK");
+    } else if (activeGame["WHITE"] == null && activeGame["BLACK"] != null) { //if first player disconnected and wants to reconnect
+      activeGame["WHITE"] = req.session.username;
+        res.send("Game with id " + gameId + " found, joining as WHITE");
+    } else if (activeGame["WHITE"] != null && activeGame["BLACK"] != null) {
+      res.send("Game with id " + gameId + " Full");
+    } else {
+      res.send("No Game with id " + gameId + " Found");
+    }
+  } else {
+    res.send("No Game with id " + gameId + " Found");
+  }
 });
 
 router.get("/home", (req, res) => {
@@ -169,7 +205,6 @@ router.post('/getTable',function(req, res){
 
 
 router.post('/login',function(req, res){
-  console.log(req.session)
   console.log("SESSION ID " + req.sessionID)
   var user_name = req.body.username;
   var password = req.body.password;

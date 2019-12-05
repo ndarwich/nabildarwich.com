@@ -19,17 +19,26 @@
     </header>
     <div id="page-overlay"></div>
     <div id="page-body">
-      <h1>Welcome User</h1>
+      <h1 id="greeting-text"></h1>
       <div class="pente-body">
-        <div class="pente-login-container">
+        <div class="pente-container">
+          <div class="pente-container-title">Pending Games</div>
+          <div id="pente-pending-games">
+
+          </div>
+        </div>
+        <div class="pente-container">
           <div class="pente-button" id="pente-creategame-btn">
             <a href="/pente/game">CREATE GAME</a>
           </div>
           <div class="pente-button" id="pente-createaccount-btn">
-            <a href="/pente/createAccount">JOIN GAME</a>
+            <a href="/pente/joinGame">JOIN GAME</a>
           </div>
           <div class="pente-button" id="pente-leaderboards-btn">
             <a href="/pente/leaderboards">PLAYER STATS</a>
+          </div>
+          <div class="pente-button" id="pente-logout-btn">
+            <a href="/pente/">LOG OUT</a>
           </div>
         </div>
       </div>

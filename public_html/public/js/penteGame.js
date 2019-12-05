@@ -49,17 +49,10 @@ var loadPenteGame = (gameId) => {
   penteGame.pieceCleared = function(piece) {
     socket.emit("clearpiece", [piece.data("row"), piece.data("column")]);
   }
-
   //play again button click
   $("body").on("click", "#play-again-btn", (e) => {
     e.preventDefault(); //don"t scroll up
     penteGame.playAgain();
-  });
-  /////////////////END PENTE GAME LOADING LOGIC///////////////////
-  $("body").on("click", "#pente-back-btn", (e) => {
-    //socket.emit("client_disconnected", "Client has left room");
-    e.preventDefault(); //don't scroll up
-    window.location.href = "/pente/home";
   });
 }
 
@@ -77,6 +70,12 @@ $(window).on("load", function() {
         loadPenteGame(gameId);
       });
     })
+  });
+  /////////////////END PENTE GAME LOADING LOGIC///////////////////
+  $("body").on("click", "#pente-back-btn", (e) => {
+    //socket.emit("client_disconnected", "Client has left room");
+    e.preventDefault(); //don't scroll up
+    window.location.href = "/pente/home";
   });
 });
 

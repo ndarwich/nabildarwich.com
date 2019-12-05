@@ -2,7 +2,7 @@
   font-size: 1.5em;
   margin: 1em; }
 
-.pente-login-container {
+.pente-container {
   margin: 0.5rem auto;
   padding: 1rem;
   font-size: 1.5rem;
@@ -51,6 +51,13 @@
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center; }
+
+.pente-container-title {
+  font-size: 2rem;
+  font-weight: bold; }
+
+.pente-pending-games {
+  font-size: 1.5rem; }
 
 .pente-game-container {
   text-align: center; }
