@@ -6,13 +6,16 @@ const fs = require('fs');
 var server = require('http').createServer(express);
 var io = require('socket.io')(server);
 var registered_users = {};
+//dictionary to hold the active games to the players that are in them (max 2 players)
+var activeGamesToPlayers = { };
+//dictionary to hold players to active games they're in (no max)
+var playersToActiveGames = { };
 
 var cookieParser = require('cookie-parser');
 const session = require('express-session');
 const app = express();
 
 var room = 1; // placeholder
-var ongoinggames = {};
 app.use(session({
   genid: (req) => {
     console.log('Inside the session middleware')
@@ -38,37 +41,42 @@ fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
   }
 });
 
-io.on('connection', function(client) {
-    console.log('Client connected... with id ' + client.id);
-    client.on('join', function(data) {
+io.on('connection', function(clientSocket) {
+    console.log('Client created game... with id ' + clientSocket.id);
+    clientSocket.on('join', function(data) {
     	console.log(data);
-      io.sockets.emit('client-connected', client.id);
+      io.sockets.emit('client-connected', clientSocket.id);
     });
-    client.on('client_disconnected', function (data) {
+    clientSocket.on('client_disconnected', function (data) {
+      console.info("client disconnect event")
         console.log(data);
     });
-    client.on('movement', function (data) {
+    clientSocket.on('disconnect', function (data) {
+      console.info("client disconnect event 2")
+        console.log(data);
+    });
+    clientSocket.on('movement', function (data) {
       console.log(data[3]);
         console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
         let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
         var otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
-        io.sockets.emit('piece-played', {row: data[0], col:data[1], clientid:client.id, piece:data[3], opposingplayer: otherplayer});
+        io.sockets.emit('piece-played', {row: data[0], col:data[1], clientid:clientSocket.id, piece:data[3], opposingplayer: otherplayer});
     });
-    client.on('clearpiece', function (data) {
+    clientSocket.on('clearpiece', function (data) {
         io.sockets.emit('clearPiece', {row: data[0], col:data[1]});
     });
 
     setInterval(function() {
       io.sockets.emit('state', "players");
       }, 1000 / 60);
-//    client.on('movement', function(data) {
+//    clientSocket.on('movement', function(data) {
 //      console.log(data);
 //    });setInterval(function() {
 //      io.sockets.emit('state', "players");
 //    }, 1000 / 60);
 });
 
-io.on('disconnect', function() {
+io.on('disconnect', function(clientSocket) {
     console.log(`Player Disconnected`);
   });
 

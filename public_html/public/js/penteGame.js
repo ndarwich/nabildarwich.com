@@ -66,7 +66,7 @@ $(window).on("load", function() {
   });
   /////////////////END PENTE GAME LOADING LOGIC///////////////////
   $("body").on("click", "#pente-back-btn", (e) => {
-     socket.emit('client_disconnected', "Client has left room");
+    //socket.emit("client_disconnected", "Client has left room");
     e.preventDefault(); //don't scroll up
     window.location.href = "/pente/home";
   });
