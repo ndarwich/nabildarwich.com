@@ -46,12 +46,12 @@ fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
 });
 
 io.on('connection', function(clientSocket) {
-    console.log('Client created game... with id ' + clientSocket.id);
-    //the socket needs to have the client's username in all subsequent interactions
-    clientSocket.on('client-login', function(username) {
-      clientSocket.clientUsername = username;
-      console.info("Client Login From " + username);
-    });
+      console.log('Client created game... with id ' + clientSocket.id);
+      //the socket needs to have the client's username in all subsequent interactions
+      clientSocket.on('client-login', function(username) {
+        clientSocket.clientUsername = username;
+        console.info("Client Login From " + username);
+      });
     clientSocket.on('join', function(data) {
     	console.log(data);
       io.sockets.emit('client-connected', clientSocket.id);
@@ -65,6 +65,7 @@ io.on('connection', function(clientSocket) {
         console.log(data);
     });
     clientSocket.on('movement', function (data) {
+      console.log("Movement by " + clientSocket.clientUsername);
       console.log(data[3]);
         console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
         let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
@@ -106,8 +107,15 @@ router.get("/game", (req, res) => {
   console.log("ID IS " + req.sessionID);
   res.setHeader("Content-Type", "text/html");
   //res.send(req.session.username);
-  res.cookie("pente-username", req.session.username, { maxAge: 900000, httpOnly: false});
+  //res.cookie("pente-username", req.session.username, { maxAge: 900000, httpOnly: false});
   res.sendFile("/game.html", { root: __dirname + "/../public/pages/pente" });
+});
+
+//helper route to retrieve the user's Pente username
+router.get("/getPenteUsername", (req, res) => {
+  console.log("ID IS " + req.sessionID);
+  res.setHeader("Content-Type", "text/html");
+  res.send(req.session.username);
 });
 
 router.get("/home", (req, res) => {

@@ -18,6 +18,11 @@ $(window).on("load", function() {
     e.preventDefault(); //don"t scroll up
     penteLogin(e);
   });
+  //
+  $.get("/pente/getPenteUsername", function(data, status) {
+    //register the socket with the client username
+    socket.emit("client-login", data); //link socket io and our username
+  });
   //////////////////////PENTE GAME LOADING LOGIC///////////////////
   const penteGame = new PenteGame(); //create a new pente game
 
