@@ -106,6 +106,10 @@ router.get("/createAccount", (req, res) => {
 });
 
 router.get("/joinGame", (req, res) => {
+  if (req.session.username == undefined){
+    console.log("User has no active session");
+    return res.redirect('/pente');
+  }
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/joinGame.html", { root: __dirname + "/../public/pages/pente" });
 });
@@ -210,6 +214,28 @@ router.post('/getTable',function(req, res){
 
   res.send(result);
 });
+
+router.post('/getGamesTable',function(req, res){
+//  activeGamesToPlayers[532] = ["test", "sadsa"]
+  let result = '<table style="width:100%">';
+  result+="<th>Game ID</th>";
+  result+="<th>Current Players</th>";
+  var anygames = 0;
+  for (user in activeGamesToPlayers){
+    if(activeGamesToPlayers[user].length != 2){
+      result += "<tr><td>" + user + "</td><td>" + activeGamesToPlayers[user].length + "/2" + "</td></tr>";
+      anygames = 1;
+    }
+  }
+
+  result += '</table>';
+  if(anygames == 0){
+    console.log("HERE");
+    result = "<h3>No available games currently :(</h3>";
+  }
+  res.send(result);
+});
+
 
 router.post('/logout', function(req, res, next) {
   if (req.session) {
