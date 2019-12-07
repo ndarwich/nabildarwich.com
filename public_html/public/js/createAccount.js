@@ -64,10 +64,12 @@ let penteSubmit = (e) => {
     },
     error: function(err) {
         console.log('Error', err);
-        var err2 = JSON.parse(err.responseText);
-      //  window.alert(err2.message);
-      $('#username-criteria-error').text(err2.message);
-      $("#username-criteria-error").css("display", "block");
+        if (err.responseText != null) {
+          var err2 = JSON.parse(err.responseText);
+          //  window.alert(err2.message);
+          $('#username-criteria-error').text(err2.message);
+          $("#username-criteria-error").css("display", "block");
+        }
   }
 });
 }

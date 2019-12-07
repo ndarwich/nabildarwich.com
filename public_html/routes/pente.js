@@ -1,24 +1,22 @@
-const express = require("express");
-const crypto = require('crypto');
-const path = require("path");
-const router = express.Router();
-const fs = require('fs');
-var server = require('http').createServer(express);
-var io = require('socket.io')(server);
+let express = require("express");
+let crypto = require('crypto');
+let path = require("path");
+let router = express.Router();
+let fs = require('fs');
+let server = require('http').createServer(express);
+let io = require('socket.io')(server);
+let uuid = require('uuid/v4');
 
-
-const uuid = require('uuid/v4');
-var registered_users = {};
+let registered_users = {};
 //dictionary to hold the active games to the players that are in them (max 2 players)
-var activeGamesToPlayers = { };
+let activeGamesToPlayers = { };
 //dictionary to hold players to active games they're in (no max)
-var playersToActiveGames = { };
+let playersToActiveGames = { };
 
+let cookieParser = require('cookie-parser');
+let session = require('express-session');
 
-var cookieParser = require('cookie-parser');
-const session = require('express-session');
-
-var room = 1; // placeholder
+let room = 1; // placeholder
 router.use(session({
   genid: (req) => {
     console.log('Inside the session middleware')
@@ -32,16 +30,26 @@ router.use(session({
 
 
 server.listen(8200);
-const databaseFilePath = path.join(__dirname, '../database/database.json');
+let databaseFilePath = path.join(__dirname, '../database/database.json');
 
 fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
-  if (err) {
-      console.log("File read failed probably because it does not exit...yet", err)
-      return
+  console.info("Read file");
+  console.info(jsonString);
+  if (err || jsonString == null || jsonString == "") {
+    console.info(databaseFilePath);
+    console.info(jsonString);
+    console.log("File read failed probably because it does not exit...yet", err)
+    return
   }
-  const users = JSON.parse(jsonString);
-  for (var user in users){
-    registered_users[user] = users[user];
+  try {
+    let users = JSON.parse(jsonString);
+    for (let user in users){
+      registered_users[user] = users[user];
+    }
+  } catch (e) {
+    console.log("Error reading db");
+    console.log(jsonString);
+    console.log(e);
   }
 });
 
@@ -65,7 +73,7 @@ io.on('connection', function(clientSocket) {
     //when a player exits out of a game
     clientSocket.on('disconnect', function (data) {
       //
-      var clientGame = clientSocket.gameId;
+      let clientGame = clientSocket.gameId;
       //delete the game if there is no other player
       if (activeGamesToPlayers[clientGame] != null && activeGamesToPlayers[clientGame].BLACK == null) {
         console.info("Deleting Game " + clientGame + " due to no black");
@@ -82,7 +90,7 @@ io.on('connection', function(clientSocket) {
       console.log(data[3]);
         console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
         let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
-        var otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
+        let otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
         io.sockets.emit('piece-played', {row: data[0], col:data[1], clientid:clientSocket.id, piece:data[3], opposingplayer: otherplayer});
     });
     clientSocket.on('clearpiece', function (data) {
@@ -118,7 +126,7 @@ router.get("/createAccount", (req, res) => {
 router.get("/joinGame", (req, res) => {
   if (req.session.username == undefined){
     console.log("User has no active session");
-    return res.redirect('/pente');
+    return res.redirect("/pente");
   }
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/joinGame.html", { root: __dirname + "/../public/pages/pente" });
@@ -150,8 +158,8 @@ router.get("/getUniqueGameId", (req, res) => {
     res.status(404).send({ error: "Not Logged In, Please log in" });
     return;
   }
-  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  var gameId = "";
+  let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let gameId = "";
   for (let i = 0; i < 5; i++ ) {
       gameId += chars.charAt(Math.floor(Math.random()*chars.length));
   }
@@ -173,9 +181,9 @@ router.post("/getGameStatus", (req, res) => {
   }
   res.setHeader("Content-Type", "text/html");
   res.status(200);
-  var gameId = req.body.gameId;
+  let gameId = req.body.gameId;
   if (gameId in activeGamesToPlayers) {
-    var activeGame = activeGamesToPlayers[gameId];
+    let activeGame = activeGamesToPlayers[gameId];
     if (activeGame["BLACK"] == null && activeGame["WHITE"] != null) { //if second player hasn't joined yet
       activeGame["BLACK"] = req.session.username; //black joins the game
       playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
@@ -227,7 +235,7 @@ router.post('/getTable',function(req, res){
 
 router.post('/getAvailableGames',function(req, res){
 //  activeGamesToPlayers[532] = ["test", "sadsa"]
-  var availableGames = [];
+  let availableGames = [];
   for (game in activeGamesToPlayers){
     if(game != null && activeGamesToPlayers[game].BLACK == null){
       availableGames.push({ id: game, host: activeGamesToPlayers[game].WHITE });
@@ -256,15 +264,15 @@ router.post('/logout', function(req, res, next) {
 
 router.post('/login',function(req, res){
   console.log("SESSION ID " + req.sessionID)
-  var user_name = req.body.username;
-  var password = req.body.password;
+  let user_name = req.body.username;
+  let password = req.body.password;
 //  console.log(encrypted_password);
 //  console.log(registered_users[user_name]);
   console.log("User name = "+user_name+", password is "+password);
   console.log(user_name in registered_users);
   if(user_name in registered_users){
-    var user_salt = registered_users[user_name].salt;
-    var encrypted_password = sha512(password, user_salt);
+    let user_salt = registered_users[user_name].salt;
+    let encrypted_password = sha512(password, user_salt);
     if(registered_users[user_name].hash == encrypted_password.hash){
           req.session.username = user_name;
       console.log("SUccessful login from " + user_name);
@@ -283,13 +291,13 @@ router.post('/login',function(req, res){
 });
 
 router.post('/createAccount',function(req, res){
-  var user_name = req.body.username;
-  var password = req.body.password;
-  var reenteredpassword = req.body.reenteredpassword;
-  var usernameregex = /^[a-zA-Z0-9]{5,}$/;
-  var passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  let user_name = req.body.username;
+  let password = req.body.password;
+  let reenteredpassword = req.body.reenteredpassword;
+  let usernameregex = /^[a-zA-Z0-9]{5,}$/;
+  let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   console.log("Submitted User name = "+user_name+", password is "+password);
-  var username_meets_req = user_name.match(usernameregex);
+  let username_meets_req = user_name.match(usernameregex);
   if (!(user_name.match(usernameregex))){
     console.log("Username did not meet requirements!");
      return res.status(406).send({
@@ -308,17 +316,20 @@ router.post('/createAccount',function(req, res){
     });
   }
   if(!(user_name in registered_users)){
-    var salt = genRandomString(16);
-    var encrypted_password = sha512(password, salt);
+    let salt = genRandomString(16);
+    let encrypted_password = sha512(password, salt);
     encrypted_password.wins = 0;
     encrypted_password.losses = 0;
     encrypted_password.ties = 0;
     registered_users[user_name] = encrypted_password;
-    var jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
-  //  console.log(jsonString);
-    fs.writeFile(databaseFilePath, JSON.stringify(registered_users),
-    function(err){
-        if(err) throw err;
+    let jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
+    console.log("jsonString before writefile");
+    console.log(jsonString);
+    fs.writeFileSync(databaseFilePath, jsonString, function(err){
+      console.info("Write File Sync");
+      console.info(err)
+        if (err) throw err;
+        process.exit();
       })
     console.log("User successfully registered");
      return res.status(206).send({
@@ -336,17 +347,17 @@ router.post('/createAccount',function(req, res){
 //     message: 'This is an error!'
 //});
 });
-var sha512 = function(password, salt){
-    var hash = crypto.createHmac('sha512', salt);
+let sha512 = function(password, salt){
+    let hash = crypto.createHmac('sha512', salt);
     hash.update(password);
-    var value = hash.digest('hex');
+    let value = hash.digest('hex');
     return {
         salt: salt,
         hash: value
     };
 };
 
-var genRandomString = function(length){
+let genRandomString = function(length){
     return crypto.randomBytes(Math.ceil(length/2))
             .toString('hex')
             .slice(0, length);
