@@ -12,13 +12,22 @@ $(window).on("load", function() {
 
 let createTable = () => {
   $.ajax({
-    url: '/pente/getGamesTable',
+    url: '/pente/getAvailableGames',
     type: "POST",
     dataType: "html",
-    success: function(data) {
-        console.log('Success');
-        console.log(data);
-        document.getElementById("available-games-container").innerHTML += data;
+    success: (availableGames) => {
+        if (availableGames.length <= 0) {
+          $("#available-games").html("<h3>No Games Available To Display...</h3>");
+        } else {
+          var availableGamesTable = "<table style='width:100%'><th>Game ID</th><th>Host</th>";
+          availableGames = JSON.parse(availableGames);
+          availableGames.forEach((availableGame) => {
+            availableGamesTable += "<tr><td>" + availableGame.id + "</td><td>" + availableGame.host + "</td></tr>";
+          });
+          availableGamesTable += "</table>";
+          $("#available-games").html(availableGamesTable);
+        }
+
     },
     error: function(err) {
         console.log('Error', err);

@@ -46,7 +46,6 @@ fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
 });
 
 io.on('connection', function(clientSocket) {
-      console.log('Client created game... with id ' + clientSocket.id);
       //the socket needs to have the client's username in all subsequent interactions
       clientSocket.on('client-login', function(username) {
         if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
@@ -55,17 +54,28 @@ io.on('connection', function(clientSocket) {
         clientSocket.clientUsername = username;
         console.info("Client Login From " + username);
       });
+
+    clientSocket.on("game-id", function(gameId) {
+    	clientSocket.gameId = gameId;
+      console.info("Game Id" + clientSocket.gameId);
+    });
     clientSocket.on("join-game", function(data) {
     	console.log(data);
-
     });
-    clientSocket.on('client_disconnected', function (data) {
-      console.info("client disconnect event")
-        console.log(data);
-    });
+    //when a player exits out of a game
     clientSocket.on('disconnect', function (data) {
-      console.info("client disconnect event 2")
-        console.log(data);
+      //
+      var clientGame = clientSocket.gameId;
+      //delete the game if there is no other player
+      if (activeGamesToPlayers[clientGame] != null && activeGamesToPlayers[clientGame].BLACK == null) {
+        console.info("Deleting Game " + clientGame + " due to no black");
+        //delete the game from the playersToActiveGames dictionary
+        playersToActiveGames[clientSocket.clientUsername] = playersToActiveGames[clientSocket.clientUsername].filter(game => game != clientGame)
+        //delete the game from the activeGamesToPlayers dictionary
+        delete activeGamesToPlayers[clientGame];
+        console.info(playersToActiveGames);
+        console.info(activeGamesToPlayers);
+      }
     });
     clientSocket.on('movement', function (data) {
       console.log("Movement by " + clientSocket.clientUsername);
@@ -215,26 +225,15 @@ router.post('/getTable',function(req, res){
   res.send(result);
 });
 
-router.post('/getGamesTable',function(req, res){
+router.post('/getAvailableGames',function(req, res){
 //  activeGamesToPlayers[532] = ["test", "sadsa"]
-  let result = '<table style="width:100%">';
-  result+="<th>Game ID</th>";
-  result+="<th>Current Players</th>";
-  var anygames = 0;
+  var availableGames = [];
   for (game in activeGamesToPlayers){
-    if(activeGamesToPlayers[game].BLACK == null){
-      var white = activeGamesToPlayers[game].BLACK;
-      result += "<tr><td>" + game + "</td><td>" + activeGamesToPlayers[game].WHITE + "</td></tr>";
-      anygames = 1;
+    if(game != null && activeGamesToPlayers[game].BLACK == null){
+      availableGames.push({ id: game, host: activeGamesToPlayers[game].WHITE });
     }
   }
-
-  result += '</table>';
-  if(anygames == 0){
-    console.log("HERE");
-    result = "<h3>No available games currently :(</h3>";
-  }
-  res.send(result);
+  res.send(availableGames);
 });
 
 

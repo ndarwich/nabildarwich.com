@@ -64,6 +64,7 @@ $(window).on("load", function() {
     socket.emit("client-login", data); //link socket io and our username
     //now that we have a username we can request a unique game id
     $.get("/pente/getUniqueGameId", function(gameId, status) {
+      socket.emit("game-id", gameId);
       $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
       socket.on("BLACK-joined", function(data) {
         //once black joins, start the game
