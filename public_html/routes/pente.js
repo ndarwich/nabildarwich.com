@@ -221,9 +221,10 @@ router.post('/getGamesTable',function(req, res){
   result+="<th>Game ID</th>";
   result+="<th>Current Players</th>";
   var anygames = 0;
-  for (user in activeGamesToPlayers){
-    if(activeGamesToPlayers[user].length != 2){
-      result += "<tr><td>" + user + "</td><td>" + activeGamesToPlayers[user].length + "/2" + "</td></tr>";
+  for (game in activeGamesToPlayers){
+    if(activeGamesToPlayers[game].BLACK == null){
+      var white = activeGamesToPlayers[game].BLACK;
+      result += "<tr><td>" + game + "</td><td>" + activeGamesToPlayers[game].WHITE + "</td></tr>";
       anygames = 1;
     }
   }
