@@ -37,9 +37,11 @@ $(window).on("load", function() {
     if (queryObjects.gameId == null || queryObjects.gameId == {}) { //if there are no query objects, this is a new game
       //now that we have a username we can request a unique game id
       $.get("/pente/getUniqueGameId", function(gameId, status) {
+        $("#game-title").text("Game " + gameId);
         socket.emit("game-id", gameId);
         $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
         socket.on("player-joined", function(data) {
+          $("#pente-game-placeholder").text("");
           //once black joins, start the game
           loadPenteGame(gameId);
         });

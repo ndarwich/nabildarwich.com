@@ -91,3 +91,8 @@
   .piece.color.BLACK {
     border: 2px double #c8c8c8;
     background-color: BLACK; }
+
+.game-title {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center; }

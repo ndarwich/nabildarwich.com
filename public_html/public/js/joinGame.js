@@ -30,7 +30,7 @@ let createTable = () => {
 
     },
     error: function(err) {
-        console.log('Error', err);
+      console.log('Error', err);
   }
 });
 
