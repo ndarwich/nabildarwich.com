@@ -17,6 +17,8 @@ let pente = require("./routes/pente");
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
