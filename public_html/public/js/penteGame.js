@@ -1,18 +1,9 @@
 console.log("hello");
 //, { origins: '*:*' }
-var socket = io.connect("http://149.28.62.78:3002", { origins: '*:*', transports: ['websocket',
-  'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling'] });
+var socket = io.connect("http://nabild.com:80/", { enabledTransports: ['ws', 'wss', 'websocket',
+  'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling']});
 console.log("Created socket");
 console.log(socket);
-
-socket.on("connection", function(data) {
-   console.log("Player connected!", socket.id);
-   socket.emit("client-login", "Hello World from client");
-});
-
-socket.on("client-connected", function(player) {
-  console.log("Player joined with id " + player);
-});
 
 //helper function to get query params
 let getQueryObjects = () => {
@@ -44,7 +35,7 @@ $(window).on("load", function() {
       //now that we have a username we can request a unique game id
       $.get("/pente/getUniqueGameId", function(gameId, status) {
         $("#game-title").text("Game " + gameId);
-        socket.emit("game-id", gameId);
+        socket.emit("join-game", gameId);
         $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
       })
     } else { //creating/joining a game with query params
@@ -52,7 +43,7 @@ $(window).on("load", function() {
       console.info("Joining Game");
       //now that we have a username we can request a unique game id
       console.info(queryObjects.gameId);
-      socket.emit("game-id", queryObjects.gameId);
+      socket.emit("join-game", queryObjects.gameId);
       $("#pente-game-placeholder").text("Waiting on second player; game id is " + queryObjects.gameId);
     }
     //if we receive a signal to start the game

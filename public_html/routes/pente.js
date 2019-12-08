@@ -3,17 +3,11 @@ const crypto = require("crypto");
 const path = require("path");
 const router = express.Router();
 const fs = require("fs");
-//var server = require("http").createServer(app);
-//var io = require("socket.io")(server);
-
-//server.listen(3045, "149.28.62.78");
+var server = require("http").Server(router);
+var io = require("socket.io").listen(server);
 
 const uuid = require("uuid/v4");
 // var registered_users = {};
-//dictionary to hold the active games to the players that are in them (max 2 players)
-let activeGamesToPlayers = { };
-//dictionary to hold players to active games they"re in (no max)
-let playersToActiveGames = { };
 
 let cookieParser = require("cookie-parser");
 let session = require("express-session");
@@ -46,91 +40,7 @@ var registered_users = JSON.parse(users);
     registered_users[user] = users[user];
   }
 }); */
-/*
-io.on("connection", function(clientSocket) {
-      //the socket needs to have the client's username in all subsequent interactions
-      clientSocket.on("client-login", function(username) {
-        if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
-          playersToActiveGames[username] = []; //initialize their game to an empty list
-        }
-        clientSocket.clientUsername = username;
-        console.info("Client Login From " + username);
-      });
 
-    clientSocket.on("game-id", function(gameId) {
-      console.info("Game ID Received");
-      if (gameId in activeGamesToPlayers && !activeGamesToPlayers[gameId]["started"] && activeGamesToPlayers[gameId].WHITE == null) {
-        console.info("Game ID Received 1");
-        //if there is already e player in the game
-        //update our data structures with game info
-        activeGamesToPlayers[gameId] = { "WHITE": clientSocket.clientUsername };
-        if (playersToActiveGames[clientSocket.clientUsername]) {
-          playersToActiveGames[clientSocket.clientUsername].push(gameId);
-        } else {
-          playersToActiveGames[clientSocket.clientUsername] = [gameId];
-        }
-        clientSocket.join(gameId);
-      	clientSocket.gameId = gameId;
-        console.info("Game Id" + clientSocket.gameId);
-      } else if (gameId in activeGamesToPlayers && activeGamesToPlayers[gameId].BLACK == null && activeGamesToPlayers[gameId].WHITE != clientSocket.clientUsername) {
-          console.info("Game ID Received 2");
-          //if there is already e player in the game
-          activeGamesToPlayers[gameId]["BLACK"] = req.session.username; //black joins the game
-          playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
-          clientSocket.join(gameId);
-        	clientSocket.gameId = gameId;
-          console.info("Game Id Started: " + clientSocket.gameId);
-          activeGamesToPlayers[gameId]["started"] = true;
-      }
-      if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
-        io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
-      }
-    });
-    clientSocket.on("join-game", function(data) {
-    	console.log(data);
-    });
-    //when a player exits out of a game
-    clientSocket.on("disconnect", function (data) {
-      //
-      let clientGame = clientSocket.gameId;
-      //delete the game if there is no other player
-      if (activeGamesToPlayers[clientGame] != null && activeGamesToPlayers[clientGame].BLACK == null) {
-        console.info("Deleting Game " + clientGame + " due to no black");
-        //delete the game from the playersToActiveGames dictionary
-        playersToActiveGames[clientSocket.clientUsername] = playersToActiveGames[clientSocket.clientUsername].filter(game => game != clientGame)
-        //delete the game from the activeGamesToPlayers dictionary
-        delete activeGamesToPlayers[clientGame];
-        console.info(playersToActiveGames);
-        console.info(activeGamesToPlayers);
-      }
-    });
-    clientSocket.on("movement", function (data) {
-      console.log("Movement by " + clientSocket.clientUsername);
-      console.log(data[3]);
-      console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
-      let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
-      let otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
-      //emit this move to the other sockets in the room
-      io.to(clientSocket.gameId).emit("piece-played", {row: data[0], col:data[1], clientid:clientSocket.id, piece:data[3], opposingplayer: otherplayer});
-    });
-    clientSocket.on("clearpiece", function (data) {
-        io.to(clientSocket.gameId).emit("clearPiece", {row: data[0], col:data[1]});
-    });
-
-    setInterval(function() {
-      io.sockets.emit("state", "players");
-      }, 1000 / 60);
-//    clientSocket.on('movement', function(data) {
-//      console.log(data);
-//    });setInterval(function() {
-//      io.sockets.emit('state', "players");
-//    }, 1000 / 60);
-});
-
-io.on("disconnect", function(clientSocket) {
-    console.log("Player Disconnected");
-  });
-*/
 //pente router
 router.get("/", (req, res) => {
    res.cookie("cart", "test", {maxAge: 900000, httpOnly: true});
@@ -183,8 +93,6 @@ router.get("/getUniqueGameId", (req, res) => {
   for (let i = 0; i < 5; i++ ) {
       gameId += chars.charAt(Math.floor(Math.random()*chars.length));
   }
-  activeGamesToPlayers[gameId] = {"host": req.session.username};
-  activeGamesToPlayers[gameId]["started"] = false;
   res.status(200).send(gameId);
 });
 
@@ -194,6 +102,9 @@ router.post("/getGameStatus", (req, res) => {
     res.status(404).send({ error: "Not Logged In, Please log in" });
       return;
   }
+  let activeGamesToPlayers = req.app.activeGamesToPlayers;
+  console.info("ACTIVE GAMES TO PLAYERS");
+  console.info(activeGamesToPlayers);
   res.setHeader("Content-Type", "text/html");
   res.status(200);
   let gameId = req.body.gameId;
@@ -254,9 +165,11 @@ router.post("/getTable", function(req, res) {
 
 router.post("/getAvailableGames", function(req, res){
 //  activeGamesToPlayers[532] = ["test", "sadsa"]
+  let activeGamesToPlayers = req.app.activeGamesToPlayers;
   let availableGames = [];
   for (game in activeGamesToPlayers){
-    if(game != null && activeGamesToPlayers[game].BLACK == null){
+    if(activeGamesToPlayers[game] != null && activeGamesToPlayers[game]["BLACK"] == null && activeGamesToPlayers[game]["started"] ==  false){
+      console.info("Adding Game");
       availableGames.push({ id: game, host: activeGamesToPlayers[game]["host"] });
     }
   }

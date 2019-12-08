@@ -16,6 +16,7 @@ let createTable = () => {
     type: "POST",
     dataType: "html",
     success: (availableGames) => {
+        console.info(availableGames);
         if (availableGames.length <= 0) {
           $("#available-games").html("<h3>No Games Available To Display...</h3>");
         } else {

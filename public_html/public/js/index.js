@@ -4,9 +4,6 @@ $(window).on("load", function() {
   loadNavigation(0);
   //socket io test
   //origins: '*:*',
-  var socket = io.connect("http://nabild.com:80", { enabledTransports: ['ws', 'wss', 'websocket',
-    'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling']});
-  socket.emit("client-login", "Hello World from client");
   $(window).on('beforeunload', function(){
     socket.close();
   });

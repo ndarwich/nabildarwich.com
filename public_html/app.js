@@ -15,6 +15,12 @@ let books = require("./routes/books");
 let pente = require("./routes/pente");
 //all the files under public are static
 
+
+//dictionary to hold the active games to the players that are in them (max 2 players)
+let activeGamesToPlayers = { };
+//dictionary to hold players to active games they"re in (no max)
+let playersToActiveGames = { };
+
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
 
@@ -122,8 +128,118 @@ server.listen(3002, "localhost", function () {
   console.info("Requiring Socket IO success");
   io.on('connection', function(socket){
    console.log('a user connected');
+   socket.on("connection", function(data) {
+      console.log("Player connected!", socket.id);
+      socket.emit("client-login", "Hello World from client");
+   });
+
+   socket.on("client-login", function(player) {
+     console.log("Player joined with id " + player);
+   });
+
+   //when a player logs in the socket needs to have the client's username in all subsequent interactions
    socket.on("client-login", function(username) {
+     if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
+       playersToActiveGames[username] = []; //initialize their game to an empty list
+     }
+     socket.clientUsername = username;
      console.info("Client Login From " + username);
    });
-  });
+
+ //when a player joins a game
+ socket.on("join-game", function(gameId) {
+   //Case 1: game is getting created
+   if (!(gameId in activeGamesToPlayers)) {
+     console.info("Join Game Received 1");
+     //if there is already e player in the game
+     //update our data structures with game info
+     activeGamesToPlayers[gameId] = { "WHITE": socket.clientUsername, "host": socket.clientUsername, "started": false };
+     if (playersToActiveGames[socket.clientUsername]) {
+       playersToActiveGames[socket.clientUsername].push(gameId);
+     } else {
+       playersToActiveGames[socket.clientUsername] = [gameId];
+     }
+     socket.join(gameId);
+     socket.gameId = gameId;
+     console.info("Game Id" + socket.gameId);
+   } else if (gameId in activeGamesToPlayers && activeGamesToPlayers[gameId].BLACK == null && activeGamesToPlayers[gameId].WHITE != socket.clientUsername) {
+       console.info("Join Game Received 2");
+       //if there is already e player in the game
+       activeGamesToPlayers[gameId]["BLACK"] = socket.clientUsername; //black joins the game
+       playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername] ? playersToActiveGames[socket.clientUsername].push(gameId) : [gameId];
+       socket.join(gameId);
+       socket.gameId = gameId;
+       console.info("Game Id Started: " + socket.gameId);
+       activeGamesToPlayers[gameId]["started"] = true;
+       activeGamesToPlayers[gameId]["currentTurn"] = "WHITE";
+   }
+   //send the game information to the player
+   if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
+     io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
+   }
+ });
+
+ ////////////////////////////////START PENTE GAME LOGIC/////////////////////////
+ //when a player makes a move
+ socket.on("movement", function (data) {
+   console.log("Movement by " + socket.clientUsername);
+   console.log(data[3]);
+   console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
+   let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
+   let otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
+   //emit this move to the other sockets in the room
+   io.to(socket.gameId).emit("piece-played", {row: data[0], col:data[1], clientid:socket.id, piece:data[3], opposingplayer: otherplayer});
+ });
+ socket.on("clearpiece", function (data) {
+     io.to(socket.gameId).emit("clearPiece", {row: data[0], col:data[1]});
+ });
+ ////////////////////////////////END PENTE GAME LOGIC/////////////////////////
+
+ //when a player exits out of a game
+ socket.on("disconnect", function (data) {
+   //record the game's id
+   let clientGame = socket.gameId;
+   //delete the game if there is no other player
+   if (activeGamesToPlayers[clientGame] != null && activeGamesToPlayers[clientGame].BLACK == null) {
+     console.info("Deleting Game " + clientGame + " due to no black");
+     console.info(activeGamesToPlayers);
+     //delete the game from the playersToActiveGames dictionary
+     playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername].filter(game => game != clientGame)
+     //delete the game from the activeGamesToPlayers dictionary
+     delete activeGamesToPlayers[clientGame];
+     console.info(playersToActiveGames);
+     console.info(activeGamesToPlayers);
+   }
+ });
 });
+
+ //if the client disconnects
+ io.on("disconnect", function(socket) {
+    console.log("Player Disconnected");
+    //record the game's id
+    let clientGame = socket.gameId;
+    //delete the game if there is no other player
+    if (activeGamesToPlayers[clientGame] != null && activeGamesToPlayers[clientGame].BLACK == null) {
+      console.info("Deleting Game " + clientGame + " due to no black");
+      //delete the game from the playersToActiveGames dictionary
+      playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername].filter(game => game != clientGame)
+      //delete the game from the activeGamesToPlayers dictionary
+      delete activeGamesToPlayers[clientGame];
+      console.info(playersToActiveGames);
+      console.info(activeGamesToPlayers);
+    }
+  });
+
+  //  setInterval(function() {
+  //    io.sockets.emit("state", "players");
+  //    }, 1000 / 60);
+  //  //    socket.on('movement', function(data) {
+  //  //      console.log(data);
+  //  //    });setInterval(function() {
+  //  //      io.sockets.emit('state', "players");
+  //  //    }, 1000 / 60);
+  // });
+  app.io = io;
+  app.activeGamesToPlayers = activeGamesToPlayers;
+  app.playersToActiveGames = playersToActiveGames;
+});``
