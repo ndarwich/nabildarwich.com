@@ -440,7 +440,7 @@ router.post('/createAccount',function(req, res){
     let jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
     console.log("jsonString before writefile");
     console.log(jsonString);
-    fs.writeFileSync(databaseFilePath, jsonString, function(err){
+    fs.writeFileSync(databaseFilePath, jsonString, "utf8", function(err){
       console.info("Write File Sync");
       console.info(err)
         if (err) throw err;
