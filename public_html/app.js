@@ -31,7 +31,6 @@ app.get("*/:scriptName.js", function(req, res){
   res.sendFile("/public/js/" + req.params.scriptName + ".js",
     {root: __dirname });
 });
-
 app.get("*/:cascadingStyleSheet.css", function(req, res){
   res.setHeader("Content-Type", "text/css");
   res.sendFile("/public/css/" + req.params.cascadingStyleSheet + ".css",
@@ -60,6 +59,7 @@ app.get("*/pages/:pageName", function(req, res){
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/pages/" + req.params.pageName, {root: __dirname });
 });
+
 app.post("/sendMail", (req, res) => {
   const key = "6LcgkLMUAAAAAP04M4TSXtW8IBleHIETBKTslfre";
   let googleReq = "https://www.google.com/recaptcha/api/siteverify?secret="

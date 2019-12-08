@@ -6,6 +6,7 @@ const fs = require("fs");
 var server = require("http").createServer(express);
 var io = require("socket.io")(server);
 
+server.listen(3045);
 
 const uuid = require("uuid/v4");
 // var registered_users = {};
@@ -29,7 +30,6 @@ router.use(session({
 }));
 
 
-server.listen(8200);
 let databaseFilePath = path.join(__dirname, "../database/database.json");
 
 var users = fs.readFileSync(databaseFilePath);
@@ -58,7 +58,9 @@ io.on("connection", function(clientSocket) {
       });
 
     clientSocket.on("game-id", function(gameId) {
-      if (gameId in activeGamesToPlayers && !activeGamesToPlayers[gameId]["started"]) {
+      console.info("Game ID Received");
+      if (gameId in activeGamesToPlayers && !activeGamesToPlayers[gameId]["started"] && activeGamesToPlayers[gameId].WHITE == null) {
+        console.info("Game ID Received 1");
         //if there is already e player in the game
         //update our data structures with game info
         activeGamesToPlayers[gameId] = { "WHITE": clientSocket.clientUsername };
@@ -71,6 +73,7 @@ io.on("connection", function(clientSocket) {
       	clientSocket.gameId = gameId;
         console.info("Game Id" + clientSocket.gameId);
       } else if (gameId in activeGamesToPlayers && activeGamesToPlayers[gameId].BLACK == null && activeGamesToPlayers[gameId].WHITE != clientSocket.clientUsername) {
+          console.info("Game ID Received 2");
           //if there is already e player in the game
           activeGamesToPlayers[gameId]["BLACK"] = req.session.username; //black joins the game
           playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
