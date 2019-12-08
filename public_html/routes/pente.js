@@ -6,7 +6,7 @@ const fs = require("fs");
 var server = require("http").createServer(express);
 var io = require("socket.io")(server);
 
-server.listen(3045);
+//server.listen(3045, "149.28.62.78");
 
 const uuid = require("uuid/v4");
 // var registered_users = {};

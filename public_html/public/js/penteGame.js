@@ -1,6 +1,6 @@
 console.log("hello");
 
-var socket = io.connect("http://" + window.location.host + ":3045");
+var socket = io.connect("http://localhost:3002");
 console.log("Created socket");
 console.log(socket);
 

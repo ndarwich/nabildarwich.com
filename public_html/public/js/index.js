@@ -2,6 +2,10 @@ expanded = [false];
 
 $(window).on("load", function() {
   loadNavigation(0);
+  //socket io test
+  var socket = io.connect("http://localhost:3002");
+  //var socket = io();
+  console.info(socket);
   /* removed visitor number
   //let storedCookie = $.cookie("visitorNum");
   let myNumber = -1;

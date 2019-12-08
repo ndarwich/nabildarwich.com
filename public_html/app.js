@@ -14,6 +14,7 @@ let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
 //all the files under public are static
+
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
 
@@ -26,6 +27,11 @@ app.use("/bio", bio);
 app.use("/cs367", specialPage);
 app.use("/books", books);
 app.use("/pente", pente);
+app.get("/socket.io/**", function(req, res){
+  res.setHeader("Content-Type", "application/javascript");
+  res.sendFile("/public/js/" + req.params.index + ".js",
+    {root: __dirname });
+});
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "application/javascript");
   res.sendFile("/public/js/" + req.params.scriptName + ".js",
@@ -102,7 +108,16 @@ app.get("*", function(req, res){
   res.sendFile("/public/error.html", {root: __dirname });
 });
 
-//port for express server
-app.listen(3002, function () {
+console.info("Requiring Socket IO");
+var server = require('http').createServer(app);
+var io = require("socket.io").listen(server);
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+// port for express server
+server.listen(3002, "localhost", function () {
   console.info("Listening on port 3002...");
+  console.info("Requiring Socket IO too");
+  console.log(io);
 });
