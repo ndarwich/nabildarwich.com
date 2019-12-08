@@ -9,13 +9,27 @@ $(window).on("load", function() {
       $("#greeting-text").text("Greetings, " + data);
     }
   });
-
+  $("body").on("click", "#pente-creategame-btn", (e) => {
+    e.preventDefault(); //don"t scroll up
+    createGame();
+  });
   $("body").on("click", "#pente-logout-btn", (e) => {
     e.preventDefault(); //don"t scroll up
     penteLogout(e);
   });
 
 });
+
+let createGame = () => {
+  $.get("/pente/getUniqueGameId", function(gameId, status) {
+    if (status == "success") {
+      console.info(gameId);
+      window.location.href = "/pente/game?gameId=" + gameId;
+    } else {
+      console.log("error");
+    }
+  });
+}
 
 let penteLogout = () => {
   $.ajax({

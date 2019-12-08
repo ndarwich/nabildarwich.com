@@ -16,6 +16,7 @@ let pente = require("./routes/pente");
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", index);
@@ -59,7 +60,6 @@ app.get("*/pages/:pageName", function(req, res){
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/public/pages/" + req.params.pageName, {root: __dirname });
 });
-
 app.post("/sendMail", (req, res) => {
   const key = "6LcgkLMUAAAAAP04M4TSXtW8IBleHIETBKTslfre";
   let googleReq = "https://www.google.com/recaptcha/api/siteverify?secret="

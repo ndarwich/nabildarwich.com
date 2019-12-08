@@ -58,11 +58,30 @@ io.on("connection", function(clientSocket) {
       });
 
     clientSocket.on("game-id", function(gameId) {
-      //if there is already e player in the game
-      io.to(gameId).emit("player-joined");
-      clientSocket.join(gameId);
-    	clientSocket.gameId = gameId;
-      console.info("Game Id" + clientSocket.gameId);
+      if (gameId in activeGamesToPlayers && !activeGamesToPlayers[gameId]["started"]) {
+        //if there is already e player in the game
+        //update our data structures with game info
+        activeGamesToPlayers[gameId] = { "WHITE": clientSocket.clientUsername };
+        if (playersToActiveGames[clientSocket.clientUsername]) {
+          playersToActiveGames[clientSocket.clientUsername].push(gameId);
+        } else {
+          playersToActiveGames[clientSocket.clientUsername] = [gameId];
+        }
+        clientSocket.join(gameId);
+      	clientSocket.gameId = gameId;
+        console.info("Game Id" + clientSocket.gameId);
+      } else if (gameId in activeGamesToPlayers && activeGamesToPlayers[gameId].BLACK == null && activeGamesToPlayers[gameId].WHITE != clientSocket.clientUsername) {
+          //if there is already e player in the game
+          activeGamesToPlayers[gameId]["BLACK"] = req.session.username; //black joins the game
+          playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
+          clientSocket.join(gameId);
+        	clientSocket.gameId = gameId;
+          console.info("Game Id Started: " + clientSocket.gameId);
+          activeGamesToPlayers[gameId]["started"] = true;
+      }
+      if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
+        io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
+      }
     });
     clientSocket.on("join-game", function(data) {
     	console.log(data);
@@ -161,13 +180,8 @@ router.get("/getUniqueGameId", (req, res) => {
   for (let i = 0; i < 5; i++ ) {
       gameId += chars.charAt(Math.floor(Math.random()*chars.length));
   }
-  //update our data structures with game info
-  activeGamesToPlayers[gameId] = { "WHITE": req.session.username };
-  if (playersToActiveGames[req.session.username]) {
-    playersToActiveGames[req.session.username].push(gameId);
-  } else {
-    playersToActiveGames[req.session.username] = [gameId];
-  }
+  activeGamesToPlayers[gameId] = {"host": req.session.username};
+  activeGamesToPlayers[gameId]["started"] = false;
   res.status(200).send(gameId);
 });
 
@@ -183,8 +197,6 @@ router.post("/getGameStatus", (req, res) => {
   if (gameId in activeGamesToPlayers) {
     let activeGame = activeGamesToPlayers[gameId];
     if (activeGame["BLACK"] == null && activeGame["WHITE"] != req.session.username) { //if second player hasn't joined yet
-        activeGamesToPlayers[gameId]["BLACK"] = req.session.username; //black joins the game
-        playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
         console.info("Game with id " + gameId + " Found, joining as BLACK");
         res.status(200).send("Joining game");
     } else if (activeGame["WHITE"] == req.session.username && activeGame["BLACK"] != null) { //if first player disconnected and wants to reconnect
@@ -194,11 +206,11 @@ router.post("/getGameStatus", (req, res) => {
         console.info("Game with id " + gameId + " found, rejoining as WHITE");
         res.status(200).send("Joining game");
     } else if (activeGame["WHITE"] != null && activeGame["BLACK"] != null) {
-      res.status(402).send("Game with id " + gameId + " Full");
+      res.status(500).send("Game with id " + gameId + " Full");
     } else if (activeGame["WHITE"] == req.session.username && activeGame["BLACK"] == null) {
-      res.status(402).send("Cannot join game " + gameId + " as you are the host");
+      res.status(500).send("Cannot join game " + gameId + " as you are the host");
     } else {
-      res.status(402).send("No Game with id " + gameId + " Found");
+      res.status(500).send("No Game with id " + gameId + " Found");
     }
   } else {
     res.send("No Game with id " + gameId + " Found");
@@ -242,7 +254,7 @@ router.post("/getAvailableGames", function(req, res){
   let availableGames = [];
   for (game in activeGamesToPlayers){
     if(game != null && activeGamesToPlayers[game].BLACK == null){
-      availableGames.push({ id: game, host: activeGamesToPlayers[game].WHITE });
+      availableGames.push({ id: game, host: activeGamesToPlayers[game]["host"] });
     }
   }
   res.send(availableGames);

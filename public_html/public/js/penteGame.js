@@ -33,29 +33,28 @@ $(window).on("load", function() {
     //register the socket with the client username
     socket.emit("client-login", data); //link socket io and our username
     let queryObjects = getQueryObjects();
-    //IN THE CASE OF CREATING A NEW GAME
+    //IN THE CASE OF CREATING A NEW GAME without any query params
     if (queryObjects.gameId == null || queryObjects.gameId == {}) { //if there are no query objects, this is a new game
       //now that we have a username we can request a unique game id
       $.get("/pente/getUniqueGameId", function(gameId, status) {
         $("#game-title").text("Game " + gameId);
         socket.emit("game-id", gameId);
         $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
-        socket.on("player-joined", function(data) {
-          $("#pente-game-placeholder").text("");
-          //once black joins, start the game
-          loadPenteGame(gameId);
-        });
       })
-    } else {
+    } else { //creating/joining a game with query params
       $("#game-title").text("Game " + queryObjects.gameId);
       console.info("Joining Game");
       //now that we have a username we can request a unique game id
       console.info(queryObjects.gameId);
       socket.emit("game-id", queryObjects.gameId);
-      $("#pente-game-placeholder").text("Joining Game " + queryObjects.gameId);
-      //we can start the game!
-      loadPenteGame(queryObjects.gameId);
+      $("#pente-game-placeholder").text("Waiting on second player; game id is " + queryObjects.gameId);
     }
+    //if we receive a signal to start the game
+    socket.on("game-started", function(gameInfo) {
+      $("#pente-game-placeholder").text("");
+      //we can start the game!
+      loadPenteGame(queryObjects.gameId, gameInfo);
+    });
   });
   /////////////////END PENTE GAME LOADING LOGIC///////////////////
   $("body").on("click", "#pente-back-btn", (e) => {
@@ -65,13 +64,13 @@ $(window).on("load", function() {
   });
 });
 
-var loadPenteGame = (gameId) => {
+var loadPenteGame = (gameId, gameInfo) => {
   console.info("Game ID: " + gameId);
   //////////////////////PENTE GAME LOADING LOGIC///////////////////
   const penteGame = new PenteGame(); //create a new pente game
-  //indicate whose player"s turn it is
+  //indicate whose player"s turn it is using their username
   penteGame.playerTurn = () => {
-    $("#pente-player-move").text("" + penteGame.currentTurn + "'s move...");
+    $("#pente-player-move").text("" + gameInfo[penteGame.currentTurn] + "'s move...");
   }
   penteGame.playerTurn();
   ///////////////////////SOCKET LOGIC//////////////////////////////
