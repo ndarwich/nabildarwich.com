@@ -169,10 +169,41 @@ server.listen(3002, "localhost", function () {
        playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername] ? playersToActiveGames[socket.clientUsername].push(gameId) : [gameId];
        socket.join(gameId);
        socket.gameId = gameId;
+       /////////////////////////START THE GAME/////////////////////////////
        console.info("Game Id Started: " + socket.gameId);
        activeGamesToPlayers[gameId]["started"] = true;
-       activeGamesToPlayers[gameId]["currentTurn"] = "WHITE";
-   }
+       //store the game in the server
+       activeGamesToPlayers[gameId]["game"] = {
+         timeLeft: 60, //default timer for the game to be over is
+         NUM_ROWS : 19,
+         NUM_COLS : 19,
+         currentTurn : "WHITE",
+         isDone : false,
+         playerTurn : () => {},
+         pieceMoved : (piece) => {},
+         pieceCleared : (piece) => {},
+         board: []
+       };
+       //as the game started, initialize the game board
+       var board = []
+       for (let rowNumber = 0; rowNumber < activeGamesToPlayers[gameId]["game"]["board"].NUM_ROWS; rowNumber++) {
+         let newRow = [];
+         for (let colNumber = 0; colNumber < activeGamesToPlayers[gameId]["game"]["board"].NUM_COLS; colNumber++) {
+           newRow.push('A'); //in our server, we will just store the space as a character A | B | W
+         }
+         board.push(newRow);
+       }
+       activeGamesToPlayers[gameId]["game"]["board"] = board;
+       //also initialize the timer and update it every second
+       setInterval(function() {
+          console.info("Time Left");
+          console.info(activeGamesToPlayers[gameId]["game"]["timeLeft"]);
+          console.info(activeGamesToPlayers[gameId]["game"]);
+          activeGamesToPlayers[gameId]["game"]["timeLeft"] -= 1;
+          io.to(gameId).emit("tik-tok", activeGamesToPlayers[gameId]["game"]["timeLeft"]);
+        }, 1000);
+        /////////////////////////FINISH START GAME/////////////////////////////
+     }
    //send the game information to the player
    if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
      io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
@@ -230,16 +261,7 @@ server.listen(3002, "localhost", function () {
     }
   });
 
-  //  setInterval(function() {
-  //    io.sockets.emit("state", "players");
-  //    }, 1000 / 60);
-  //  //    socket.on('movement', function(data) {
-  //  //      console.log(data);
-  //  //    });setInterval(function() {
-  //  //      io.sockets.emit('state', "players");
-  //  //    }, 1000 / 60);
-  // });
   app.io = io;
   app.activeGamesToPlayers = activeGamesToPlayers;
   app.playersToActiveGames = playersToActiveGames;
-});``
+});
