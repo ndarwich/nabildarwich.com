@@ -19,6 +19,7 @@ let pente = require("./routes/pente");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", index);
+
 app.use("/contact", contact);
 app.use("/projects", projects);
 app.use("/bio", bio);

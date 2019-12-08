@@ -1,13 +1,14 @@
-let express = require("express");
-let crypto = require('crypto');
-let path = require("path");
-let router = express.Router();
-let fs = require('fs');
-let server = require('http').createServer(express);
-let io = require('socket.io')(server);
-let uuid = require('uuid/v4');
+const express = require("express");
+const crypto = require('crypto');
+const path = require("path");
+const router = express.Router();
+const fs = require('fs');
+var server = require('http').createServer(express);
+var io = require('socket.io')(server);
 
-let registered_users = {};
+
+const uuid = require('uuid/v4');
+// var registered_users = {};
 //dictionary to hold the active games to the players that are in them (max 2 players)
 let activeGamesToPlayers = { };
 //dictionary to hold players to active games they're in (no max)
@@ -32,26 +33,20 @@ router.use(session({
 server.listen(8200);
 let databaseFilePath = path.join(__dirname, '../database/database.json');
 
-fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
-  console.info("Read file");
-  console.info(jsonString);
-  if (err || jsonString == null || jsonString == "") {
-    console.info(databaseFilePath);
-    console.info(jsonString);
-    console.log("File read failed probably because it does not exit...yet", err)
-    return
+var users = fs.readFileSync(databaseFilePath);
+var registered_users = JSON.parse(users);
+
+/* fs.readFileSync(databaseFilePath, 'utf8', (err, jsonString) => {
+  if (err) {
+      console.log("File read failed probably because it does not exit...yet", err)
+      return
   }
-  try {
-    let users = JSON.parse(jsonString);
-    for (let user in users){
-      registered_users[user] = users[user];
-    }
-  } catch (e) {
-    console.log("Error reading db");
-    console.log(jsonString);
-    console.log(e);
+  const users = JSON.parse(jsonString);
+  console.log(users);
+  for (var user in users){
+    registered_users[user] = users[user];
   }
-});
+}); */
 
 io.on('connection', function(clientSocket) {
       //the socket needs to have the client's username in all subsequent interactions
