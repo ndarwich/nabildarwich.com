@@ -45,6 +45,7 @@ $(window).on("load", function() {
         });
       })
     } else {
+      $("#game-title").text("Game " + queryObjects.gameId);
       console.info("Joining Game");
       //now that we have a username we can request a unique game id
       console.info(queryObjects.gameId);

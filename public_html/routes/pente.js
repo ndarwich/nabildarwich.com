@@ -186,14 +186,19 @@ router.post("/getGameStatus", (req, res) => {
         activeGamesToPlayers[gameId]["BLACK"] = req.session.username; //black joins the game
         playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
         console.info("Game with id " + gameId + " Found, joining as BLACK");
-        return res.redirect("pente/game?gameId=" + gameId);
+        res.status(200).send("Joining game");
     } else if (activeGame["WHITE"] == req.session.username && activeGame["BLACK"] != null) { //if first player disconnected and wants to reconnect
         console.info("Game with id " + gameId + " found, rejoining as WHITE");
-        return res.redirect("pente/game?gameId=" + gameId);
+        res.status(200).send("Joining game");
+    } else if (activeGame["BLACK"] == req.session.username && activeGame["WHITE"] != null) { //if first player disconnected and wants to reconnect
+        console.info("Game with id " + gameId + " found, rejoining as WHITE");
+        res.status(200).send("Joining game");
     } else if (activeGame["WHITE"] != null && activeGame["BLACK"] != null) {
-      res.send("Game with id " + gameId + " Full");
+      res.status(402).send("Game with id " + gameId + " Full");
+    } else if (activeGame["WHITE"] == req.session.username && activeGame["BLACK"] == null) {
+      res.status(402).send("Cannot join game " + gameId + " as you are the host");
     } else {
-      res.send("No Game with id " + gameId + " Found");
+      res.status(402).send("No Game with id " + gameId + " Found");
     }
   } else {
     res.send("No Game with id " + gameId + " Found");
