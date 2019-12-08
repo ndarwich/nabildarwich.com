@@ -50,9 +50,9 @@ $(window).on("load", function() {
       //now that we have a username we can request a unique game id
       console.info(queryObjects.gameId);
       socket.emit("game-id", queryObjects.gameId);
-      $("#pente-game-placeholder").text("Joining Game " + gameId);
+      $("#pente-game-placeholder").text("Joining Game " + queryObjects.gameId);
       //we can start the game!
-      loadPenteGame(gameId);
+      loadPenteGame(queryObjects.gameId);
     }
   });
   /////////////////END PENTE GAME LOADING LOGIC///////////////////
