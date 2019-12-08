@@ -1,3 +1,86 @@
+var socket = io.connect('http://localhost:8200');
+socket.on('connect', function(data) {
+   console.log('Player connected!', socket.id);
+   socket.emit('join', 'Hello World from client');
+});
+
+socket.on('client-connected', function(player) {
+  console.log("Player joined with id " + player);
+});
+
+var loadPenteGame = (gameId) => {
+  console.info("Game ID: " + gameId);
+  //////////////////////PENTE GAME LOADING LOGIC///////////////////
+  const penteGame = new PenteGame(); //create a new pente game
+  //indicate whose player's turn it is
+  penteGame.playerTurn = () => {
+    $("#pente-player-move").text("" + penteGame.currentTurn + "'s move...");
+  }
+  penteGame.playerTurn();
+  ///////////////////////SOCKET LOGIC//////////////////////////////
+  socket.on('piece-played', function(pieceplayed) {
+    if(socket.id != pieceplayed.clientid){
+    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
+    penteGame.flipColor(piece);
+    piece.addClass("color");
+    piece.addClass(penteGame.currentTurn); //readd the current color just in case
+    piece.removeClass("shadow");
+    piece.removeClass("available");
+    piece.data("state", pieceplayed.opposingplayer); //update the piece state
+
+    }
+    console.log(pieceplayed.pieceinfo + " with socket id " + pieceplayed.clientid);
+  //  console.log(piece.id);
+  });
+
+  socket.on('state', function(players) {
+    console.log(players);
+  });
+
+  socket.on('clearPiece', function(piece) {
+    var piece = $(penteGame.getPiece(piece.row, piece.col));
+    penteGame.flipColor(piece);
+  });
+
+  //initialize socket related functions
+  penteGame.pieceMoved = function(piece) {
+    socket.emit("movement", [piece.data("row"), piece.data("column"), piece.data("state"), piece]);
+  }
+  penteGame.pieceCleared = function(piece) {
+    socket.emit("clearpiece", [piece.data("row"), piece.data("column")]);
+  }
+  //play again button click
+  $("body").on("click", "#play-again-btn", (e) => {
+    e.preventDefault(); //don"t scroll up
+    penteGame.playAgain();
+  });
+}
+
+$(window).on("load", function() {
+  loadNavigation(4);
+  //request our pente username
+  $.get("/pente/getPenteUsername", function(data, status) {
+    //register the socket with the client username
+    socket.emit("client-login", data); //link socket io and our username
+    //now that we have a username we can request a unique game id
+    $.get("/pente/getUniqueGameId", function(gameId, status) {
+      socket.emit("game-id", gameId);
+      $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
+      socket.on("BLACK-joined", function(data) {
+        //once black joins, start the game
+        loadPenteGame(gameId);
+      });
+    })
+  });
+  /////////////////END PENTE GAME LOADING LOGIC///////////////////
+  $("body").on("click", "#pente-back-btn", (e) => {
+    //socket.emit("client_disconnected", "Client has left room");
+    e.preventDefault(); //don't scroll up
+    window.location.href = "/pente/home";
+  });
+});
+
+
 /**
  * Class with Pente game logic.
  */
@@ -6,11 +89,13 @@ class PenteGame {
    * Constructor.
    */
   constructor() {
-    this.NUM_ROWS = 18;
-    this.NUM_COLS = 18;
+    this.NUM_ROWS = 19;
+    this.NUM_COLS = 19;
     this.currentTurn = "WHITE";
     this.isDone = false;
     this.playerTurn = () => {};
+    this.pieceMoved = (piece) => {};
+    this.pieceCleared = (piece) => {};
     this.initializeGame();
     this.listenToInputs();
   }
@@ -32,6 +117,7 @@ class PenteGame {
         newCol.data("column", colNumber);
         newCol.data("state", "available");
         newCol.addClass("piece available");
+        newCol.attr('id', rowNumber+""+colNumber);
         newRow.append(newCol);
       }
       board.append(newRow);
@@ -87,6 +173,7 @@ class PenteGame {
       piece.removeClass("shadow");
       piece.removeClass("available");
       piece.data("state", game.currentTurn); //update the piece state
+      this.pieceMoved(piece);
       //apply Othello game logic
       game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
       //check if five in a row achieved
@@ -107,10 +194,12 @@ class PenteGame {
     if (currentColor != "WHITE" && currentColor != "BLACK") {
       return;
     }
-    let newColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
+    let newColor = "available";
     existingPiece.data("state", newColor);
     existingPiece.removeClass(currentColor);
+    existingPiece.removeClass("color");
     existingPiece.addClass(newColor);
+    existingPiece.addClass("shadow");
   }
 
   /**
@@ -118,14 +207,28 @@ class PenteGame {
    */
   flipColorsInDirection(row, col, color, xOffset, yOffset) {
     let multiplier = 1;
+    let numOppositePieces = 0;
     //traverse until we are out of bounds/the stopping conditions are met
     while (row + yOffset*multiplier >= 0 && row + yOffset*multiplier < this.NUM_ROWS &&
            col + xOffset*multiplier >= 0 && col + xOffset*multiplier < this.NUM_COLS) {
       let existingPiece = $(this.getPiece(row + yOffset*multiplier, col + xOffset*multiplier));
       if ($(existingPiece).hasClass("available") || $(existingPiece).hasClass(color)) {
-        break;
+        if (numOppositePieces == 2 && $(existingPiece).hasClass(color)) {
+          //these are the pieces in between
+          let piece1 = $(this.getPiece(row + yOffset*1, col + xOffset*1));
+          let piece2 = $(this.getPiece(row + yOffset*2, col + xOffset*2));
+          this.pieceCleared(piece1);
+          this.pieceCleared(piece2);
+          this.flipColor(piece1);
+          this.flipColor(piece2);
+        }
+        return;
       }
-      this.flipColor(existingPiece);
+      numOppositePieces++;
+      //do not flip colors if more than 2 opposite pieces are in between
+      if (numOppositePieces > 2) {
+        return;
+      }
       //increment the multiplier
       multiplier++;
     }
@@ -186,7 +289,7 @@ class PenteGame {
   }
 
   /**
-   * Othello Logic to check if piece colors can be flipped.
+   * Pente Logic to check if opponent pieces can be removed from board.
    */
   checkColorsToFlip(row, column, color) {
     this.traverseAllDirections(row, column, color, true);

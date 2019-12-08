@@ -11,6 +11,7 @@
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/pente.js"></script>
+    <script src="js/joinGame.js"></script>
   </head>
   <body>
     <header>
@@ -18,28 +19,33 @@
     </header>
     <div id="page-overlay"></div>
     <div id="page-body">
-      <h1>Pente</h1>
+      <h1>Join A Pente Game</h1>
       <div class="pente-body">
         <div class="pente-container">
-          <div class="pente-combo-box">
-            <div class="pente-field">
-              Username
-            </div>
-            <input class ="pente-input-field" id="pente-username" />
+          <div class="pente-container-title">
+            Join Game
           </div>
           <div class="pente-combo-box">
-            <div class="pente-field">
-              Password
+             <div class="pente-field" >
+               Game ID:
+             </div>
+             <input class="pente-input-field" id="pente-gameid-input" />
+          </div>
+          <div id="server-response">
+          </div>
+          <div class="pente-button" id="pente-joingame-btn">
+            JOIN
+          </div>
+          <div class="pente-container">
+            Available Games
+            <div id="available-games">
+
             </div>
-            <input class="pente-input-field" type="password" id="pente-password" />
-          </div>
-          <div class="pente-button" id="pente-login-btn">
-            LOGIN
-          </div>
-          <div class="pente-button" id="pente-createaccount-btn">
-            <a href="/pente/createAccount">CREATE ACCOUNT</a>
           </div>
         </div>
+      </div>
+      <div class="pente-button" id="pente-back-btn">
+        BACK
       </div>
     </div>
   </body>

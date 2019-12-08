@@ -2,9 +2,9 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
-var https = require("https");
-var app = express();
-var router = express.Router();
+let https = require("https");
+let app = express();
+let router = express.Router();
 //ALL routes are imported
 let index = require("./routes/index");
 let contact = require("./routes/contact");
@@ -13,7 +13,6 @@ let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
-
 //all the files under public are static
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
@@ -21,7 +20,6 @@ let pente = require("./routes/pente");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use("/", index);
 app.use("/contact", contact);
 app.use("/projects", projects);

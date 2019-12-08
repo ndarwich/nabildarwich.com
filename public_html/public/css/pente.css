@@ -2,7 +2,7 @@
   font-size: 1.5em;
   margin: 1em; }
 
-.pente-login-container {
+.pente-container {
   margin: 0.5rem auto;
   padding: 1rem;
   font-size: 1.5rem;
@@ -25,6 +25,7 @@
   margin: 1rem; }
 
 .pente-button {
+  text-align: center;
   background-color: brown;
   border: 2px solid BLACK;
   color: white;
@@ -36,9 +37,27 @@
     background-color: #8f5200;
     cursor: pointer; }
 
+.pente-warning {
+  font-size: 1.1rem;
+  color: red;
+  text-align: center;
+  display: none; }
+
 #pente-game {
   background-color: #673400;
   display: inline-block; }
+
+#pente-game-placeholder {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center; }
+
+.pente-container-title {
+  font-size: 2rem;
+  font-weight: bold; }
+
+.pente-pending-games {
+  font-size: 1.5rem; }
 
 .pente-game-container {
   text-align: center; }

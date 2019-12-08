@@ -11,6 +11,7 @@
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/pente.js"></script>
+    <script src="js/home.js"></script>
   </head>
   <body>
     <header>
@@ -18,26 +19,26 @@
     </header>
     <div id="page-overlay"></div>
     <div id="page-body">
-      <h1>Pente</h1>
+      <h1 id="greeting-text"></h1>
       <div class="pente-body">
         <div class="pente-container">
-          <div class="pente-combo-box">
-            <div class="pente-field">
-              Username
-            </div>
-            <input class ="pente-input-field" id="pente-username" />
+          <div class="pente-container-title">Pending Games</div>
+          <div id="pente-pending-games">
+
           </div>
-          <div class="pente-combo-box">
-            <div class="pente-field">
-              Password
-            </div>
-            <input class="pente-input-field" type="password" id="pente-password" />
-          </div>
-          <div class="pente-button" id="pente-login-btn">
-            LOGIN
+        </div>
+        <div class="pente-container">
+          <div class="pente-button" id="pente-creategame-btn">
+            <a href="/pente/game">CREATE GAME</a>
           </div>
           <div class="pente-button" id="pente-createaccount-btn">
-            <a href="/pente/createAccount">CREATE ACCOUNT</a>
+            <a href="/pente/joinGame">JOIN GAME</a>
+          </div>
+          <div class="pente-button" id="pente-leaderboards-btn">
+            <a href="/pente/leaderboards">PLAYER STATS</a>
+          </div>
+          <div class="pente-button" id="pente-logout-btn">
+            LOG OUT
           </div>
         </div>
       </div>

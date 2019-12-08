@@ -8,9 +8,8 @@
     <link rel="icon" sizes="192x192" href="img/nd-icon.png">
     <link rel="manifest" href="manifest.json">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="js/nav.js"></script>
-    <script src="js/pente.js"></script>
+    <script src="js/createAccount.js"></script>
   </head>
   <body>
     <header>
@@ -18,7 +17,7 @@
     </header>
     <div id="page-overlay"></div>
     <div id="page-body">
-      <h1>Pente</h1>
+      <h1>Pente Account Creation</h1>
       <div class="pente-body">
         <div class="pente-container">
           <div class="pente-combo-box">
@@ -26,21 +25,35 @@
               Username
             </div>
             <input class ="pente-input-field" id="pente-username" />
+            <div class="pente-warning" id="username-criteria-error">
+              Usernames must be at least 5 characters. Allowed characters are
+              A-Z, a-z, and 0-9.
+            </div>
           </div>
           <div class="pente-combo-box">
             <div class="pente-field">
               Password
             </div>
-            <input class="pente-input-field" type="password" id="pente-password" />
-          </div>
-          <div class="pente-button" id="pente-login-btn">
-            LOGIN
-          </div>
-          <div class="pente-button" id="pente-createaccount-btn">
-            <a href="/pente/createAccount">CREATE ACCOUNT</a>
+            <input class ="pente-input-field" type="password" id="pente-password" />
+            <div class="pente-warning" id="password-criteria-error">
+              Passwords must be a mixture of digits, upper, and lower case characters.
+              Passwords must also be at least 8 characters long.
+            </div>
+            <div class="pente-field">
+              Re-enter Password
+            </div>
+            <input class ="pente-input-field" type="password" id="pente-reentered-password" />
+            <div class="pente-warning" id="password-match-error">
+              Entered passwords must match.
+            </div>
+            </div>
+          <div class="pente-button" id="pente-submit-btn">
+            SUBMIT
           </div>
         </div>
-      </div>
+        <div class="pente-button" id="pente-back-btn">
+          BACK
+        </div>
     </div>
   </body>
 </html>
