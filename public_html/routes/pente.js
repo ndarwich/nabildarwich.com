@@ -8,7 +8,7 @@ var io = require('socket.io')(server);
 
 
 const uuid = require('uuid/v4');
-var registered_users = {};
+// var registered_users = {};
 //dictionary to hold the active games to the players that are in them (max 2 players)
 var activeGamesToPlayers = { };
 //dictionary to hold players to active games they're in (no max)
@@ -34,16 +34,20 @@ router.use(session({
 server.listen(8200);
 const databaseFilePath = path.join(__dirname, '../database/database.json');
 
-fs.readFile(databaseFilePath, 'utf8', (err, jsonString) => {
+var users = fs.readFileSync(databaseFilePath);
+var registered_users = JSON.parse(users);
+
+/* fs.readFileSync(databaseFilePath, 'utf8', (err, jsonString) => {
   if (err) {
       console.log("File read failed probably because it does not exit...yet", err)
       return
   }
   const users = JSON.parse(jsonString);
+  console.log(users);
   for (var user in users){
     registered_users[user] = users[user];
   }
-});
+}); */
 
 io.on('connection', function(clientSocket) {
       //the socket needs to have the client's username in all subsequent interactions
@@ -316,7 +320,7 @@ router.post('/createAccount',function(req, res){
     registered_users[user_name] = encrypted_password;
     var jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
   //  console.log(jsonString);
-    fs.writeFile(databaseFilePath, JSON.stringify(registered_users),
+    fs.writeFileSync(databaseFilePath, JSON.stringify(registered_users),
     function(err){
         if(err) throw err;
       })
