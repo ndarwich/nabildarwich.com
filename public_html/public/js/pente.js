@@ -54,8 +54,8 @@ let penteJoinGame = (gameId) => {
       window.location.href = "/pente/game?gameId=" + gameId;
     },
     error: function(err) {
-        $("#server-response").text(err);
-        console.log("Error", err);
+        $("#server-response").text(err.responseText);
+        console.log("Error", err.responseText);
     }
   });
 }

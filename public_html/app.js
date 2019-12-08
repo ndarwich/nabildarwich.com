@@ -196,9 +196,7 @@ server.listen(3002, "localhost", function () {
        activeGamesToPlayers[gameId]["game"]["board"] = board;
        //also initialize the timer and update it every second
        setInterval(function() {
-          console.info("Time Left");
-          console.info(activeGamesToPlayers[gameId]["game"]["timeLeft"]);
-          console.info(activeGamesToPlayers[gameId]["game"]);
+          //decrement the timer and emit the new time to both players
           activeGamesToPlayers[gameId]["game"]["timeLeft"] -= 1;
           io.to(gameId).emit("tik-tok", activeGamesToPlayers[gameId]["game"]["timeLeft"]);
         }, 1000);
@@ -212,14 +210,34 @@ server.listen(3002, "localhost", function () {
 
  ////////////////////////////////START PENTE GAME LOGIC/////////////////////////
  //when a player makes a move
- socket.on("movement", function (data) {
+ socket.on("piece-moved", function (moveLocation) {
+   if (socket.clientUsername == null || activeGamesToPlayers[gameId] == null) {
+     return;
+   }
    console.log("Movement by " + socket.clientUsername);
-   console.log(data[3]);
-   console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
-   let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
-   let otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
-   //emit this move to the other sockets in the room
-   io.to(socket.gameId).emit("piece-played", {row: data[0], col:data[1], clientid:socket.id, piece:data[3], opposingplayer: otherplayer});
+   //check if the movement is legal, if it's not,this is cheating
+   console.log(socket.gameId);
+   console.log(moveLocation);
+   var currentTurn = activeGamesToPlayers[gameId]["game"].currentTurn;
+   var opposingTurn = currentTurn == "WHITE" ? "BLACK" : "WHITE";
+   var pieceCharacter = currentTurn == "WHITE" ? 'W' : 'B';
+   var gameId = socket.gameId;
+   //a player has to place a piece in the bounds, it's the player's turn, and it should not be already occupied
+   if (moveLocation.row >= 0 && moveLocation.row < activeGamesToPlayers[gameId]["game"].NUM_ROWS
+     && moveLocation.column >= 0 && moveLocation.column < activeGamesToPlayers[gameId]["game"].NUM_COLS
+     && socket.clientUsername == activeGamesToPlayers[gameId][currentTurn]
+     && activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] == 'A') {
+       //apply move logic
+       activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] = pieceCharacter;
+       //update internals
+      activeGamesToPlayers[gameId]["game"]["currentTurn"] == opposingTurn;
+     //emit this move to the other sockets in the room
+     io.to(socket.gameId).emit("piece-played", moveLocation);
+   } else {
+     console.log("Illegal Move");
+     io.to(socket.gameId).emit("player-cheated", socket.clientUsername + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
+      + activeGamesToPlayers[gameId][opposingTurn] + " wins!!");
+   }
  });
  socket.on("clearpiece", function (data) {
      io.to(socket.gameId).emit("clearPiece", {row: data[0], col:data[1]});

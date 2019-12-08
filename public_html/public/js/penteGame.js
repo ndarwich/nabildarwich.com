@@ -72,22 +72,22 @@ var loadPenteGame = (gameId, gameInfo) => {
   penteGame.playerTurn();
   ///////////////////////SOCKET LOGIC//////////////////////////////
   socket.on("piece-played", function(pieceplayed) {
-    if(socket.id != pieceplayed.clientid){
-    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
+    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.column));
     penteGame.flipColor(piece);
     piece.addClass("color");
     piece.addClass(penteGame.currentTurn); //readd the current color just in case
     piece.removeClass("shadow");
     piece.removeClass("available");
-    piece.data("state", pieceplayed.opposingplayer); //update the piece state
-
+    piece.data("state", penteGame.currentTurn); //update the piece state
+    if (! penteGame.isDone) {
+      penteGame.currentTurn = penteGame.currentTurn == "WHITE" ? "BLACK" : "WHITE";
+      penteGame.playerTurn();
     }
-    console.log(pieceplayed.pieceinfo + " with socket id " + pieceplayed.clientid);
-  //  console.log(piece.id);
   });
 
-  socket.on("state", function(players) {
-    console.log(players);
+  socket.on("player-cheated", function(message) {
+    alert(message);
+    penteGame.isDone = true;
   });
 
   socket.on("clearPiece", function(piece) {
@@ -97,7 +97,7 @@ var loadPenteGame = (gameId, gameInfo) => {
 
   //initialize socket related functions
   penteGame.pieceMoved = function(piece) {
-    socket.emit("movement", [piece.data("row"), piece.data("column"), piece.data("state"), piece]);
+    socket.emit("piece-moved", {row: piece.data("row"), column: piece.data("column") });
   }
   penteGame.pieceCleared = function(piece) {
     socket.emit("clearpiece", [piece.data("row"), piece.data("column")]);
