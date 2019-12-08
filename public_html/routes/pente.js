@@ -1,26 +1,25 @@
 const express = require("express");
-const crypto = require('crypto');
+const crypto = require("crypto");
 const path = require("path");
 const router = express.Router();
-const fs = require('fs');
-var server = require('http').createServer(express);
-var io = require('socket.io')(server);
+const fs = require("fs");
+var server = require("http").createServer(express);
+var io = require("socket.io")(server);
 
 
-const uuid = require('uuid/v4');
+const uuid = require("uuid/v4");
 // var registered_users = {};
 //dictionary to hold the active games to the players that are in them (max 2 players)
 let activeGamesToPlayers = { };
-//dictionary to hold players to active games they're in (no max)
+//dictionary to hold players to active games they"re in (no max)
 let playersToActiveGames = { };
 
-let cookieParser = require('cookie-parser');
-let session = require('express-session');
+let cookieParser = require("cookie-parser");
+let session = require("express-session");
 
-let room = 1; // placeholder
 router.use(session({
   genid: (req) => {
-    console.log('Inside the session middleware')
+    console.log("Inside the session middleware")
     console.log(req.sessionID)
     return uuid()
   },
@@ -31,12 +30,12 @@ router.use(session({
 
 
 server.listen(8200);
-let databaseFilePath = path.join(__dirname, '../database/database.json');
+let databaseFilePath = path.join(__dirname, "../database/database.json");
 
 var users = fs.readFileSync(databaseFilePath);
 var registered_users = JSON.parse(users);
 
-/* fs.readFileSync(databaseFilePath, 'utf8', (err, jsonString) => {
+/* fs.readFile(databaseFilePath, "utf8", (err, jsonString) => {
   if (err) {
       console.log("File read failed probably because it does not exit...yet", err)
       return
@@ -48,9 +47,9 @@ var registered_users = JSON.parse(users);
   }
 }); */
 
-io.on('connection', function(clientSocket) {
+io.on("connection", function(clientSocket) {
       //the socket needs to have the client's username in all subsequent interactions
-      clientSocket.on('client-login', function(username) {
+      clientSocket.on("client-login", function(username) {
         if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
           playersToActiveGames[username] = []; //initialize their game to an empty list
         }
@@ -59,6 +58,9 @@ io.on('connection', function(clientSocket) {
       });
 
     clientSocket.on("game-id", function(gameId) {
+      //if there is already e player in the game
+      io.to(gameId).emit("player-joined");
+      clientSocket.join(gameId);
     	clientSocket.gameId = gameId;
       console.info("Game Id" + clientSocket.gameId);
     });
@@ -66,7 +68,7 @@ io.on('connection', function(clientSocket) {
     	console.log(data);
     });
     //when a player exits out of a game
-    clientSocket.on('disconnect', function (data) {
+    clientSocket.on("disconnect", function (data) {
       //
       let clientGame = clientSocket.gameId;
       //delete the game if there is no other player
@@ -80,20 +82,21 @@ io.on('connection', function(clientSocket) {
         console.info(activeGamesToPlayers);
       }
     });
-    clientSocket.on('movement', function (data) {
+    clientSocket.on("movement", function (data) {
       console.log("Movement by " + clientSocket.clientUsername);
       console.log(data[3]);
-        console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
-        let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
-        let otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
-        io.sockets.emit('piece-played', {row: data[0], col:data[1], clientid:clientSocket.id, piece:data[3], opposingplayer: otherplayer});
+      console.log(data[2] + " placed piece at row " + data[0] + ", column " + data[1]);
+      let pieceinfo = data[2] + " placed piece at row " + data[0] + ", column " + data[1];
+      let otherplayer = data[2] == "WHITE" ? "BLACK" : "WHITE";
+      //emit this move to the other sockets in the room
+      io.to(clientSocket.gameId).emit("piece-played", {row: data[0], col:data[1], clientid:clientSocket.id, piece:data[3], opposingplayer: otherplayer});
     });
-    clientSocket.on('clearpiece', function (data) {
-        io.sockets.emit('clearPiece', {row: data[0], col:data[1]});
+    clientSocket.on("clearpiece", function (data) {
+        io.to(clientSocket.gameId).emit("clearPiece", {row: data[0], col:data[1]});
     });
 
     setInterval(function() {
-      io.sockets.emit('state', "players");
+      io.sockets.emit("state", "players");
       }, 1000 / 60);
 //    clientSocket.on('movement', function(data) {
 //      console.log(data);
@@ -102,13 +105,13 @@ io.on('connection', function(clientSocket) {
 //    }, 1000 / 60);
 });
 
-io.on('disconnect', function(clientSocket) {
-    console.log(`Player Disconnected`);
+io.on("disconnect", function(clientSocket) {
+    console.log("Player Disconnected");
   });
 
 //pente router
 router.get("/", (req, res) => {
-   res.cookie('cart', 'test', {maxAge: 900000, httpOnly: true});
+   res.cookie("cart", "test", {maxAge: 900000, httpOnly: true});
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/pente.html", { root: __dirname + "/../public" });
 });
@@ -179,13 +182,14 @@ router.post("/getGameStatus", (req, res) => {
   let gameId = req.body.gameId;
   if (gameId in activeGamesToPlayers) {
     let activeGame = activeGamesToPlayers[gameId];
-    if (activeGame["BLACK"] == null && activeGame["WHITE"] != null) { //if second player hasn't joined yet
-      activeGame["BLACK"] = req.session.username; //black joins the game
-      playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
-      res.send("Game with id " + gameId + " Found, joining as BLACK");
-    } else if (activeGame["WHITE"] == null && activeGame["BLACK"] != null) { //if first player disconnected and wants to reconnect
-      activeGame["WHITE"] = req.session.username;
-        res.send("Game with id " + gameId + " found, joining as WHITE");
+    if (activeGame["BLACK"] == null && activeGame["WHITE"] != req.session.username) { //if second player hasn't joined yet
+        activeGamesToPlayers[gameId]["BLACK"] = req.session.username; //black joins the game
+        playersToActiveGames[req.session.username] = playersToActiveGames[req.session.username] ? playersToActiveGames[req.session.username].push(gameId) : [gameId];
+        console.info("Game with id " + gameId + " Found, joining as BLACK");
+        return res.redirect("pente/game?gameId=" + gameId);
+    } else if (activeGame["WHITE"] == req.session.username && activeGame["BLACK"] != null) { //if first player disconnected and wants to reconnect
+        console.info("Game with id " + gameId + " found, rejoining as WHITE");
+        return res.redirect("pente/game?gameId=" + gameId);
     } else if (activeGame["WHITE"] != null && activeGame["BLACK"] != null) {
       res.send("Game with id " + gameId + " Full");
     } else {
@@ -199,7 +203,7 @@ router.post("/getGameStatus", (req, res) => {
 router.get("/home", (req, res) => {
   if (req.session.username == undefined){
     console.log("User has no active session");
-    return res.redirect('/pente');
+    return res.redirect("/pente");
   }
   console.log("USERNAME IS " + req.session.username);
   res.setHeader("Content-Type", "text/html");
@@ -209,26 +213,26 @@ router.get("/home", (req, res) => {
 router.get("/leaderboards", (req, res) => {
   if (req.session.username == undefined){
     console.log("User has no active session");
-    return res.redirect('/pente');
+    return res.redirect("/pente");
   }
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/leaderboards.html", { root: __dirname + "/../public/pages/pente" });
 });
 
-router.post('/getTable',function(req, res){
-  let result = '<table style="width:100%">';
+router.post("/getTable", function(req, res) {
+  let result = "<table style='width:100%'>";
   result+="<th>Username</th>";
   result+="<th>Win/Loss/Tie Ratio</th>";
   for (user in registered_users){
     result += "<tr><td>" + user + "</td><td>" + registered_users[user].wins + "/" + registered_users[user].losses + "/" + registered_users[user].ties + "</td></tr>";
   }
 
-  result += '</table>';
+  result += "</table>";
 
   res.send(result);
 });
 
-router.post('/getAvailableGames',function(req, res){
+router.post("/getAvailableGames", function(req, res){
 //  activeGamesToPlayers[532] = ["test", "sadsa"]
   let availableGames = [];
   for (game in activeGamesToPlayers){
@@ -240,7 +244,7 @@ router.post('/getAvailableGames',function(req, res){
 });
 
 
-router.post('/logout', function(req, res, next) {
+router.post("/logout", function(req, res, next) {
   if (req.session) {
     console.log("Session was " + req.session);
     // delete session object
@@ -250,14 +254,14 @@ router.post('/logout', function(req, res, next) {
         return next(err);
       } else {
         console.log("Destroyed session cookie " + req.session);
-        return res.redirect('/pente');
+        return res.redirect("/pente");
       }
     });
   }
 
 });
 
-router.post('/login',function(req, res){
+router.post("/login", function(req, res){
   console.log("SESSION ID " + req.sessionID)
   let user_name = req.body.username;
   let password = req.body.password;
@@ -272,20 +276,20 @@ router.post('/login',function(req, res){
           req.session.username = user_name;
       console.log("SUccessful login from " + user_name);
       return res.status(200).send({
-         message: 'Successful login from ' + user_name
+         message: "Successful login from " + user_name
      });
     }
   }
   else {
     console.log("Username or password is incorrect");
      return res.status(406).send({
-        message: 'Username ' + user_name + ' or password entered is incorrect'
+        message: "Username " + user_name + " or password entered is incorrect"
     });
   }
 
 });
 
-router.post('/createAccount',function(req, res){
+router.post("/createAccount", function(req, res){
   let user_name = req.body.username;
   let password = req.body.password;
   let reenteredpassword = req.body.reenteredpassword;
@@ -293,21 +297,21 @@ router.post('/createAccount',function(req, res){
   let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   console.log("Submitted User name = "+user_name+", password is "+password);
   let username_meets_req = user_name.match(usernameregex);
-  if (!(user_name.match(usernameregex))){
+  if (! user_name.match(usernameregex)){
     console.log("Username did not meet requirements!");
      return res.status(406).send({
-        message: 'Entered username does not meet the requirements.'
+        message: "Entered username does not meet the requirements."
     });
   }
   if (!password.match(passwordregex)){
     console.log("Password did not meet the criteria!");
      return res.status(406).send({
-        message: 'Password did not meet the criteria!'
+        message: "Password did not meet the criteria!"
     });  }
   else if (!(password === reenteredpassword)){
     console.log("Passwords did not match");
      return res.status(406).send({
-        message: 'Passwords did not match'
+        message: "Passwords did not match"
     });
   }
   if(!(user_name in registered_users)){
@@ -320,32 +324,33 @@ router.post('/createAccount',function(req, res){
     let jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
     console.log("jsonString before writefile");
     console.log(jsonString);
-    fs.writeFileSync(databaseFilePath, jsonString, function(err){
-      console.info("Write File Sync");
-      console.info(err)
-        if (err) throw err;
-        process.exit();
-      })
+
+    // fs.writeFileSync(databaseFilePath, jsonString, function(err){
+    //   console.info("Write File Sync");
+    //   console.info(err)
+    //     if (err) throw err;
+    //     process.exit();
+    //   })
     console.log("User successfully registered");
      return res.status(206).send({
-        message: 'Username ' + user_name + ' registered'
+        message: "Username " + user_name + " registered"
     });
   }
   else {
     console.log("Username already registered");
      return res.status(406).send({
-        message: 'Username ' + user_name + ' already registered'
+        message: "Username " + user_name + " already registered"
     });
   }
 // code to send an error to the AJAX call
 //  return res.status(400).send({
-//     message: 'This is an error!'
+//     message: "This is an error!"
 //});
 });
 let sha512 = function(password, salt){
-    let hash = crypto.createHmac('sha512', salt);
+    let hash = crypto.createHmac("sha512", salt);
     hash.update(password);
-    let value = hash.digest('hex');
+    let value = hash.digest("hex");
     return {
         salt: salt,
         hash: value
@@ -354,7 +359,7 @@ let sha512 = function(password, salt){
 
 let genRandomString = function(length){
     return crypto.randomBytes(Math.ceil(length/2))
-            .toString('hex')
+            .toString("hex")
             .slice(0, length);
 };
 

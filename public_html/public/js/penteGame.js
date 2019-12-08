@@ -1,24 +1,78 @@
-var socket = io.connect('http://localhost:8200');
-socket.on('connect', function(data) {
-   console.log('Player connected!', socket.id);
-   socket.emit('join', 'Hello World from client');
+var socket = io.connect("http://localhost:8200");
+socket.on("connect", function(data) {
+   console.log("Player connected!", socket.id);
+   socket.emit("join", "Hello World from client");
 });
 
-socket.on('client-connected', function(player) {
+socket.on("client-connected", function(player) {
   console.log("Player joined with id " + player);
+});
+
+//helper function to get query params
+let getQueryObjects = () => {
+    let queryObjects = {};
+    //if there is no query object
+    if (window.location.href.indexOf('?') == -1) {
+      return {};
+    }
+    //else, parse the query object
+    let queryParams = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    queryParams.forEach((queryParam) => {
+      let queryObject = queryParam.split('=');
+      queryObjects[queryObject[0]] = queryObject[1];
+    });
+    return queryObjects;
+  };
+
+$(window).on("load", function() {
+  loadNavigation(4);
+  var creatingGame = true;
+
+  //request our pente username
+  $.get("/pente/getPenteUsername", function(data, status) {
+    //register the socket with the client username
+    socket.emit("client-login", data); //link socket io and our username
+    let queryObjects = getQueryObjects();
+    //IN THE CASE OF CREATING A NEW GAME
+    if (queryObjects.gameId == null || queryObjects.gameId == {}) { //if there are no query objects, this is a new game
+      //now that we have a username we can request a unique game id
+      $.get("/pente/getUniqueGameId", function(gameId, status) {
+        socket.emit("game-id", gameId);
+        $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
+        socket.on("player-joined", function(data) {
+          //once black joins, start the game
+          loadPenteGame(gameId);
+        });
+      })
+    } else {
+      console.info("Joining Game");
+      //now that we have a username we can request a unique game id
+      console.info(queryObjects.gameId);
+      socket.emit("game-id", queryObjects.gameId);
+      $("#pente-game-placeholder").text("Joining Game " + gameId);
+      //we can start the game!
+      loadPenteGame(gameId);
+    }
+  });
+  /////////////////END PENTE GAME LOADING LOGIC///////////////////
+  $("body").on("click", "#pente-back-btn", (e) => {
+    //socket.emit("client_disconnected", "Client has left room");
+    e.preventDefault(); //don't scroll up
+    window.location.href = "/pente/home";
+  });
 });
 
 var loadPenteGame = (gameId) => {
   console.info("Game ID: " + gameId);
   //////////////////////PENTE GAME LOADING LOGIC///////////////////
   const penteGame = new PenteGame(); //create a new pente game
-  //indicate whose player's turn it is
+  //indicate whose player"s turn it is
   penteGame.playerTurn = () => {
     $("#pente-player-move").text("" + penteGame.currentTurn + "'s move...");
   }
   penteGame.playerTurn();
   ///////////////////////SOCKET LOGIC//////////////////////////////
-  socket.on('piece-played', function(pieceplayed) {
+  socket.on("piece-played", function(pieceplayed) {
     if(socket.id != pieceplayed.clientid){
     var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.col));
     penteGame.flipColor(piece);
@@ -33,11 +87,11 @@ var loadPenteGame = (gameId) => {
   //  console.log(piece.id);
   });
 
-  socket.on('state', function(players) {
+  socket.on("state", function(players) {
     console.log(players);
   });
 
-  socket.on('clearPiece', function(piece) {
+  socket.on("clearPiece", function(piece) {
     var piece = $(penteGame.getPiece(piece.row, piece.col));
     penteGame.flipColor(piece);
   });
@@ -55,31 +109,6 @@ var loadPenteGame = (gameId) => {
     penteGame.playAgain();
   });
 }
-
-$(window).on("load", function() {
-  loadNavigation(4);
-  //request our pente username
-  $.get("/pente/getPenteUsername", function(data, status) {
-    //register the socket with the client username
-    socket.emit("client-login", data); //link socket io and our username
-    //now that we have a username we can request a unique game id
-    $.get("/pente/getUniqueGameId", function(gameId, status) {
-      socket.emit("game-id", gameId);
-      $("#pente-game-placeholder").text("Waiting on second player; game id is " + gameId);
-      socket.on("BLACK-joined", function(data) {
-        //once black joins, start the game
-        loadPenteGame(gameId);
-      });
-    })
-  });
-  /////////////////END PENTE GAME LOADING LOGIC///////////////////
-  $("body").on("click", "#pente-back-btn", (e) => {
-    //socket.emit("client_disconnected", "Client has left room");
-    e.preventDefault(); //don't scroll up
-    window.location.href = "/pente/home";
-  });
-});
-
 
 /**
  * Class with Pente game logic.
@@ -117,7 +146,7 @@ class PenteGame {
         newCol.data("column", colNumber);
         newCol.data("state", "available");
         newCol.addClass("piece available");
-        newCol.attr('id', rowNumber+""+colNumber);
+        newCol.attr("id", rowNumber+""+colNumber);
         newRow.append(newCol);
       }
       board.append(newRow);

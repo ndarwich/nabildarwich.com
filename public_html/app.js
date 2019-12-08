@@ -19,14 +19,12 @@ let pente = require("./routes/pente");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", index);
-
 app.use("/contact", contact);
 app.use("/projects", projects);
 app.use("/bio", bio);
 app.use("/cs367", specialPage);
 app.use("/books", books);
 app.use("/pente", pente);
-
 app.get("*/:scriptName.js", function(req, res){
   res.setHeader("Content-Type", "application/javascript");
   res.sendFile("/public/js/" + req.params.scriptName + ".js",
