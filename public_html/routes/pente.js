@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const path = require("path");
 const router = express.Router();
 const fs = require("fs");
-var server = require("http").createServer(express);
+var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 
 //server.listen(3045, "149.28.62.78");

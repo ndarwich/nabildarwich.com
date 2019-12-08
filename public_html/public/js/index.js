@@ -3,7 +3,8 @@ expanded = [false];
 $(window).on("load", function() {
   loadNavigation(0);
   //socket io test
-  var socket = io.connect("http://localhost:3002");
+  var socket = io.connect("http://149.28.62.78:3002", { origins: '*:*', transports: ['websocket',
+    'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling']});
   //var socket = io();
   console.info(socket);
   /* removed visitor number

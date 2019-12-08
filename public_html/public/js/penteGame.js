@@ -1,6 +1,7 @@
 console.log("hello");
-
-var socket = io.connect("http://localhost:3002");
+//, { origins: '*:*' }
+var socket = io.connect("http://149.28.62.78:3002", { origins: '*:*', transports: ['websocket',
+  'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling'] });
 console.log("Created socket");
 console.log(socket);
 

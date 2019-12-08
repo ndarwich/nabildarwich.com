@@ -1,0 +1,629 @@
+error: Could not read .foreverignore file.
+error: ENOENT: no such file or directory, open '/var/www/nabild.com/.foreverignore'
+Requiring Socket IO
+Listening on port 3002...
+Requiring Socket IO too
+Server {
+  nsps: {
+    '/': Namespace {
+      name: '/',
+      server: [Circular],
+      sockets: {},
+      connected: {},
+      fns: [],
+      ids: 0,
+      rooms: [],
+      flags: {},
+      adapter: [Adapter],
+      _events: [Object: null prototype],
+      _eventsCount: 1
+    }
+  },
+  parentNsps: Map {},
+  _path: '/socket.io',
+  _serveClient: true,
+  parser: {
+    protocol: 4,
+    types: [
+      'CONNECT',
+      'DISCONNECT',
+      'EVENT',
+      'ACK',
+      'ERROR',
+      'BINARY_EVENT',
+      'BINARY_ACK'
+    ],
+    CONNECT: 0,
+    DISCONNECT: 1,
+    EVENT: 2,
+    ACK: 3,
+    ERROR: 4,
+    BINARY_EVENT: 5,
+    BINARY_ACK: 6,
+    Encoder: [Function: Encoder],
+    Decoder: [Function: Decoder]
+  },
+  encoder: Encoder {},
+  _adapter: [Function: Adapter],
+  _origins: '*:*',
+  sockets: Namespace {
+    name: '/',
+    server: [Circular],
+    sockets: {},
+    connected: {},
+    fns: [],
+    ids: 0,
+    rooms: [],
+    flags: {},
+    adapter: Adapter {
+      nsp: [Circular],
+      rooms: {},
+      sids: {},
+      encoder: Encoder {}
+    },
+    _events: [Object: null prototype] { connection: [Function] },
+    _eventsCount: 1
+  },
+  eio: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  },
+  httpServer: Server {
+    _events: [Object: null prototype] {
+      connection: [Function: connectionListener],
+      close: [Function: bound ],
+      listening: [Function: bound ],
+      upgrade: [Function],
+      request: [Function]
+    },
+    _eventsCount: 5,
+    _maxListeners: undefined,
+    _connections: 0,
+    _handle: TCP {
+      reading: false,
+      onconnection: [Function: onconnection],
+      [Symbol(owner)]: [Circular]
+    },
+    _usingWorkers: false,
+    _workers: [],
+    _unref: false,
+    allowHalfOpen: true,
+    pauseOnConnect: false,
+    httpAllowHalfOpen: false,
+    timeout: 120000,
+    keepAliveTimeout: 5000,
+    maxHeadersCount: null,
+    headersTimeout: 40000,
+    _connectionKey: '4:127.0.0.1:3002',
+    [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+    [Symbol(ServerResponse)]: [Function: ServerResponse],
+    [Symbol(asyncId)]: 7
+  },
+  engine: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  }
+}
+error: restarting script because change changed
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #1
+Requiring Socket IO
+Listening on port 3002...
+Requiring Socket IO too
+Server {
+  nsps: {
+    '/': Namespace {
+      name: '/',
+      server: [Circular],
+      sockets: {},
+      connected: {},
+      fns: [],
+      ids: 0,
+      rooms: [],
+      flags: {},
+      adapter: [Adapter],
+      _events: [Object: null prototype],
+      _eventsCount: 1
+    }
+  },
+  parentNsps: Map {},
+  _path: '/socket.io',
+  _serveClient: true,
+  parser: {
+    protocol: 4,
+    types: [
+      'CONNECT',
+      'DISCONNECT',
+      'EVENT',
+      'ACK',
+      'ERROR',
+      'BINARY_EVENT',
+      'BINARY_ACK'
+    ],
+    CONNECT: 0,
+    DISCONNECT: 1,
+    EVENT: 2,
+    ACK: 3,
+    ERROR: 4,
+    BINARY_EVENT: 5,
+    BINARY_ACK: 6,
+    Encoder: [Function: Encoder],
+    Decoder: [Function: Decoder]
+  },
+  encoder: Encoder {},
+  _adapter: [Function: Adapter],
+  _origins: '*:*',
+  sockets: Namespace {
+    name: '/',
+    server: [Circular],
+    sockets: {},
+    connected: {},
+    fns: [],
+    ids: 0,
+    rooms: [],
+    flags: {},
+    adapter: Adapter {
+      nsp: [Circular],
+      rooms: {},
+      sids: {},
+      encoder: Encoder {}
+    },
+    _events: [Object: null prototype] { connection: [Function] },
+    _eventsCount: 1
+  },
+  eio: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  },
+  httpServer: Server {
+    _events: [Object: null prototype] {
+      connection: [Function: connectionListener],
+      close: [Function: bound ],
+      listening: [Function: bound ],
+      upgrade: [Function],
+      request: [Function]
+    },
+    _eventsCount: 5,
+    _maxListeners: undefined,
+    _connections: 0,
+    _handle: TCP {
+      reading: false,
+      onconnection: [Function: onconnection],
+      [Symbol(owner)]: [Circular]
+    },
+    _usingWorkers: false,
+    _workers: [],
+    _unref: false,
+    allowHalfOpen: true,
+    pauseOnConnect: false,
+    httpAllowHalfOpen: false,
+    timeout: 120000,
+    keepAliveTimeout: 5000,
+    maxHeadersCount: null,
+    headersTimeout: 40000,
+    _connectionKey: '4:127.0.0.1:3002',
+    [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+    [Symbol(ServerResponse)]: [Function: ServerResponse],
+    [Symbol(asyncId)]: 7
+  },
+  engine: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  }
+}
+Inside the session middleware
+1cc224a4-2c50-429d-8b5a-a6e182b53b13
+SESSION ID 8ae07364-c05d-4dcf-a2c2-21db35c13312
+User name = hmughal, password is Dogcat123
+true
+SUccessful login from hmughal
+USERNAME IS hmughal
+USERNAME IS hmughal
+ID IS 8ae07364-c05d-4dcf-a2c2-21db35c13312
+USERNAME IS hmughal
+ID IS 8ae07364-c05d-4dcf-a2c2-21db35c13312
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #2
+Requiring Socket IO
+Listening on port 3002...
+Requiring Socket IO too
+Server {
+  nsps: {
+    '/': Namespace {
+      name: '/',
+      server: [Circular],
+      sockets: {},
+      connected: {},
+      fns: [],
+      ids: 0,
+      rooms: [],
+      flags: {},
+      adapter: [Adapter],
+      _events: [Object: null prototype],
+      _eventsCount: 1
+    }
+  },
+  parentNsps: Map {},
+  _path: '/socket.io',
+  _serveClient: true,
+  parser: {
+    protocol: 4,
+    types: [
+      'CONNECT',
+      'DISCONNECT',
+      'EVENT',
+      'ACK',
+      'ERROR',
+      'BINARY_EVENT',
+      'BINARY_ACK'
+    ],
+    CONNECT: 0,
+    DISCONNECT: 1,
+    EVENT: 2,
+    ACK: 3,
+    ERROR: 4,
+    BINARY_EVENT: 5,
+    BINARY_ACK: 6,
+    Encoder: [Function: Encoder],
+    Decoder: [Function: Decoder]
+  },
+  encoder: Encoder {},
+  _adapter: [Function: Adapter],
+  _origins: '*:*',
+  sockets: Namespace {
+    name: '/',
+    server: [Circular],
+    sockets: {},
+    connected: {},
+    fns: [],
+    ids: 0,
+    rooms: [],
+    flags: {},
+    adapter: Adapter {
+      nsp: [Circular],
+      rooms: {},
+      sids: {},
+      encoder: Encoder {}
+    },
+    _events: [Object: null prototype] { connection: [Function] },
+    _eventsCount: 1
+  },
+  eio: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  },
+  httpServer: Server {
+    _events: [Object: null prototype] {
+      connection: [Function: connectionListener],
+      close: [Function: bound ],
+      listening: [Function: bound ],
+      upgrade: [Function],
+      request: [Function]
+    },
+    _eventsCount: 5,
+    _maxListeners: undefined,
+    _connections: 0,
+    _handle: TCP {
+      reading: false,
+      onconnection: [Function: onconnection],
+      [Symbol(owner)]: [Circular]
+    },
+    _usingWorkers: false,
+    _workers: [],
+    _unref: false,
+    allowHalfOpen: true,
+    pauseOnConnect: false,
+    httpAllowHalfOpen: false,
+    timeout: 120000,
+    keepAliveTimeout: 5000,
+    maxHeadersCount: null,
+    headersTimeout: 40000,
+    _connectionKey: '4:127.0.0.1:3002',
+    [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+    [Symbol(ServerResponse)]: [Function: ServerResponse],
+    [Symbol(asyncId)]: 7
+  },
+  engine: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  }
+}
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #3
+Requiring Socket IO
+Listening on port 3002...
+Requiring Socket IO too
+Server {
+  nsps: {
+    '/': Namespace {
+      name: '/',
+      server: [Circular],
+      sockets: {},
+      connected: {},
+      fns: [],
+      ids: 0,
+      rooms: [],
+      flags: {},
+      adapter: [Adapter],
+      _events: [Object: null prototype],
+      _eventsCount: 1
+    }
+  },
+  parentNsps: Map {},
+  _path: '/socket.io',
+  _serveClient: true,
+  parser: {
+    protocol: 4,
+    types: [
+      'CONNECT',
+      'DISCONNECT',
+      'EVENT',
+      'ACK',
+      'ERROR',
+      'BINARY_EVENT',
+      'BINARY_ACK'
+    ],
+    CONNECT: 0,
+    DISCONNECT: 1,
+    EVENT: 2,
+    ACK: 3,
+    ERROR: 4,
+    BINARY_EVENT: 5,
+    BINARY_ACK: 6,
+    Encoder: [Function: Encoder],
+    Decoder: [Function: Decoder]
+  },
+  encoder: Encoder {},
+  _adapter: [Function: Adapter],
+  _origins: '*:*',
+  sockets: Namespace {
+    name: '/',
+    server: [Circular],
+    sockets: {},
+    connected: {},
+    fns: [],
+    ids: 0,
+    rooms: [],
+    flags: {},
+    adapter: Adapter {
+      nsp: [Circular],
+      rooms: {},
+      sids: {},
+      encoder: Encoder {}
+    },
+    _events: [Object: null prototype] { connection: [Function] },
+    _eventsCount: 1
+  },
+  eio: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  },
+  httpServer: Server {
+    _events: [Object: null prototype] {
+      connection: [Function: connectionListener],
+      close: [Function: bound ],
+      listening: [Function: bound ],
+      upgrade: [Function],
+      request: [Function]
+    },
+    _eventsCount: 5,
+    _maxListeners: undefined,
+    _connections: 0,
+    _handle: TCP {
+      reading: false,
+      onconnection: [Function: onconnection],
+      [Symbol(owner)]: [Circular]
+    },
+    _usingWorkers: false,
+    _workers: [],
+    _unref: false,
+    allowHalfOpen: true,
+    pauseOnConnect: false,
+    httpAllowHalfOpen: false,
+    timeout: 120000,
+    keepAliveTimeout: 5000,
+    maxHeadersCount: null,
+    headersTimeout: 40000,
+    _connectionKey: '4:127.0.0.1:3002',
+    [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+    [Symbol(ServerResponse)]: [Function: ServerResponse],
+    [Symbol(asyncId)]: 7
+  },
+  engine: Server {
+    clients: {},
+    clientsCount: 0,
+    wsEngine: 'ws',
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 100000000,
+    transports: [ 'polling', 'websocket' ],
+    allowUpgrades: true,
+    allowRequest: [Function: bound ],
+    cookie: 'io',
+    cookiePath: '/',
+    cookieHttpOnly: true,
+    perMessageDeflate: { threshold: 1024 },
+    httpCompression: { threshold: 1024 },
+    initialPacket: [ '0' ],
+    ws: WebSocketServer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      options: [Object]
+    },
+    _events: [Object: null prototype] { connection: [Function: bound ] },
+    _eventsCount: 1
+  }
+}
+Inside the session middleware
+undefined
+SESSION ID c324922a-5f79-4185-881b-db74641b7afe
+User name = abcde, password is 123456Ab
+true
+SUccessful login from abcde
+USERNAME IS abcde
+USERNAME IS abcde
+ID IS c324922a-5f79-4185-881b-db74641b7afe
+USERNAME IS abcde
+Session was [object Object]
+Destroyed session cookie undefined
+Inside the session middleware
+c324922a-5f79-4185-881b-db74641b7afe
