@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
-let https = require("https");
+//let https = require("https");
 let app = express();
 let router = express.Router();
 //ALL routes are imported
@@ -109,15 +109,21 @@ app.get("*", function(req, res){
 });
 
 console.info("Requiring Socket IO");
+console.info(app);
+
 var server = require('http').createServer(app);
-var io = require("socket.io").listen(server);
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
 
 // port for express server
 server.listen(3002, "localhost", function () {
   console.info("Listening on port 3002...");
   console.info("Requiring Socket IO too");
-  console.log(io);
+  //console.log(io);
+  var io = require("socket.io").listen(server);
+  console.info("Requiring Socket IO success");
+  io.on('connection', function(socket){
+   console.log('a user connected');
+   socket.on("client-login", function(username) {
+     console.info("Client Login From " + username);
+   });
+  });
 });

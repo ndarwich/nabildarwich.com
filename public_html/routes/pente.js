@@ -3,8 +3,8 @@ const crypto = require("crypto");
 const path = require("path");
 const router = express.Router();
 const fs = require("fs");
-var server = require("http").createServer(app);
-var io = require("socket.io")(server);
+//var server = require("http").createServer(app);
+//var io = require("socket.io")(server);
 
 //server.listen(3045, "149.28.62.78");
 
@@ -46,7 +46,7 @@ var registered_users = JSON.parse(users);
     registered_users[user] = users[user];
   }
 }); */
-
+/*
 io.on("connection", function(clientSocket) {
       //the socket needs to have the client's username in all subsequent interactions
       clientSocket.on("client-login", function(username) {
@@ -130,7 +130,7 @@ io.on("connection", function(clientSocket) {
 io.on("disconnect", function(clientSocket) {
     console.log("Player Disconnected");
   });
-
+*/
 //pente router
 router.get("/", (req, res) => {
    res.cookie("cart", "test", {maxAge: 900000, httpOnly: true});
