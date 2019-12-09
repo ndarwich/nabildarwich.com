@@ -16,6 +16,7 @@ let pente = require("./routes/pente");
 //all the files under public are static
 
 
+
 //dictionary to hold the active games to the players that are in them (max 2 players)
 let activeGamesToPlayers = { };
 //dictionary to hold players to active games they"re in (no max)
@@ -23,6 +24,7 @@ let playersToActiveGames = { };
 
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -120,7 +122,9 @@ console.info(app);
 var server = require('http').createServer(app);
 
 // port for express server
+var pente2 = require('./routes/pente.js');
 server.listen(3002, "localhost", function () {
+
   console.info("Listening on port 3002...");
   console.info("Requiring Socket IO too");
   //console.log(io);
@@ -210,6 +214,8 @@ server.listen(3002, "localhost", function () {
             activeGamesToPlayers[gameId]["game"].isDone = true;
             activeGamesToPlayers[gameId]["game"].winner = activeGamesToPlayers[gameId][otherColor];
             //the timer is freed
+            pente.completedGamesMoveList[socket.gameId] =   activeGamesToPlayers[gameId]["game"]["moveHistory"];
+
             clearInterval(timer);
           }
         }, 1000);
@@ -258,6 +264,7 @@ server.listen(3002, "localhost", function () {
      activeGamesToPlayers[gameId]["game"].winner = activeGamesToPlayers[gameId][otherColor];
      io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor] + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
       + activeGamesToPlayers[gameId][otherColor] + " wins!!");
+      pente.completedGamesMoveList[socket.gameId] =   activeGamesToPlayers[gameId]["game"]["moveHistory"];
    }
  });
  /**
@@ -363,6 +370,16 @@ server.listen(3002, "localhost", function () {
        activeGamesToPlayers[gameId]["game"].isDone = true;
        activeGamesToPlayers[gameId]["game"].winner = socket.clientUsername;
        io.to(gameId).emit("game-over", color + " won with " + maxInARow + " in a row!\nCongratulations " + color + "!!");
+       pente.registered_users[socket.clientUsername]["wins"] += 1;
+       pente.gamestoPlayer[gameId] = [];
+       pente.gamestoPlayer[gameId].push(socket.clientUsername);
+       for (var user in playersToActiveGames){
+         if (gameId in playersToActiveGames[user]){ // find the other user who was in the game
+            pente.registered_users[user]["losses"] += 1;
+            pente.gamestoPlayer[gameId].push(user);
+            break;
+         }
+       }
      }
    }
  }
@@ -418,4 +435,5 @@ server.listen(3002, "localhost", function () {
   app.io = io;
   app.activeGamesToPlayers = activeGamesToPlayers;
   app.playersToActiveGames = playersToActiveGames;
+//  console.log(pente.registered_users);
 });

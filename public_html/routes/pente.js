@@ -29,6 +29,8 @@ let databaseFilePath = path.join(__dirname, "../database/database.json");
 var users = fs.readFileSync(databaseFilePath);
 var registered_users = JSON.parse(users);
 
+let completedGamesMoveList = { };
+let gamestoPlayer = { };
 /* fs.readFile(databaseFilePath, "utf8", (err, jsonString) => {
   if (err) {
       console.log("File read failed probably because it does not exit...yet", err)
@@ -150,6 +152,24 @@ router.get("/leaderboards", (req, res) => {
   res.sendFile("/leaderboards.html", { root: __dirname + "/../public/pages/pente" });
 });
 
+router.get("/gamemovehistory", (req, res) => {
+  if (req.session.username == undefined){
+    console.log("User has no active session");
+    return res.redirect("/pente");
+  }
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/gamemovehistory.html", { root: __dirname + "/../public/pages/pente" });
+});
+
+router.get("/history", (req, res) => {
+  if (req.session.username == undefined){
+    console.log("User has no active session");
+    return res.redirect("/pente");
+  }
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/history.html", { root: __dirname + "/../public/pages/pente" });
+});
+
 router.post("/getTable", function(req, res) {
   let result = "<table style='width:100%'>";
   result+="<th>Username</th>";
@@ -160,6 +180,46 @@ router.post("/getTable", function(req, res) {
 
   result += "</table>";
 
+  res.send(result);
+});
+
+router.post("/getGamesTable", function(req, res) {
+  let result = "<table style='width:100%'>";
+  result+="<th>Past Completed Games</th>";
+//  completedGamesMoveList["3"] = "test";
+//  gamestoPlayer[3] = [];
+//  gamestoPlayer[3].push("sa");
+//  gamestoPlayer[3].push("ssas");
+  console.log(gamestoPlayer);
+  let games = []
+  for (gameid in completedGamesMoveList){
+  //  result += "<tr><td>" + "<a href=/pente/game?gameId=" + gameid + ">AAAAA</a>TEST</td></tr>";
+    result += "<tr><td>" +  "<div class=pente-button id=pente-movehistory-btn><a href=/pente/history?gameId=" + gameid + ">" + gamestoPlayer[gameid][0] + " vs " + gamestoPlayer[gameid][1] + "</a></div>" + "</td></tr>";
+  //  games.push(gameid);
+//  <div class="pente-button" id="pente-movehistory-btn"><a href="/pente/gamemovehistory">MOVE HISTORY</a></div>
+  }
+  //<a href="/pente/gamemovehistory">MOVE HISTORY</a>
+
+  result += "</table>";
+//window.location.href = "/pente/game?gameId=" + gameId;
+  res.send(result);
+});
+
+router.post("/getGameHistory", function(req, res) {
+  let result = "<table style='width:100%'>";
+//  completedGamesMoveList[3] = [];
+//  completedGamesMoveList[3].push({row: 5, column: 3, player: "hmughal", color: "WHITE"});
+//  completedGamesMoveList[3].push({row: 5, column: 3, player: "hmughal", color: "WHITE"});
+  console.log("AAAA");
+  let movesList = completedGamesMoveList[req.body.gameId];
+//  console.log(movesList);
+//  console.log(movesList[0]);
+//  console.log(movesList[1]);
+  for (move in movesList){
+  //  console.log(movesList[move]["row"]);
+    result += "<tr><td>"  + movesList[move]["player"] + " placed a piece at row " + movesList[move]["row"] + ", column " + movesList[move]["column"] +  "</td></tr>";
+  }
+  result += "</table>";
   res.send(result);
 });
 
@@ -296,4 +356,8 @@ let genRandomString = function(length){
             .slice(0, length);
 };
 
+
 module.exports = router;
+module.exports.registered_users = registered_users;
+module.exports.completedGamesMoveList = completedGamesMoveList;
+module.exports.gamestoPlayer = gamestoPlayer;
