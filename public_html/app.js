@@ -169,6 +169,7 @@ server.listen(3002, "localhost", function () {
        playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername] ? playersToActiveGames[socket.clientUsername].push(gameId) : [gameId];
        socket.join(gameId);
        socket.gameId = gameId;
+       socket.emit("setPlayerTurn", "BLACK"); // emit only to the sender
        /////////////////////////START THE GAME/////////////////////////////
        console.info("Game Id Started: " + socket.gameId);
        activeGamesToPlayers[gameId]["started"] = true;
@@ -232,7 +233,8 @@ server.listen(3002, "localhost", function () {
        //update internals
       activeGamesToPlayers[gameId]["game"]["currentTurn"] == opposingTurn;
      //emit this move to the other sockets in the room
-     io.to(socket.gameId).emit("piece-played", moveLocation);
+    // io.to(socket.gameId).emit("piece-played", moveLocation);
+    io.to(socket.gameId).emit("piece-played", {row: moveLocation.row, column: moveLocation.column, player: currentTurn});
    } else {
      console.log("Illegal Move");
      io.to(socket.gameId).emit("player-cheated", socket.clientUsername + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "

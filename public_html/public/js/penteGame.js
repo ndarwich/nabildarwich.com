@@ -75,10 +75,10 @@ var loadPenteGame = (gameId, gameInfo) => {
     var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.column));
     penteGame.flipColor(piece);
     piece.addClass("color");
-    piece.addClass(penteGame.currentTurn); //readd the current color just in case
+    piece.addClass(pieceplayed.player); //readd the current color just in case
     piece.removeClass("shadow");
     piece.removeClass("available");
-    piece.data("state", penteGame.currentTurn); //update the piece state
+    piece.data("state", pieceplayed.player); //update the piece state
     if (! penteGame.isDone) {
       penteGame.currentTurn = penteGame.currentTurn == "WHITE" ? "BLACK" : "WHITE";
       penteGame.playerTurn();
@@ -93,6 +93,12 @@ var loadPenteGame = (gameId, gameInfo) => {
   socket.on("clearPiece", function(piece) {
     var piece = $(penteGame.getPiece(piece.row, piece.col));
     penteGame.flipColor(piece);
+  });
+
+  socket.on("setPlayerTurn", function(color) {
+    penteGame.currentTurn = color;
+  //  var piece = $(penteGame.getPiece(piece.row, piece.col));
+  //  penteGame.flipColor(piece);
   });
 
   //initialize socket related functions
@@ -196,11 +202,11 @@ class PenteGame {
       }
       //place a piece; remove the available and shadow classes
       let piece = $(event.target);
-      piece.addClass("color");
-      piece.addClass(game.currentTurn); //readd the current color just in case
-      piece.removeClass("shadow");
-      piece.removeClass("available");
-      piece.data("state", game.currentTurn); //update the piece state
+//      piece.addClass("color");
+//      piece.addClass(game.currentTurn); //readd the current color just in case
+//      piece.removeClass("shadow");
+//      piece.removeClass("available");
+//      piece.data("state", game.currentTurn); //update the piece state
       this.pieceMoved(piece);
       //apply Othello game logic
       game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
