@@ -182,7 +182,8 @@ server.listen(3002, "localhost", function () {
          playerTurn : () => {},
          pieceMoved : (piece) => {},
          pieceCleared : (piece) => {},
-         board: []
+         board: [],
+         moveHistory: []
        };
        //as the game started, initialize the game board
        var board = []
@@ -206,6 +207,8 @@ server.listen(3002, "localhost", function () {
             var otherColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
             io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor]
               + " ran out of time. " + activeGamesToPlayers[gameId][otherColor] + " wins!");
+            activeGamesToPlayers[gameId]["game"].isDone = true;
+            activeGamesToPlayers[gameId]["game"].winner = activeGamesToPlayers[gameId][otherColor];
             //the timer is freed
             clearInterval(timer);
           }
@@ -245,10 +248,14 @@ server.listen(3002, "localhost", function () {
        //update internals
        activeGamesToPlayers[gameId]["game"]["currentTurn"] = otherColor;
        activeGamesToPlayers[gameId]["game"]["timeLeft"] = 60; //reset the timer
+       activeGamesToPlayers[gameId]["game"]["moveHistory"].push({row: moveLocation.row, column: moveLocation.column, player: socket.clientUsername, color: pieceCharacter});
        //emit this move to the other sockets in the room
        io.to(socket.gameId).emit("piece-played", moveLocation);
+       io.to(socket.gameId).emit("move-history", activeGamesToPlayers[gameId]["game"]["moveHistory"]);
    } else {
      console.log("Illegal Move");
+     activeGamesToPlayers[gameId]["game"].isDone = true;
+     activeGamesToPlayers[gameId]["game"].winner = activeGamesToPlayers[gameId][otherColor];
      io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor] + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
       + activeGamesToPlayers[gameId][otherColor] + " wins!!");
    }
@@ -353,7 +360,8 @@ server.listen(3002, "localhost", function () {
      let diagonalTwoPieces = 1 + northWest + southEast;
      let maxInARow = Math.max(horizontalPieces, verticalPieces, diagonalOnePieces, diagonalTwoPieces);
      if (maxInARow >= 5) {
-       isDone = true;
+       activeGamesToPlayers[gameId]["game"].isDone = true;
+       activeGamesToPlayers[gameId]["game"].winner = socket.clientUsername;
        io.to(gameId).emit("game-over", color + " won with " + maxInARow + " in a row!\nCongratulations " + color + "!!");
      }
    }

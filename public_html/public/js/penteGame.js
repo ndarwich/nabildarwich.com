@@ -93,6 +93,11 @@ var loadPenteGame = (gameId, gameInfo, username) => {
     }
   });
 
+  //move history
+  socket.on("move-history", function(moveHistory) {
+    console.info(moveHistory);
+  });
+
   //the timer
   socket.on("tik-tok", function(timeLeft) {
     if (timeLeft == 60) {
