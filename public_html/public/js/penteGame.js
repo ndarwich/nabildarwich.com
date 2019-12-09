@@ -103,7 +103,7 @@ var loadPenteGame = (gameId, gameInfo) => {
 
   //initialize socket related functions
   penteGame.pieceMoved = function(piece) {
-    socket.emit("piece-moved", {row: piece.data("row"), column: piece.data("column") });
+    socket.emit("piece-moved", {row: piece.data("row"), column: piece.data("column"), turn: penteGame.currentTurn });
   }
   penteGame.pieceCleared = function(piece) {
     socket.emit("clearpiece", [piece.data("row"), piece.data("column")]);
