@@ -195,10 +195,20 @@ server.listen(3002, "localhost", function () {
        }
        activeGamesToPlayers[gameId]["game"]["board"] = board;
        //also initialize the timer and update it every second
-       setInterval(function() {
+       var timer = setInterval(function() {
           //decrement the timer and emit the new time to both players
           activeGamesToPlayers[gameId]["game"]["timeLeft"] -= 1;
           io.to(gameId).emit("tik-tok", activeGamesToPlayers[gameId]["game"]["timeLeft"]);
+          //if time ran out
+          if (activeGamesToPlayers[gameId]["game"]["timeLeft"] <= 0) {
+            //the current player loses and the opposing player wins
+            var currentColor = activeGamesToPlayers[gameId]["game"]["currentTurn"];
+            var otherColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
+            io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor]
+              + " ran out of time. " + activeGamesToPlayers[gameId][otherColor] + " wins!");
+            //the timer is freed
+            clearInterval(timer);
+          }
         }, 1000);
         /////////////////////////FINISH START GAME/////////////////////////////
      }
@@ -219,25 +229,26 @@ server.listen(3002, "localhost", function () {
    //check if the movement is legal, if it's not,this is cheating
    console.log(socket.gameId);
    console.log(moveLocation);
-   var currentTurn = activeGamesToPlayers[gameId]["game"].currentTurn;
-   console.info(currentTurn);
-   var opposingTurn = currentTurn == "WHITE" ? "BLACK" : "WHITE";
-   var pieceCharacter = currentTurn == "WHITE" ? 'W' : 'B';
+   var currentColor = activeGamesToPlayers[gameId]["game"].currentTurn;
+   console.info(currentColor);
+   var otherColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
+   var pieceCharacter = currentColor == "WHITE" ? 'W' : 'B';
    //a player has to place a piece in the bounds, it's the player's turn, and it should not be already occupied
    if (moveLocation.row >= 0 && moveLocation.row < activeGamesToPlayers[gameId]["game"].NUM_ROWS
      && moveLocation.column >= 0 && moveLocation.column < activeGamesToPlayers[gameId]["game"].NUM_COLS
-     && socket.clientUsername == activeGamesToPlayers[gameId][currentTurn]
+     && socket.clientUsername == activeGamesToPlayers[gameId][currentColor]
      && activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] == 'A') {
        //apply move logic
        activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] = pieceCharacter;
+       activeGamesToPlayers[gameId]["game"]["board"]["timeLeft"] = 60; //reset the timer
        //update internals
-       activeGamesToPlayers[gameId]["game"]["currentTurn"] = opposingTurn;
+       activeGamesToPlayers[gameId]["game"]["currentTurn"] = otherColor;
        //emit this move to the other sockets in the room
        io.to(socket.gameId).emit("piece-played", moveLocation);
    } else {
      console.log("Illegal Move");
-     io.to(socket.gameId).emit("player-cheated", socket.clientUsername + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
-      + activeGamesToPlayers[gameId][opposingTurn] + " wins!!");
+     io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor] + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
+      + activeGamesToPlayers[gameId][otherColor] + " wins!!");
    }
  });
  socket.on("clearpiece", function (data) {

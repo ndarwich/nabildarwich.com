@@ -76,6 +76,7 @@ var loadPenteGame = (gameId, gameInfo, username) => {
   }
   penteGame.playerTurn();
   ///////////////////////SOCKET LOGIC//////////////////////////////
+  //a piece was played
   socket.on("piece-played", function(pieceLocation) {
     var piece = $(penteGame.getPiece(pieceLocation.row, pieceLocation.column));
     penteGame.flipColor(piece);
@@ -92,7 +93,19 @@ var loadPenteGame = (gameId, gameInfo, username) => {
     }
   });
 
-  socket.on("player-cheated", function(message) {
+  //the timer
+  socket.on("tik-tok", function(timeLeft) {
+    if (timeLeft == 60) {
+      $("#timer").text("1:00");
+    } else if (timeLeft < 10) {
+      $("#timer").text("0:0" + timeLeft);
+    } else {
+      $("#timer").text("0:" + timeLeft);
+    }
+  });
+
+  //when the game is done, emit the message that was sent by the server
+  socket.on("game-over", function(message) {
     alert(message);
     penteGame.isDone = true;
   });
