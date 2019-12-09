@@ -79,7 +79,7 @@ var loadPenteGame = (gameId, gameInfo, username) => {
   //a piece was played
   socket.on("piece-played", function(pieceLocation) {
     var piece = $(penteGame.getPiece(pieceLocation.row, pieceLocation.column));
-    penteGame.flipColor(piece);
+    penteGame.clearPiece(piece);
     piece.addClass("color");
     piece.addClass(penteGame.currentTurn); //readd the current color just in case
     piece.removeClass("shadow");
@@ -110,9 +110,11 @@ var loadPenteGame = (gameId, gameInfo, username) => {
     penteGame.isDone = true;
   });
 
-  socket.on("clearPiece", function(piece) {
-    var piece = $(penteGame.getPiece(piece.row, piece.col));
-    penteGame.flipColor(piece);
+  //when a piece should be cleared from the game
+  socket.on("piece-cleared", function(piece) {
+    console.info("Piece Cleared")
+    var piece = $(penteGame.getPiece(piece.row, piece.column));
+    penteGame.clearPiece(piece);
   });
 
   //initialize socket related functions
@@ -227,117 +229,17 @@ class PenteGame {
   /**
    * Helper function to flip an existing piece's color
    */
-  flipColor(existingPiece) {
+  clearPiece(existingPiece) {
     let currentColor = existingPiece.data("state");
     if (currentColor != "WHITE" && currentColor != "BLACK") {
       return;
     }
-    let newColor = "available";
-    existingPiece.data("state", newColor);
+    let cleared = "available";
+    existingPiece.data("state", cleared);
     existingPiece.removeClass(currentColor);
     existingPiece.removeClass("color");
-    existingPiece.addClass(newColor);
+    existingPiece.addClass(cleared);
     existingPiece.addClass("shadow");
-  }
-
-  /**
-   * Helper function to flip other piece's colors in a spectific direction;
-   */
-  flipColorsInDirection(row, col, color, xOffset, yOffset) {
-    let multiplier = 1;
-    let numOppositePieces = 0;
-    //traverse until we are out of bounds/the stopping conditions are met
-    while (row + yOffset*multiplier >= 0 && row + yOffset*multiplier < this.NUM_ROWS &&
-           col + xOffset*multiplier >= 0 && col + xOffset*multiplier < this.NUM_COLS) {
-      let existingPiece = $(this.getPiece(row + yOffset*multiplier, col + xOffset*multiplier));
-      if ($(existingPiece).hasClass("available") || $(existingPiece).hasClass(color)) {
-        if (numOppositePieces == 2 && $(existingPiece).hasClass(color)) {
-          //these are the pieces in between
-          let piece1 = $(this.getPiece(row + yOffset*1, col + xOffset*1));
-          let piece2 = $(this.getPiece(row + yOffset*2, col + xOffset*2));
-          this.pieceCleared(piece1);
-          this.pieceCleared(piece2);
-          this.flipColor(piece1);
-          this.flipColor(piece2);
-        }
-        return;
-      }
-      numOppositePieces++;
-      //do not flip colors if more than 2 opposite pieces are in between
-      if (numOppositePieces > 2) {
-        return;
-      }
-      //increment the multiplier
-      multiplier++;
-    }
-  }
-
-  /**
-   * Helper function to traverse a board, backtracking if the condition for flipping is met.
-   */
-  traverseBoard(row, col, color, xOffset, yOffset, flip) {
-    //when it comes to stopping the traversal, either a piece has to be empty or the same colorif we're flipping
-    //or be either empty or a different color if we're checking for a winner
-    let additionalStoppingCondition = flip ? color : color == "WHITE" ? "BLACK" : "WHITE";
-    let multiplier = 1;
-    let piecesInARow = 0; //the number of pieces in a row is initially 1 + traversed pieces
-    //traverse until we are out of bounds/the stopping conditions are met
-    while (row + yOffset*multiplier >= 0 && row + yOffset*multiplier < this.NUM_ROWS &&
-           col + xOffset*multiplier >= 0 && col + xOffset*multiplier < this.NUM_COLS) {
-      let existingPiece = $(this.getPiece(row + yOffset*multiplier, col + xOffset*multiplier));
-      if ($(existingPiece).hasClass("available") || $(existingPiece).hasClass(additionalStoppingCondition)) {
-        //OTHELLO: flip colors only if the same color on the other end
-        if (flip && $(existingPiece).hasClass(additionalStoppingCondition)) {
-          this.flipColorsInDirection(row, col, color, xOffset, yOffset)
-        }
-         break;
-      }
-      //increment the multiplier and piecesInARow
-      piecesInARow++;
-      multiplier++;
-    }
-    return piecesInARow;
-  }
-
-  /**
-   * Helper function to traverse a board in all directions
-   */
-  traverseAllDirections(row, col, color, flip) {
-    let east = this.traverseBoard(row, col, color, 1, 0, flip); //to the east
-    let north = this.traverseBoard(row, col, color, 0, 1, flip); //to the north
-    let west = this.traverseBoard(row, col, color, -1, 0, flip); //to the west
-    let south = this.traverseBoard(row, col, color, 0, -1, flip); //to the south
-    let northEast = this.traverseBoard(row, col, color, 1, 1, flip); //to the northeast
-    let northWest = this.traverseBoard(row, col, color, -1, 1, flip); //to the northwest
-    let southEast = this.traverseBoard(row, col, color, 1, -1, flip); //to the southeast
-    let southWest = this.traverseBoard(row, col, color, -1, -1, flip); //to the southwest
-    //if checking for winning
-    if (!flip) {
-      //1 is added to include the current piece
-      let horizontalPieces = 1 + east + west;
-      let verticalPieces = 1 + north + south;
-      let diagonalOnePieces = 1 + northEast + southWest;
-      let diagonalTwoPieces = 1 + northWest + southEast;
-      let maxInARow = Math.max(horizontalPieces, verticalPieces, diagonalOnePieces, diagonalTwoPieces);
-      if (maxInARow >= 5) {
-        this.isDone = true;
-        alert(color + " won with " + maxInARow + " in a row!\nCongratulations " + color + "!!");
-      }
-    }
-  }
-
-  /**
-   * Pente Logic to check if opponent pieces can be removed from board.
-   */
-  checkColorsToFlip(row, column, color) {
-    this.traverseAllDirections(row, column, color, true);
-  }
-
-  /**
-   * Game logic to end when 5 in a row is met.
-   */
-  checkIfWin(row, column, color) {
-    this.traverseAllDirections(row, column, color, false);
   }
 
   /**

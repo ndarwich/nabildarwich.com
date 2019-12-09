@@ -240,9 +240,11 @@ server.listen(3002, "localhost", function () {
      && activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] == 'A') {
        //apply move logic
        activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] = pieceCharacter;
-       activeGamesToPlayers[gameId]["game"]["board"]["timeLeft"] = 60; //reset the timer
+       checkColorsToClear(socket, moveLocation.row, moveLocation.column, pieceCharacter);
+       checkIfWin(socket, moveLocation.row, moveLocation.column, pieceCharacter);
        //update internals
        activeGamesToPlayers[gameId]["game"]["currentTurn"] = otherColor;
+       activeGamesToPlayers[gameId]["game"]["timeLeft"] = 60; //reset the timer
        //emit this move to the other sockets in the room
        io.to(socket.gameId).emit("piece-played", moveLocation);
    } else {
@@ -251,9 +253,123 @@ server.listen(3002, "localhost", function () {
       + activeGamesToPlayers[gameId][otherColor] + " wins!!");
    }
  });
- socket.on("clearpiece", function (data) {
-     io.to(socket.gameId).emit("clearPiece", {row: data[0], col:data[1]});
- });
+ /**
+  * Helper function to clear other piece's colors in a spectific direction;
+  */
+ let clearPiecesInDirection = (socket, row, col, color, xOffset, yOffset) => {
+   if (socket == null) {
+     console.log("Clear Pieces No Socket");
+     return;
+   }
+   let gameId = socket.gameId;
+   if (gameId == null || activeGamesToPlayers[gameId] == null || activeGamesToPlayers[gameId]["game"] == null || activeGamesToPlayers[gameId]["game"]["board"] == null) {
+     console.log("clear pieces error")
+     return;
+   }
+   let board = activeGamesToPlayers[gameId]["game"]["board"];
+   let multiplier = 1;
+   let numOppositePieces = 0;
+   //traverse until we are out of bounds/the stopping conditions are met
+   while (row + yOffset*multiplier >= 0 && row + yOffset*multiplier < 19 &&
+          col + xOffset*multiplier >= 0 && col + xOffset*multiplier < 19) {
+     let existingPiece = board[row + yOffset*multiplier][col + xOffset*multiplier];
+     if (existingPiece == 'A' || existingPiece == color) {
+       if (numOppositePieces == 2 && existingPiece == color) {
+         //clear the pieces in between
+         activeGamesToPlayers[gameId]["game"]["board"][row + yOffset*1][col + xOffset*1] = 'A';
+         activeGamesToPlayers[gameId]["game"]["board"][row + yOffset*2][col + xOffset*2] = 'A';
+         console.info("Pieces Cleared");
+         //in the client as well
+         io.to(gameId).emit("piece-cleared", {row: row + yOffset*1, column: col + xOffset*1});
+         io.to(gameId).emit("piece-cleared", {row: row + yOffset*2, column: col + xOffset*2})
+       }
+       return;
+     }
+     numOppositePieces++;
+     //do not clear colors if more than 2 opposite pieces are in between
+     if (numOppositePieces > 2) {
+       return;
+     }
+     //increment the multiplier
+     multiplier++;
+   }
+ }
+ /**
+  * Helper function to traverse a board, backtracking if the condition for clearping is met.
+  */
+ let traverseBoard = (socket, row, col, color, xOffset, yOffset, clear) => {
+   if (socket == null) {
+     console.log("Traverse Board No Socket");
+     return;
+   }
+   let gameId = socket.gameId;
+   if (gameId == null || activeGamesToPlayers[gameId] == null || activeGamesToPlayers[gameId]["game"] == null || activeGamesToPlayers[gameId]["game"]["board"] == null) {
+     console.log("traverse board error")
+     return;
+   }
+   let board = activeGamesToPlayers[gameId]["game"]["board"];
+   //when it comes to stopping the traversal, either a piece has to be empty or the same colorif we're clearing
+   //or be either empty or a different color if we're checking for a winner
+   let additionalStoppingCondition = clear ? color : color == 'W' ? 'B' : 'W';
+   let multiplier = 1;
+   let piecesInARow = 0; //the number of pieces in a row is initially 1 + traversed pieces
+   //traverse until we are out of bounds/the stopping conditions are met
+   while (row + yOffset*multiplier >= 0 && row + yOffset*multiplier < 19 &&
+          col + xOffset*multiplier >= 0 && col + xOffset*multiplier < 19) {
+     let existingPiece = board[row + yOffset*multiplier][col + xOffset*multiplier];
+     if (existingPiece == 'A' || existingPiece == additionalStoppingCondition) {
+       //OTHELLO: clear colors only if the same color on the other end
+       if (clear && existingPiece == additionalStoppingCondition) {
+         clearPiecesInDirection(socket, row, col, color, xOffset, yOffset)
+       }
+        break;
+     }
+     //increment the multiplier and piecesInARow
+     piecesInARow++;
+     multiplier++;
+   }
+   return piecesInARow;
+ }
+ /**
+  * Helper function to traverse a board in all directions
+  */
+ let traverseAllDirections = (socket, row, col, color, clear) => {
+   let gameId = socket.gameId;
+   let board = activeGamesToPlayers[gameId]["game"]["board"];
+   let east = traverseBoard(socket, row, col, color, 1, 0, clear); //to the east
+   let north = traverseBoard(socket, row, col, color, 0, 1, clear); //to the north
+   let west = traverseBoard(socket, row, col, color, -1, 0, clear); //to the west
+   let south = traverseBoard(socket, row, col, color, 0, -1, clear); //to the south
+   let northEast = traverseBoard(socket, row, col, color, 1, 1, clear); //to the northeast
+   let northWest = traverseBoard(socket, row, col, color, -1, 1, clear); //to the northwest
+   let southEast = traverseBoard(socket, row, col, color, 1, -1, clear); //to the southeast
+   let southWest = traverseBoard(socket, row, col, color, -1, -1, clear); //to the southwest
+   //if checking for winning
+   if (!clear) {
+     //1 is added to include the current piece
+     let horizontalPieces = 1 + east + west;
+     let verticalPieces = 1 + north + south;
+     let diagonalOnePieces = 1 + northEast + southWest;
+     let diagonalTwoPieces = 1 + northWest + southEast;
+     let maxInARow = Math.max(horizontalPieces, verticalPieces, diagonalOnePieces, diagonalTwoPieces);
+     if (maxInARow >= 5) {
+       isDone = true;
+       io.to(gameId).emit("game-over", color + " won with " + maxInARow + " in a row!\nCongratulations " + color + "!!");
+     }
+   }
+ }
+ /**
+  * Pente Logic to check if opponent pieces can be removed from board.
+  */
+ let checkColorsToClear = (socket, row, column, color) => {
+   traverseAllDirections(socket, row, column, color, true);
+ }
+ /**
+  * Game logic to end when 5 in a row is met.
+  */
+ let checkIfWin = (socket, row, column, color) => {
+   traverseAllDirections(socket, row, column, color, false);
+ }
  ////////////////////////////////END PENTE GAME LOGIC/////////////////////////
 
  //when a player exits out of a game
