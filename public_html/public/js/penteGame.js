@@ -26,9 +26,9 @@ $(window).on("load", function() {
   var creatingGame = true;
 
   //request our pente username
-  $.get("/pente/getPenteUsername", function(data, status) {
+  $.get("/pente/getPenteUsername", function(username, status) {
     //register the socket with the client username
-    socket.emit("client-login", data); //link socket io and our username
+    socket.emit("client-login", username); //link socket io and our username
     let queryObjects = getQueryObjects();
     //IN THE CASE OF CREATING A NEW GAME without any query params
     if (queryObjects.gameId == null || queryObjects.gameId == {}) { //if there are no query objects, this is a new game
@@ -50,7 +50,7 @@ $(window).on("load", function() {
     socket.on("game-started", function(gameInfo) {
       $("#pente-game-placeholder").text("");
       //we can start the game!
-      loadPenteGame(queryObjects.gameId, gameInfo);
+      loadPenteGame(queryObjects.gameId, gameInfo, username);
     });
   });
   /////////////////END PENTE GAME LOADING LOGIC///////////////////
@@ -61,26 +61,33 @@ $(window).on("load", function() {
   });
 });
 
-var loadPenteGame = (gameId, gameInfo) => {
+var loadPenteGame = (gameId, gameInfo, username) => {
   console.info("Game ID: " + gameId);
   //////////////////////PENTE GAME LOADING LOGIC///////////////////
-  const penteGame = new PenteGame(); //create a new pente game
+  let penteGame = new PenteGame(); //create a new pente game
+  //store our color to only play when it's our turn for the client
+  penteGame.myColor = gameInfo["WHITE"] == username ? "WHITE" : "BLACK";
+  penteGame.gameInfo = gameInfo;
   //indicate whose player"s turn it is using their username
   penteGame.playerTurn = () => {
-    $("#pente-player-move").text("" + gameInfo[penteGame.currentTurn] + "'s move...");
+    var moveText = penteGame.currentTurn == penteGame.myColor ?
+      "Your move..." : gameInfo[penteGame.currentTurn] + "'s move...";
+    $("#pente-player-move").text(moveText);
   }
   penteGame.playerTurn();
   ///////////////////////SOCKET LOGIC//////////////////////////////
-  socket.on("piece-played", function(pieceplayed) {
-    var piece = $(penteGame.getPiece(pieceplayed.row, pieceplayed.column));
+  socket.on("piece-played", function(pieceLocation) {
+    var piece = $(penteGame.getPiece(pieceLocation.row, pieceLocation.column));
     penteGame.flipColor(piece);
     piece.addClass("color");
-    piece.addClass(pieceplayed.player); //readd the current color just in case
+    piece.addClass(penteGame.currentTurn); //readd the current color just in case
     piece.removeClass("shadow");
     piece.removeClass("available");
-    piece.data("state", pieceplayed.player); //update the piece state
+    piece.data("state", penteGame.currentTurn); //update the piece state
     if (! penteGame.isDone) {
+      //flip whose turn it is
       penteGame.currentTurn = penteGame.currentTurn == "WHITE" ? "BLACK" : "WHITE";
+      //display the correct name's turn
       penteGame.playerTurn();
     }
   });
@@ -95,19 +102,17 @@ var loadPenteGame = (gameId, gameInfo) => {
     penteGame.flipColor(piece);
   });
 
-  socket.on("setPlayerTurn", function(color) {
-    penteGame.currentTurn = color;
-  //  var piece = $(penteGame.getPiece(piece.row, piece.col));
-  //  penteGame.flipColor(piece);
-  });
-
   //initialize socket related functions
   penteGame.pieceMoved = function(piece) {
-    socket.emit("piece-moved", {row: piece.data("row"), column: piece.data("column"), turn: penteGame.currentTurn });
+    console.info("Emitted piece-moved");
+    //client side checking of whose turn it is before moving a piece (redone on server side)
+    if (penteGame.currentTurn == penteGame.myColor) {
+      socket.emit("piece-moved", {row: piece.data("row"), column: piece.data("column") });
+    } else {
+      alert("It's currently " + gameInfo[penteGame.currentTurn] + "'s move");
+    }
   }
-  penteGame.pieceCleared = function(piece) {
-    socket.emit("clearpiece", [piece.data("row"), piece.data("column")]);
-  }
+
   //play again button click
   $("body").on("click", "#play-again-btn", (e) => {
     e.preventDefault(); //don"t scroll up
@@ -130,6 +135,8 @@ class PenteGame {
     this.playerTurn = () => {};
     this.pieceMoved = (piece) => {};
     this.pieceCleared = (piece) => {};
+    this.gameInfo = {};
+    this.myColor = "";
     this.initializeGame();
     this.listenToInputs();
   }
@@ -156,7 +163,7 @@ class PenteGame {
       }
       board.append(newRow);
     }
-    this.playerTurn(); //indicate whose turn it is
+    this.playerTurn(); //update whose turn it is
   }
 
   //Helper functions
@@ -185,10 +192,6 @@ class PenteGame {
     });
     //the mouse leave listener after we leave an available piece
     board.on("mouseleave", ".available.piece", (event) => {
-      //console.info("left piece");
-      if (game.isDone) {
-        return; //do nothing if game is done
-      }
       //undo what entering a piece does
       let piece = $(event.target);
       piece.removeClass("shadow");
@@ -196,27 +199,15 @@ class PenteGame {
     });
     //the mouse click listener, makes a move
     board.on("click", ".available.piece", () => {
+      console.info("available piece moved");
       //console.info("available piece clicked");
       if (game.isDone) {
         return; //do nothing if game is done
       }
       //place a piece; remove the available and shadow classes
       let piece = $(event.target);
-//      piece.addClass("color");
-//      piece.addClass(game.currentTurn); //readd the current color just in case
-//      piece.removeClass("shadow");
-//      piece.removeClass("available");
-//      piece.data("state", game.currentTurn); //update the piece state
+      //let the server take care of piece moved logic
       this.pieceMoved(piece);
-      //apply Othello game logic
-      game.checkColorsToFlip(piece.data("row"), piece.data("column"), piece.data("state"));
-      //check if five in a row achieved
-      game.checkIfWin(piece.data("row"), piece.data("column"), piece.data("state"));
-      //change turns if game is not over
-      if (! game.isDone) {
-        game.currentTurn = game.currentTurn == "WHITE" ? "BLACK" : "WHITE";
-        this.playerTurn();
-      }
     });
   }
 

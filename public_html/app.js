@@ -169,7 +169,6 @@ server.listen(3002, "localhost", function () {
        playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername] ? playersToActiveGames[socket.clientUsername].push(gameId) : [gameId];
        socket.join(gameId);
        socket.gameId = gameId;
-       socket.emit("setPlayerTurn", "BLACK"); // emit only to the sender
        /////////////////////////START THE GAME/////////////////////////////
        console.info("Game Id Started: " + socket.gameId);
        activeGamesToPlayers[gameId]["started"] = true;
@@ -187,9 +186,9 @@ server.listen(3002, "localhost", function () {
        };
        //as the game started, initialize the game board
        var board = []
-       for (let rowNumber = 0; rowNumber < activeGamesToPlayers[gameId]["game"]["board"].NUM_ROWS; rowNumber++) {
+       for (let rowNumber = 0; rowNumber < activeGamesToPlayers[gameId]["game"].NUM_ROWS; rowNumber++) {
          let newRow = [];
-         for (let colNumber = 0; colNumber < activeGamesToPlayers[gameId]["game"]["board"].NUM_COLS; colNumber++) {
+         for (let colNumber = 0; colNumber < activeGamesToPlayers[gameId]["game"].NUM_COLS; colNumber++) {
            newRow.push('A'); //in our server, we will just store the space as a character A | B | W
          }
          board.push(newRow);
@@ -212,6 +211,7 @@ server.listen(3002, "localhost", function () {
  ////////////////////////////////START PENTE GAME LOGIC/////////////////////////
  //when a player makes a move
  socket.on("piece-moved", function (moveLocation) {
+   var gameId = socket.gameId;
    if (socket.clientUsername == null || activeGamesToPlayers[gameId] == null) {
      return;
    }
@@ -220,9 +220,9 @@ server.listen(3002, "localhost", function () {
    console.log(socket.gameId);
    console.log(moveLocation);
    var currentTurn = activeGamesToPlayers[gameId]["game"].currentTurn;
+   console.info(currentTurn);
    var opposingTurn = currentTurn == "WHITE" ? "BLACK" : "WHITE";
    var pieceCharacter = currentTurn == "WHITE" ? 'W' : 'B';
-   var gameId = socket.gameId;
    //a player has to place a piece in the bounds, it's the player's turn, and it should not be already occupied
    if (moveLocation.row >= 0 && moveLocation.row < activeGamesToPlayers[gameId]["game"].NUM_ROWS
      && moveLocation.column >= 0 && moveLocation.column < activeGamesToPlayers[gameId]["game"].NUM_COLS
@@ -231,13 +231,9 @@ server.listen(3002, "localhost", function () {
        //apply move logic
        activeGamesToPlayers[gameId]["game"]["board"][moveLocation.row][moveLocation.column] = pieceCharacter;
        //update internals
-       if(moveLocation.player === currentTurn){
-         io.to(socket.gameId).emit("piece-played", {row: moveLocation.row, column: moveLocation.column, player: currentTurn});
-     }
-      activeGamesToPlayers[gameId]["game"]["currentTurn"] == opposingTurn;
-     //emit this move to the other sockets in the room
-    // io.to(socket.gameId).emit("piece-played", moveLocation);
-  //  io.to(socket.gameId).emit("piece-played", {row: moveLocation.row, column: moveLocation.column, player: currentTurn});
+       activeGamesToPlayers[gameId]["game"]["currentTurn"] = opposingTurn;
+       //emit this move to the other sockets in the room
+       io.to(socket.gameId).emit("piece-played", moveLocation);
    } else {
      console.log("Illegal Move");
      io.to(socket.gameId).emit("player-cheated", socket.clientUsername + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
