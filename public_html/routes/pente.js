@@ -22,18 +22,6 @@ router.use(session({
   saveUninitialized: true
 }));
 
-/* fs.readFile(databaseFilePath, "utf8", (err, jsonString) => {
-  if (err) {
-      console.log("File read failed probably because it does not exit...yet", err)
-      return
-  }
-  const users = JSON.parse(jsonString);
-  console.log(users);
-  for (var user in users){
-    registeredUsers[user] = users[user];
-  }
-}); */
-
 //pente router
 router.get("/", (req, res) => {
    res.cookie("cart", "test", {maxAge: 900000, httpOnly: true});
@@ -143,6 +131,15 @@ router.get("/leaderboards", (req, res) => {
   res.sendFile("/leaderboards.html", { root: __dirname + "/../public/pages/pente" });
 });
 
+router.get("/completedGames", (req, res) => {
+  if (req.session.username == undefined){
+    console.log("User has no active session");
+    return res.redirect("/pente");
+  }
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile("/completedGames.html", { root: __dirname + "/../public/pages/pente" });
+});
+
 router.get("/gameHistory", (req, res) => {
   if (req.session.username == undefined){
     console.log("User has no active session");
@@ -150,15 +147,6 @@ router.get("/gameHistory", (req, res) => {
   }
   res.setHeader("Content-Type", "text/html");
   res.sendFile("/gameHistory.html", { root: __dirname + "/../public/pages/pente" });
-});
-
-router.get("/history", (req, res) => {
-  if (req.session.username == undefined){
-    console.log("User has no active session");
-    return res.redirect("/pente");
-  }
-  res.setHeader("Content-Type", "text/html");
-  res.sendFile("/history.html", { root: __dirname + "/../public/pages/pente" });
 });
 
 router.post("/getTable", function(req, res) {
@@ -173,19 +161,13 @@ router.post("/getTable", function(req, res) {
   res.send(result);
 });
 
-router.get("/getGamesTable", function(req, res) {
+router.get("/getCompletedGames", function(req, res) {
   res.status(200).send(req.app.completedGames);
 });
 
 router.post("/getGameHistory", function(req, res) {
-  let result = "<table style='width:100%'>";
-  let gameHistory = req.app.completedGames[req.body.gameId];
-  for (move in movesList){
-  //  console.log(movesList[move]["row"]);
-    result += "<tr><td>"  + movesList[move]["player"] + " placed a piece at row " + movesList[move]["row"] + ", column " + movesList[move]["column"] +  "</td></tr>";
-  }
-  result += "</table>";
-  res.send(result);
+  let game = req.app.completedGames[req.body.gameId];
+  res.status(200).send(game);
 });
 
 router.post("/getAvailableGames", function(req, res){

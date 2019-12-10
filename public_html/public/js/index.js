@@ -17,7 +17,7 @@ $(window).on("load", function() {
     //new visitors, therefore total visitors = this visitor's spot
     if (storedCookie == null || storedCookie === "") {
       $("#myNumberSpan").text(myNumber.toLocaleString());
-      let inTenYears = new Date();
+      let inTenYears = new Date().toString();
       inTenYears.setDate(inTenYears.getDate() + 3652); //3652 days are added
       $.cookie("visitorNum", "" + myNumber, { expires: inTenYears, path: "/"});
     } else {

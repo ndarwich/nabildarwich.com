@@ -35,7 +35,7 @@ let downloadBook = (bookType, bookName, res) => {
   clientId += 1;
   let thisClient = clientId;
   let header = "";
-  let timeStamp = new Date()/1000;
+  let timeStamp = new Date().toString()/1000;
   let bookAddress = bookType + "/" + bookName;
   let bookPath = __dirname + "/../public/books/" + bookAddress;
   console.info("" + timeStamp + ": " +  thisClient + " request " + bookAddress);
@@ -59,7 +59,7 @@ let downloadBook = (bookType, bookName, res) => {
       }
       else {
         res.download(bookPath, (err) => {
-          timeStamp = new Date()/1000;
+          timeStamp = new Date().toString()/1000;
           if (err) {
             console.error("" + timeStamp + ": " +  thisClient + " fail " + bookAddress);
           }
@@ -75,7 +75,7 @@ let downloadBook = (bookType, bookName, res) => {
   }
   res.setHeader("Content-Type", header);
   res.sendFile("/books/" + bookAddress, { root: __dirname + "/../public" }, (err) => {
-      timeStamp = new Date()/1000;
+      timeStamp = new Date().toString()/1000;
       if (err) {
         console.error("" + timeStamp + ": " +  thisClient + " fail " + bookAddress);
       }

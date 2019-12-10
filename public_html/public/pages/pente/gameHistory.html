@@ -8,6 +8,7 @@
     <link rel="icon" sizes="192x192" href="img/nd-icon.png">
     <link rel="manifest" href="manifest.json">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/pente.js"></script>
     <script src="js/gameHistory.js"></script>
@@ -20,11 +21,26 @@
     <div id="page-body">
       <h1>Game History</h1>
       <div class="pente-body">
-        <div class="pente-container" id="game-history-container">
-          <table style="width:100%">
-            <th>Game ID</th><th>Winner</th><th>Loser</th><th>Statistics</th>
-            <tr><td>ANCDE</td><td>jdoe</td><td>jdoe2</td><td><div class="pente-button">Statistics</div></td></tr>
+        <div class="pente-container" id="gamehistory-container">
+          <div class="pente-field">
+            <b>WHITE: </b><span id="username-white"></span>
+          </div>
+          <div class="pente-field">
+            <b>BLACK: </b><span id="username-black"></span>
+          </div>
+          <div class="pente-field">
+            <b>Date Started: </b><span id="date-started"></span>
+          </div>
+          <div class="pente-field">
+            <b>Date Finished: </b><span id="date-finished"></span>
+          </div>
+          <table id="move-history-table" style="text-align: center; width:100%">
+            <th>Player</th><th>Color</th><th>Row</th><th>Column</th>
+
           </table>
+          <div class="pente-field" style="text-align: center">
+            <b><span id="game-status"></b>
+          </div>
         </div>
       </div>
       <div class="pente-button" id="pente-back-btn">

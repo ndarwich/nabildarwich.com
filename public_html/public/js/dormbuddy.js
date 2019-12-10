@@ -10,7 +10,7 @@ if (! dbPath.includes("/dormBuddy/")) {
 console.info(widgetName);
 //get time and display it as an am/pm locale string in the phone screen
 let loadTime = () => {
-  $("#currentTime").text(new Date()
+  $("#currentTime").text(new Date().toString()
     .toLocaleString("en-US",
     { hour: "numeric", minute: "numeric",
     hour12: true }));

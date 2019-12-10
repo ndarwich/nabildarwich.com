@@ -44,11 +44,10 @@ let playersToActiveGames = { };
 let completedGames = { };
 //dictionary to hold the games to the players that played them
 let gamesToPlayers = { };
-let databaseFilePath = path.join(__dirname, "database/database.json");
-console.info(databaseFilePath);
-var users = fs.readFileSync(databaseFilePath);
-var registeredUsers = JSON.parse(users);
+//database of all registered users
+let registeredUsers = { };
 
+let databaseFilePath = path.join(__dirname, "database/database.json");
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
 
@@ -138,14 +137,14 @@ app.post("/sendMail", (req, res) => {
 });
 
 app.post("/createPenteAccount", function(req, res) {
-  let user_name = req.body.username;
+  let username = req.body.username;
   let password = req.body.password;
   let reenteredpassword = req.body.reenteredpassword;
   let usernameregex = /^[a-zA-Z0-9]{5,}$/;
   let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-  console.log("Submitted User name = "+user_name+", password is "+password);
-  let username_meets_req = user_name.match(usernameregex);
-  if (! user_name.match(usernameregex)){
+  console.log("Submitted User name = "+username+", password is "+password);
+  let username_meets_req = username.match(usernameregex);
+  if (! username.match(usernameregex)){
     console.log("Username did not meet requirements!");
      return res.status(406).send({
         message: "Entered username does not meet the requirements."
@@ -162,32 +161,33 @@ app.post("/createPenteAccount", function(req, res) {
         message: "Passwords did not match"
     });
   }
-  if(!(user_name in registeredUsers)){
+  if(!(username in registeredUsers)){
     let salt = genRandomString(16);
     let encrypted_password = sha512(password, salt);
     encrypted_password.wins = 0;
     encrypted_password.losses = 0;
     encrypted_password.ties = 0;
-    registeredUsers[user_name] = encrypted_password;
+    registeredUsers[username] = encrypted_password;
     let jsonString = JSON.stringify(registeredUsers, null, 4); // Pretty printed
     console.log("jsonString before writefile");
     console.log(jsonString);
-
-    fs.writeFileSync(databaseFilePath, jsonString, function(err){
-       console.info("Write File Sync");
-       console.info(err)
-         if (err) throw err;
-         process.exit();
-    })
-    console.log("User successfully registered");
-     return res.status(206).send({
-        message: "Username " + user_name + " registered"
-    });
+    //NOTE: forever.js leads to errors when this writefile is sent
+    // fs.writeFile(databaseFilePath, registeredUsers, (err) => {
+    //    console.info("Write File Sync");
+    //    console.info(err)
+    //     if (err) {
+    //       return res.status(404).end({message: "Error Registering"});
+    //     }
+    // });
+    // console.log("User successfully registered");
+    //  res.status(206).send({
+    //     message: "Username " + username + " registered"
+    // });
   }
   else {
     console.log("Username already registered");
      return res.status(406).send({
-        message: "Username " + user_name + " already registered"
+        message: "Username " + username + " already registered"
     });
   }
 });
@@ -199,13 +199,18 @@ app.get("*", function(req, res){
 });
 
 console.info("Requiring Socket IO");
-console.info(app);
 
 var server = require('http').createServer(app);
 
 // port for express server
 server.listen(3002, "localhost", function () {
-
+  var users = fs.readFileSync(databaseFilePath);
+  if (users != null) {
+    console.log("Users successfully read");
+    registeredUsers = JSON.parse(users);
+  } else {
+    console.log("Users unsuccessfully read");
+  }
   console.info("Listening on port 3002...");
   console.info("Requiring Socket IO too");
   //console.log(io);
@@ -221,7 +226,7 @@ server.listen(3002, "localhost", function () {
    socket.on("client-login", function(username) {
      let usernameregex = /^[a-zA-Z0-9]{5,}$/;
      //block malicious users
-     if (username == null || ! user_name.match(usernameregex) ) {
+     if (username == null || ! username.match(usernameregex) ) {
        console.info("Client username is either null or incorrect");
        return;
      }
@@ -256,7 +261,11 @@ server.listen(3002, "localhost", function () {
        console.info("Join Game Received 2");
        //if there is already e player in the game
        activeGamesToPlayers[gameId]["BLACK"] = socket.clientUsername; //black joins the game
-       playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername] ? playersToActiveGames[socket.clientUsername].push(gameId) : [gameId];
+       if (playersToActiveGames[socket.clientUsername] == []) {
+         playersToActiveGames[socket.clientUsername].push(gameId);
+       } else {
+         playersToActiveGames[socket.clientUsername] = [gameId];
+       }
        socket.join(gameId);
        socket.gameId = gameId;
        /////////////////////////START THE GAME/////////////////////////////
@@ -264,6 +273,7 @@ server.listen(3002, "localhost", function () {
        activeGamesToPlayers[gameId]["started"] = true;
        //store the game in the server
        activeGamesToPlayers[gameId]["game"] = {
+         dateStarted: new Date().toString(),
          timeLeft: 60, //default timer for the game to be over is
          NUM_ROWS : 19,
          NUM_COLS : 19,
@@ -302,13 +312,13 @@ server.listen(3002, "localhost", function () {
             activeGamesToPlayers[gameId]["winner"] = winner;
             activeGamesToPlayers[gameId]["loser"] = loser;
             activeGamesToPlayers[gameId]["status"] = status;
+            activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date().toString();
             registeredUsers[winner]["wins"] += 1;
             registeredUsers[loser]["losses"] += 1;
             //internals are freed, finish the game
-            pente.completedGames[gameId] = activeGamesToPlayers[gameId];
+            completedGames[gameId] = activeGamesToPlayers[gameId];
             playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
             playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
-            delete activeGamesToPlayers[gameId];
             io.to(socket.gameId).emit("game-over", status);
             clearInterval(timer);
           }
@@ -359,13 +369,13 @@ server.listen(3002, "localhost", function () {
      activeGamesToPlayers[gameId]["loser"] = loser;
      let status = loser + " tried to cheat and illegally move. Cheating is not tolerated in Pente. " + winner + " wins!!";
     activeGamesToPlayers[gameId]["status"] = status;
+    activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date().toString();
     registeredUsers[winner]["wins"] += 1;
     registeredUsers[loser]["losses"] += 1;
     //internals are freed, finish the game
-    pente.completedGames[gameId] = activeGamesToPlayers[gameId];
+    completedGames[gameId] = activeGamesToPlayers[gameId];
     playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
     playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
-    delete activeGamesToPlayers[gameId];
     io.to(gameId).emit("game-over", status);
    }
  });
@@ -473,18 +483,18 @@ server.listen(3002, "localhost", function () {
        var loserColor = color == 'W' ? "BLACK" : "WHITE";
        var winner = activeGamesToPlayers[gameId][winnerColor];
        var loser = activeGamesToPlayers[gameId][loserColor];
-       let status = color + " won with " + maxInARow + " in a row!\nCongratulations " + winner + "!!";
+       let status = winner + " won with " + maxInARow + " in a row!\nCongratulations " + winner + "!!";
        activeGamesToPlayers[gameId]["game"].isDone = true;
        activeGamesToPlayers[gameId]["winner"] = winner;
        activeGamesToPlayers[gameId]["loser"] = loser;
        activeGamesToPlayers[gameId]["status"] = status;
+       activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date().toString();
        registeredUsers[winner]["wins"] += 1;
        registeredUsers[loser]["losses"] += 1;
        //internals are freed, finish the game
-       pente.completedGames[gameId] = activeGamesToPlayers[gameId];
+       completedGames[gameId] = activeGamesToPlayers[gameId];
        playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
        playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
-       delete activeGamesToPlayers[gameId];
        io.to(gameId).emit("game-over", status);
      }
    }

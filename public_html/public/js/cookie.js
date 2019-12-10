@@ -60,7 +60,7 @@
 			options = $.extend({}, config.defaults, options);
 
 			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
+				var days = options.expires, t = options.expires = new Date().toString();
 				t.setTime(+t + days * 864e+5);
 			}
 
