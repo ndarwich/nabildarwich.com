@@ -1,7 +1,6 @@
 $(window).on("load", function() {
   loadNavigation(4);
-  console.log("TEST");
-  createTable();
+  getGameHistory();
 
   $("body").on("click", "#pente-back-btn", (e) => {
     e.preventDefault(); //don't scroll up
@@ -10,22 +9,23 @@ $(window).on("load", function() {
 
 });
 
-
-let createTable = () => {
+/**
+ * Retrieves the game history
+ */
+let getGameHistory = () => {
   $.ajax({
-    url: '/pente/getGamesTable',
-    type: "POST",
-    dataType: "html",
+    url: '/pente/getGameHistory',
+    type: "GET",
+    dataType: "json",
     success: function(data) {
-        console.log('Success');
-        console.log(data);
-        document.getElementById("movehistory-container").innerHTML += data;
+        displayGames(gameHistory);
     },
     error: function(err) {
         console.log('Error', err);
-  }
-});
+    }
+  });
+}
 
-
+let displayGames = (gameHistory) => {
 
 }

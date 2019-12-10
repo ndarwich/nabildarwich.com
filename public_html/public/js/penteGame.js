@@ -1,4 +1,3 @@
-console.log("hello");
 //, { origins: '*:*' }
 var socket = io.connect("http://nabild.com:80/", { enabledTransports: ['ws', 'wss', 'websocket',
   'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling']});

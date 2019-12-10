@@ -8,10 +8,9 @@
     <link rel="icon" sizes="192x192" href="img/nd-icon.png">
     <link rel="manifest" href="manifest.json">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/pente.js"></script>
-    <script src="js/history.js"></script>
+    <script src="js/gameHistory.js"></script>
   </head>
   <body>
     <header>
@@ -21,7 +20,11 @@
     <div id="page-body">
       <h1>Game History</h1>
       <div class="pente-body">
-        <div class="pente-container" id="leaderboards-container">
+        <div class="pente-container" id="game-history-container">
+          <table style="width:100%">
+            <th>Game ID</th><th>Winner</th><th>Loser</th><th>Statistics</th>
+            <tr><td>ANCDE</td><td>jdoe</td><td>jdoe2</td><td><div class="pente-button">Statistics</div></td></tr>
+          </table>
         </div>
       </div>
       <div class="pente-button" id="pente-back-btn">

@@ -1,6 +1,8 @@
 const express = require("express");
+const crypto = require("crypto");
 const path = require("path");
 const bodyParser = require("body-parser");
+const fs = require("fs");
 const nodemailer = require("nodemailer");
 //let https = require("https");
 let app = express();
@@ -13,14 +15,39 @@ let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
+//helper functions
+let sha512 = function(password, salt){
+    let hash = crypto.createHmac("sha512", salt);
+    hash.update(password);
+    let value = hash.digest("hex");
+    return {
+        salt: salt,
+        hash: value
+    };
+};
+
+let genRandomString = function(length){
+    return crypto.randomBytes(Math.ceil(length/2))
+            .toString("hex")
+            .slice(0, length);
+};
+
+
+
 //all the files under public are static
-
-
 
 //dictionary to hold the active games to the players that are in them (max 2 players)
 let activeGamesToPlayers = { };
 //dictionary to hold players to active games they"re in (no max)
 let playersToActiveGames = { };
+//dictionary to hold all the completed games
+let completedGames = { };
+//dictionary to hold the games to the players that played them
+let gamesToPlayers = { };
+let databaseFilePath = path.join(__dirname, "database/database.json");
+console.info(databaseFilePath);
+var users = fs.readFileSync(databaseFilePath);
+var registeredUsers = JSON.parse(users);
 
 //app.use(express.static(path.join(__dirname, "public")));
 //for POST requests
@@ -110,6 +137,61 @@ app.post("/sendMail", (req, res) => {
   });
 });
 
+app.post("/createPenteAccount", function(req, res) {
+  let user_name = req.body.username;
+  let password = req.body.password;
+  let reenteredpassword = req.body.reenteredpassword;
+  let usernameregex = /^[a-zA-Z0-9]{5,}$/;
+  let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  console.log("Submitted User name = "+user_name+", password is "+password);
+  let username_meets_req = user_name.match(usernameregex);
+  if (! user_name.match(usernameregex)){
+    console.log("Username did not meet requirements!");
+     return res.status(406).send({
+        message: "Entered username does not meet the requirements."
+    });
+  }
+  if (!password.match(passwordregex)){
+    console.log("Password did not meet the criteria!");
+     return res.status(406).send({
+        message: "Password did not meet the criteria!"
+    });  }
+  else if (!(password === reenteredpassword)){
+    console.log("Passwords did not match");
+     return res.status(406).send({
+        message: "Passwords did not match"
+    });
+  }
+  if(!(user_name in registeredUsers)){
+    let salt = genRandomString(16);
+    let encrypted_password = sha512(password, salt);
+    encrypted_password.wins = 0;
+    encrypted_password.losses = 0;
+    encrypted_password.ties = 0;
+    registeredUsers[user_name] = encrypted_password;
+    let jsonString = JSON.stringify(registeredUsers, null, 4); // Pretty printed
+    console.log("jsonString before writefile");
+    console.log(jsonString);
+
+    fs.writeFileSync(databaseFilePath, jsonString, function(err){
+       console.info("Write File Sync");
+       console.info(err)
+         if (err) throw err;
+         process.exit();
+    })
+    console.log("User successfully registered");
+     return res.status(206).send({
+        message: "Username " + user_name + " registered"
+    });
+  }
+  else {
+    console.log("Username already registered");
+     return res.status(406).send({
+        message: "Username " + user_name + " already registered"
+    });
+  }
+});
+
 app.get("*", function(req, res){
   res.status(404);
   res.setHeader("Content-Type", "text/html");
@@ -137,8 +219,11 @@ server.listen(3002, "localhost", function () {
 
    //when a player logs in the socket needs to have the client's username in all subsequent interactions
    socket.on("client-login", function(username) {
-     if (username == null) {
-       console.info("client username is null");
+     let usernameregex = /^[a-zA-Z0-9]{5,}$/;
+     //block malicious users
+     if (username == null || ! user_name.match(usernameregex) ) {
+       console.info("Client username is either null or incorrect");
+       return;
      }
      if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
        playersToActiveGames[username] = []; //initialize their game to an empty list
@@ -149,6 +234,10 @@ server.listen(3002, "localhost", function () {
 
  //when a player joins a game
  socket.on("join-game", function(gameId) {
+   //do nothing if client is not logged in
+   if (socket.clientUsername == null) {
+     return;
+   }
    //Case 1: game is getting created
    if (!(gameId in activeGamesToPlayers)) {
      console.info("Join Game Received 1");
@@ -206,13 +295,21 @@ server.listen(3002, "localhost", function () {
             //the current player loses and the opposing player wins
             var currentColor = activeGamesToPlayers[gameId]["game"]["currentTurn"];
             var otherColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
-            io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor]
-              + " ran out of time. " + activeGamesToPlayers[gameId][otherColor] + " wins!");
+            var winner = activeGamesToPlayers[gameId][otherColor];
+            var loser = activeGamesToPlayers[gameId][currentColor];
+            var status = "" + loser + " ran out of time. " + winner + " wins!";
             activeGamesToPlayers[gameId]["game"].isDone = true;
-            activeGamesToPlayers[gameId]["game"].winner = activeGamesToPlayers[gameId][otherColor];
-            //the timer is freed
-            pente.completedGamesMoveList[socket.gameId] =   activeGamesToPlayers[gameId]["game"]["moveHistory"];
-
+            activeGamesToPlayers[gameId]["winner"] = winner;
+            activeGamesToPlayers[gameId]["loser"] = loser;
+            activeGamesToPlayers[gameId]["status"] = status;
+            registeredUsers[winner]["wins"] += 1;
+            registeredUsers[loser]["losses"] += 1;
+            //internals are freed, finish the game
+            pente.completedGames[gameId] = activeGamesToPlayers[gameId];
+            playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
+            playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
+            delete activeGamesToPlayers[gameId];
+            io.to(socket.gameId).emit("game-over", status);
             clearInterval(timer);
           }
         }, 1000);
@@ -220,6 +317,7 @@ server.listen(3002, "localhost", function () {
      }
    //send the game information to the player
    if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
+     //emit game-started to the game room
      io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
    }
  });
@@ -228,13 +326,10 @@ server.listen(3002, "localhost", function () {
  //when a player makes a move
  socket.on("piece-moved", function (moveLocation) {
    var gameId = socket.gameId;
+   //if the game doesn't exist or the user doesn't, return
    if (socket.clientUsername == null || activeGamesToPlayers[gameId] == null) {
      return;
    }
-   console.log("Movement by " + socket.clientUsername);
-   //check if the movement is legal, if it's not,this is cheating
-   console.log(socket.gameId);
-   console.log(moveLocation);
    var currentColor = activeGamesToPlayers[gameId]["game"].currentTurn;
    console.info(currentColor);
    var otherColor = currentColor == "WHITE" ? "BLACK" : "WHITE";
@@ -257,11 +352,21 @@ server.listen(3002, "localhost", function () {
        io.to(socket.gameId).emit("move-history", activeGamesToPlayers[gameId]["game"]["moveHistory"]);
    } else {
      console.log("Illegal Move");
+     var winner = activeGamesToPlayers[gameId][otherColor];
+     var loser = activeGamesToPlayers[gameId][currentColor];
      activeGamesToPlayers[gameId]["game"].isDone = true;
-     activeGamesToPlayers[gameId]["game"].winner = activeGamesToPlayers[gameId][otherColor];
-     io.to(socket.gameId).emit("game-over", activeGamesToPlayers[gameId][currentColor] + " tried to cheat and illegally move. Cheating is not tolerated in Pente. "
-      + activeGamesToPlayers[gameId][otherColor] + " wins!!");
-      pente.completedGamesMoveList[socket.gameId] =   activeGamesToPlayers[gameId]["game"]["moveHistory"];
+     activeGamesToPlayers[gameId]["winner"] = winner;
+     activeGamesToPlayers[gameId]["loser"] = loser;
+     let status = loser + " tried to cheat and illegally move. Cheating is not tolerated in Pente. " + winner + " wins!!";
+    activeGamesToPlayers[gameId]["status"] = status;
+    registeredUsers[winner]["wins"] += 1;
+    registeredUsers[loser]["losses"] += 1;
+    //internals are freed, finish the game
+    pente.completedGames[gameId] = activeGamesToPlayers[gameId];
+    playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
+    playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
+    delete activeGamesToPlayers[gameId];
+    io.to(gameId).emit("game-over", status);
    }
  });
  /**
@@ -274,7 +379,7 @@ server.listen(3002, "localhost", function () {
    }
    let gameId = socket.gameId;
    if (gameId == null || activeGamesToPlayers[gameId] == null || activeGamesToPlayers[gameId]["game"] == null || activeGamesToPlayers[gameId]["game"]["board"] == null) {
-     console.log("clear pieces error")
+     console.log("Clear pieces error")
      return;
    }
    let board = activeGamesToPlayers[gameId]["game"]["board"];
@@ -368,13 +473,19 @@ server.listen(3002, "localhost", function () {
        var loserColor = color == 'W' ? "BLACK" : "WHITE";
        var winner = activeGamesToPlayers[gameId][winnerColor];
        var loser = activeGamesToPlayers[gameId][loserColor];
+       let status = color + " won with " + maxInARow + " in a row!\nCongratulations " + winner + "!!";
        activeGamesToPlayers[gameId]["game"].isDone = true;
-       activeGamesToPlayers[gameId]["game"].winner = winner;
-       activeGamesToPlayers[gameId]["game"].loser = loser;
-       io.to(gameId).emit("game-over", color + " won with " + maxInARow + " in a row!\nCongratulations " + winner + "!!");
-       pente.registeredUsers[winner]["wins"] += 1;
-       pente.registeredUsers[loser]["losses"] += 1;
-       pente.gamesToPlayers[gameId] = { "winner": winner, "loser": loser };
+       activeGamesToPlayers[gameId]["winner"] = winner;
+       activeGamesToPlayers[gameId]["loser"] = loser;
+       activeGamesToPlayers[gameId]["status"] = status;
+       registeredUsers[winner]["wins"] += 1;
+       registeredUsers[loser]["losses"] += 1;
+       //internals are freed, finish the game
+       pente.completedGames[gameId] = activeGamesToPlayers[gameId];
+       playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
+       playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
+       delete activeGamesToPlayers[gameId];
+       io.to(gameId).emit("game-over", status);
      }
    }
  }
@@ -394,24 +505,30 @@ server.listen(3002, "localhost", function () {
 
  //when a player exits out of a game
  socket.on("disconnect", function (data) {
+   if (socket.gameId == null || socket.clientUsername == null) {
+     return;
+   }
    //record the game's id
    let clientGame = socket.gameId;
    //delete the game if there is no other player
    if (activeGamesToPlayers[clientGame] != null && activeGamesToPlayers[clientGame].BLACK == null) {
      console.info("Deleting Game " + clientGame + " due to no black");
      console.info(activeGamesToPlayers);
-     //delete the game from the playersToActiveGames dictionary
-     playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername].filter(game => game != clientGame)
+     if (playersToActiveGames[socket.clientUsername] != null) {
+       //delete the game from the playersToActiveGames dictionary
+       playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername].filter(game => game != clientGame)
+     }
      //delete the game from the activeGamesToPlayers dictionary
      delete activeGamesToPlayers[clientGame];
-     console.info(playersToActiveGames);
-     console.info(activeGamesToPlayers);
    }
  });
 });
 
  //if the client disconnects
  io.on("disconnect", function(socket) {
+   if (socket.gameId == null || socket.clientUsername == null) {
+     return;
+   }
     console.log("Player Disconnected");
     //record the game's id
     let clientGame = socket.gameId;
@@ -422,13 +539,12 @@ server.listen(3002, "localhost", function () {
       playersToActiveGames[socket.clientUsername] = playersToActiveGames[socket.clientUsername].filter(game => game != clientGame)
       //delete the game from the activeGamesToPlayers dictionary
       delete activeGamesToPlayers[clientGame];
-      console.info(playersToActiveGames);
-      console.info(activeGamesToPlayers);
     }
   });
 
+  app.completedGames = completedGames;
+  app.registeredUsers = registeredUsers;
   app.io = io;
   app.activeGamesToPlayers = activeGamesToPlayers;
   app.playersToActiveGames = playersToActiveGames;
-//  console.log(pente.registeredUsers);
 });
