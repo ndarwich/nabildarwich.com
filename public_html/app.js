@@ -273,7 +273,7 @@ server.listen(3002, "localhost", function () {
        activeGamesToPlayers[gameId]["started"] = true;
        //store the game in the server
        activeGamesToPlayers[gameId]["game"] = {
-         dateStarted: new Date().toString(),
+         dateStarted: new Date(),
          timeLeft: 60, //default timer for the game to be over is
          NUM_ROWS : 19,
          NUM_COLS : 19,
@@ -312,7 +312,7 @@ server.listen(3002, "localhost", function () {
             activeGamesToPlayers[gameId]["winner"] = winner;
             activeGamesToPlayers[gameId]["loser"] = loser;
             activeGamesToPlayers[gameId]["status"] = status;
-            activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date().toString();
+            activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date();
             registeredUsers[winner]["wins"] += 1;
             registeredUsers[loser]["losses"] += 1;
             //internals are freed, finish the game
@@ -369,7 +369,7 @@ server.listen(3002, "localhost", function () {
      activeGamesToPlayers[gameId]["loser"] = loser;
      let status = loser + " tried to cheat and illegally move. Cheating is not tolerated in Pente. " + winner + " wins!!";
     activeGamesToPlayers[gameId]["status"] = status;
-    activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date().toString();
+    activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date();
     registeredUsers[winner]["wins"] += 1;
     registeredUsers[loser]["losses"] += 1;
     //internals are freed, finish the game
@@ -488,7 +488,7 @@ server.listen(3002, "localhost", function () {
        activeGamesToPlayers[gameId]["winner"] = winner;
        activeGamesToPlayers[gameId]["loser"] = loser;
        activeGamesToPlayers[gameId]["status"] = status;
-       activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date().toString();
+       activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date();
        registeredUsers[winner]["wins"] += 1;
        registeredUsers[loser]["losses"] += 1;
        //internals are freed, finish the game

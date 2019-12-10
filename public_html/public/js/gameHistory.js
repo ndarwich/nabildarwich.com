@@ -48,7 +48,7 @@ let displayGameHistory = (game) => {
   $("#user-black").text(game["BLACK"]);
   $("#date-started").text(game["game"]["dateStarted"]);
   $("#date-finished").text(game["game"]["dateFinished"]);
-  $("#game-status").text(game["game"]["status"]);
+  $("#game-status").text(game["status"]);
   let moveHistory = game["game"]["moveHistory"];
   var i = 0;
   moveHistory.forEach((move) => {
