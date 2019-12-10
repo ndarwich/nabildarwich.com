@@ -7,7 +7,7 @@ var server = require("http").Server(router);
 var io = require("socket.io").listen(server);
 
 const uuid = require("uuid/v4");
-// var registered_users = {};
+// var registeredUsers = {};
 
 let cookieParser = require("cookie-parser");
 let session = require("express-session");
@@ -27,10 +27,10 @@ router.use(session({
 let databaseFilePath = path.join(__dirname, "../database/database.json");
 
 var users = fs.readFileSync(databaseFilePath);
-var registered_users = JSON.parse(users);
+var registeredUsers = JSON.parse(users);
 
 let completedGamesMoveList = { };
-let gamestoPlayer = { };
+let gamesToPlayers = { };
 /* fs.readFile(databaseFilePath, "utf8", (err, jsonString) => {
   if (err) {
       console.log("File read failed probably because it does not exit...yet", err)
@@ -39,7 +39,7 @@ let gamestoPlayer = { };
   const users = JSON.parse(jsonString);
   console.log(users);
   for (var user in users){
-    registered_users[user] = users[user];
+    registeredUsers[user] = users[user];
   }
 }); */
 
@@ -174,8 +174,8 @@ router.post("/getTable", function(req, res) {
   let result = "<table style='width:100%'>";
   result+="<th>Username</th>";
   result+="<th>Win/Loss/Tie Ratio</th>";
-  for (user in registered_users){
-    result += "<tr><td>" + user + "</td><td>" + registered_users[user].wins + "/" + registered_users[user].losses + "/" + registered_users[user].ties + "</td></tr>";
+  for (user in registeredUsers){
+    result += "<tr><td>" + user + "</td><td>" + registeredUsers[user].wins + "/" + registeredUsers[user].losses + "/" + registeredUsers[user].ties + "</td></tr>";
   }
 
   result += "</table>";
@@ -186,15 +186,11 @@ router.post("/getTable", function(req, res) {
 router.post("/getGamesTable", function(req, res) {
   let result = "<table style='width:100%'>";
   result+="<th>Past Completed Games</th>";
-//  completedGamesMoveList["3"] = "test";
-//  gamestoPlayer[3] = [];
-//  gamestoPlayer[3].push("sa");
-//  gamestoPlayer[3].push("ssas");
-  console.log(gamestoPlayer);
+  console.log(gamesToPlayers);
   let games = []
   for (gameid in completedGamesMoveList){
   //  result += "<tr><td>" + "<a href=/pente/game?gameId=" + gameid + ">AAAAA</a>TEST</td></tr>";
-    result += "<tr><td>" +  "<div class=pente-button id=pente-movehistory-btn><a href=/pente/history?gameId=" + gameid + ">" + gamestoPlayer[gameid][0] + " vs " + gamestoPlayer[gameid][1] + "</a></div>" + "</td></tr>";
+    result += "<tr><td>" +  "<div class=pente-button id=pente-movehistory-btn><a href=/pente/history?gameId=" + gameid + ">" + gamesToPlayers[gameid]["winner"] + " vs " + gamesToPlayers[gameid]["loser"] + "</a></div>" + "</td></tr>";
   //  games.push(gameid);
 //  <div class="pente-button" id="pente-movehistory-btn"><a href="/pente/gamemovehistory">MOVE HISTORY</a></div>
   }
@@ -259,13 +255,13 @@ router.post("/login", function(req, res){
   let user_name = req.body.username;
   let password = req.body.password;
 //  console.log(encrypted_password);
-//  console.log(registered_users[user_name]);
+//  console.log(registeredUsers[user_name]);
   console.log("User name = "+user_name+", password is "+password);
-  console.log(user_name in registered_users);
-  if(user_name in registered_users){
-    let user_salt = registered_users[user_name].salt;
+  console.log(user_name in registeredUsers);
+  if(user_name in registeredUsers){
+    let user_salt = registeredUsers[user_name].salt;
     let encrypted_password = sha512(password, user_salt);
-    if(registered_users[user_name].hash == encrypted_password.hash){
+    if(registeredUsers[user_name].hash == encrypted_password.hash){
           req.session.username = user_name;
       console.log("SUccessful login from " + user_name);
       return res.status(200).send({
@@ -307,14 +303,14 @@ router.post("/createAccount", function(req, res){
         message: "Passwords did not match"
     });
   }
-  if(!(user_name in registered_users)){
+  if(!(user_name in registeredUsers)){
     let salt = genRandomString(16);
     let encrypted_password = sha512(password, salt);
     encrypted_password.wins = 0;
     encrypted_password.losses = 0;
     encrypted_password.ties = 0;
-    registered_users[user_name] = encrypted_password;
-    let jsonString = JSON.stringify(registered_users, null, 4); // Pretty printed
+    registeredUsers[user_name] = encrypted_password;
+    let jsonString = JSON.stringify(registeredUsers, null, 4); // Pretty printed
     console.log("jsonString before writefile");
     console.log(jsonString);
 
@@ -358,6 +354,6 @@ let genRandomString = function(length){
 
 
 module.exports = router;
-module.exports.registered_users = registered_users;
+module.exports.registeredUsers = registeredUsers;
 module.exports.completedGamesMoveList = completedGamesMoveList;
-module.exports.gamestoPlayer = gamestoPlayer;
+module.exports.gamesToPlayers = gamesToPlayers;

@@ -77,17 +77,20 @@ var loadPenteGame = (gameId, gameInfo, username) => {
   penteGame.playerTurn();
   ///////////////////////SOCKET LOGIC//////////////////////////////
   //a piece was played
-  socket.on("piece-played", function(pieceLocation) {
-    var piece = $(penteGame.getPiece(pieceLocation.row, pieceLocation.column));
+  socket.on("piece-played", function(piecePlayed) {
+    var piece = $(penteGame.getPiece(piecePlayed.row, piecePlayed.column));
     penteGame.clearPiece(piece);
-    piece.addClass("color");
-    piece.addClass(penteGame.currentTurn); //readd the current color just in case
+    var color = piecePlayed.color == 'W' ? "WHITE" : "BLACK";
+    var oppositeColor = color == "WHITE" ? "BLACK" : "WHITE";
     piece.removeClass("shadow");
     piece.removeClass("available");
-    piece.data("state", penteGame.currentTurn); //update the piece state
+    piece.removeClass(oppositeColor); //remove the opposite color
+    piece.addClass("color");
+    piece.addClass(color); //readd the current color
+    piece.data("state", color); //update the piece state
     if (! penteGame.isDone) {
       //flip whose turn it is
-      penteGame.currentTurn = penteGame.currentTurn == "WHITE" ? "BLACK" : "WHITE";
+      penteGame.currentTurn = color == "WHITE" ? "BLACK" : "WHITE";
       //display the correct name's turn
       penteGame.playerTurn();
     }

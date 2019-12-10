@@ -122,7 +122,6 @@ console.info(app);
 var server = require('http').createServer(app);
 
 // port for express server
-var pente2 = require('./routes/pente.js');
 server.listen(3002, "localhost", function () {
 
   console.info("Listening on port 3002...");
@@ -134,15 +133,13 @@ server.listen(3002, "localhost", function () {
    console.log('a user connected');
    socket.on("connection", function(data) {
       console.log("Player connected!", socket.id);
-      socket.emit("client-login", "Hello World from client");
-   });
-
-   socket.on("client-login", function(player) {
-     console.log("Player joined with id " + player);
    });
 
    //when a player logs in the socket needs to have the client's username in all subsequent interactions
    socket.on("client-login", function(username) {
+     if (username == null) {
+       console.info("client username is null");
+     }
      if (playersToActiveGames[username] == null) { //if the player doesn't have any active games
        playersToActiveGames[username] = []; //initialize their game to an empty list
      }
@@ -158,7 +155,7 @@ server.listen(3002, "localhost", function () {
      //if there is already e player in the game
      //update our data structures with game info
      activeGamesToPlayers[gameId] = { "WHITE": socket.clientUsername, "host": socket.clientUsername, "started": false };
-     if (playersToActiveGames[socket.clientUsername]) {
+     if (playersToActiveGames[socket.clientUsername] == []) {
        playersToActiveGames[socket.clientUsername].push(gameId);
      } else {
        playersToActiveGames[socket.clientUsername] = [gameId];
@@ -256,7 +253,7 @@ server.listen(3002, "localhost", function () {
        activeGamesToPlayers[gameId]["game"]["timeLeft"] = 60; //reset the timer
        activeGamesToPlayers[gameId]["game"]["moveHistory"].push({row: moveLocation.row, column: moveLocation.column, player: socket.clientUsername, color: pieceCharacter});
        //emit this move to the other sockets in the room
-       io.to(socket.gameId).emit("piece-played", moveLocation);
+       io.to(socket.gameId).emit("piece-played", { "color": pieceCharacter, row: moveLocation.row, column: moveLocation.column });
        io.to(socket.gameId).emit("move-history", activeGamesToPlayers[gameId]["game"]["moveHistory"]);
    } else {
      console.log("Illegal Move");
@@ -367,19 +364,17 @@ server.listen(3002, "localhost", function () {
      let diagonalTwoPieces = 1 + northWest + southEast;
      let maxInARow = Math.max(horizontalPieces, verticalPieces, diagonalOnePieces, diagonalTwoPieces);
      if (maxInARow >= 5) {
+       var winnerColor = color == 'W' ? "WHITE" : "BLACK";
+       var loserColor = color == 'W' ? "BLACK" : "WHITE";
+       var winner = activeGamesToPlayers[gameId][winnerColor];
+       var loser = activeGamesToPlayers[gameId][loserColor];
        activeGamesToPlayers[gameId]["game"].isDone = true;
-       activeGamesToPlayers[gameId]["game"].winner = socket.clientUsername;
-       io.to(gameId).emit("game-over", color + " won with " + maxInARow + " in a row!\nCongratulations " + color + "!!");
-       pente.registered_users[socket.clientUsername]["wins"] += 1;
-       pente.gamestoPlayer[gameId] = [];
-       pente.gamestoPlayer[gameId].push(socket.clientUsername);
-       for (var user in playersToActiveGames){
-         if (gameId in playersToActiveGames[user]){ // find the other user who was in the game
-            pente.registered_users[user]["losses"] += 1;
-            pente.gamestoPlayer[gameId].push(user);
-            break;
-         }
-       }
+       activeGamesToPlayers[gameId]["game"].winner = winner;
+       activeGamesToPlayers[gameId]["game"].loser = loser;
+       io.to(gameId).emit("game-over", color + " won with " + maxInARow + " in a row!\nCongratulations " + winner + "!!");
+       pente.registeredUsers[winner]["wins"] += 1;
+       pente.registeredUsers[loser]["losses"] += 1;
+       pente.gamesToPlayers[gameId] = { "winner": winner, "loser": loser };
      }
    }
  }
@@ -435,5 +430,5 @@ server.listen(3002, "localhost", function () {
   app.io = io;
   app.activeGamesToPlayers = activeGamesToPlayers;
   app.playersToActiveGames = playersToActiveGames;
-//  console.log(pente.registered_users);
+//  console.log(pente.registeredUsers);
 });
