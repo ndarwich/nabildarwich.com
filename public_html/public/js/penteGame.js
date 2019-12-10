@@ -23,7 +23,7 @@ let getQueryObjects = () => {
 $(window).on("load", function() {
   loadNavigation(4);
   var creatingGame = true;
-
+  var gameStarted = false;
   //request our pente username
   $.get("/pente/getPenteUsername", function(username, status) {
     //register the socket with the client username
@@ -48,9 +48,15 @@ $(window).on("load", function() {
     //if we receive a signal to start the game
     socket.on("game-started", function(gameInfo) {
       $("#pente-game-placeholder").text("");
-      //we can start the game!
-      loadPenteGame(queryObjects.gameId, gameInfo, username);
+      if (!gameStarted) {
+        //we can start the game!
+        loadPenteGame(queryObjects.gameId, gameInfo, username);
+      }
+      gameStarted = true;
     });
+    socket.on("cannot-join", function(reason) {
+      $("#pente-game-placeholder").text("" + reason);
+    })
   });
   /////////////////END PENTE GAME LOADING LOGIC///////////////////
   $("body").on("click", "#pente-back-btn", (e) => {
@@ -67,6 +73,27 @@ var loadPenteGame = (gameId, gameInfo, username) => {
   //store our color to only play when it's our turn for the client
   penteGame.myColor = gameInfo["WHITE"] == username ? "WHITE" : "BLACK";
   penteGame.gameInfo = gameInfo;
+  //load the board
+  let board = penteGame.gameInfo["game"]["board"];
+  for (let i = 0; i < 19; i++) {
+    for (let j = 0; j < 19; j++) {
+      let piece = $(penteGame.getPiece(i, j));
+      //for pieces played on the board
+      if (board[i][j] != 'A') {
+        penteGame.clearPiece(piece);
+        var color = board[i][j] == 'W' ? "WHITE" : "BLACK";
+        piece.removeClass("shadow");
+        piece.removeClass("available");
+        piece.addClass("color");
+        piece.addClass(color); //readd the current color
+        piece.data("state", color); //update the piece state
+      } else { //for pieces that aren't player
+        penteGame.clearPiece(piece);
+      }
+    }
+  }
+  //update game internals
+  penteGame.currentTurn = gameInfo["game"]["currentTurn"];
   //indicate whose player"s turn it is using their username
   penteGame.playerTurn = () => {
     var moveText = penteGame.currentTurn == penteGame.myColor ?

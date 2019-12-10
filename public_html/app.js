@@ -15,6 +15,9 @@ let bio = require("./routes/bio");
 let specialPage = require("./routes/specialPage");
 let books = require("./routes/books");
 let pente = require("./routes/pente");
+//helper variables
+let usernameregex = /^[a-zA-Z0-9]{5,}$/;
+let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
 //helper functions
 let sha512 = function(password, salt){
     let hash = crypto.createHmac("sha512", salt);
@@ -140,8 +143,6 @@ app.post("/createPenteAccount", function(req, res) {
   let username = req.body.username;
   let password = req.body.password;
   let reenteredpassword = req.body.reenteredpassword;
-  let usernameregex = /^[a-zA-Z0-9]{5,}$/;
-  let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   console.log("Submitted User name = "+username+", password is "+password);
   let username_meets_req = username.match(usernameregex);
   if (! username.match(usernameregex)){
@@ -224,7 +225,6 @@ server.listen(3002, "localhost", function () {
 
    //when a player logs in the socket needs to have the client's username in all subsequent interactions
    socket.on("client-login", function(username) {
-     let usernameregex = /^[a-zA-Z0-9]{5,}$/;
      //block malicious users
      if (username == null || ! username.match(usernameregex) ) {
        console.info("Client username is either null or incorrect");
@@ -240,9 +240,24 @@ server.listen(3002, "localhost", function () {
  //when a player joins a game
  socket.on("join-game", function(gameId) {
    //do nothing if client is not logged in
-   if (socket.clientUsername == null) {
+   if (socket.clientUsername == null || gameId == null) {
      return;
    }
+   //joining game conditions for failure
+   if (gameId in completedGames) {
+     socket.emit('cannot-join', "Cannot join game as it already finished")
+     return;
+   } else if (gameId in activeGamesToPlayers) {
+     if (activeGamesToPlayers[gameId].BLACK != null && activeGamesToPlayers[gameId].BLACK != socket.clientUsername
+      && activeGamesToPlayers[gameId].WHITE != null && activeGamesToPlayers[gameId].WHITE != socket.clientUsername) {
+        socket.emit('cannot-join', "Spectating games has not been implemented yet")
+         return;
+      } else if (activeGamesToPlayers[gameId].WHITE == socket.clientUsername && activeGamesToPlayers[gameId].BLACK == null) {
+        socket.emit('cannot-join', "Playing against yourself is not allowed. Find some friends :).")
+       return;
+      }
+   }
+   console.info("here 3");
    //Case 1: game is getting created
    if (!(gameId in activeGamesToPlayers)) {
      console.info("Join Game Received 1");
@@ -266,9 +281,9 @@ server.listen(3002, "localhost", function () {
        } else {
          playersToActiveGames[socket.clientUsername] = [gameId];
        }
+       /////////////////////////START THE GAME/////////////////////////////
        socket.join(gameId);
        socket.gameId = gameId;
-       /////////////////////////START THE GAME/////////////////////////////
        console.info("Game Id Started: " + socket.gameId);
        activeGamesToPlayers[gameId]["started"] = true;
        //store the game in the server
@@ -282,6 +297,7 @@ server.listen(3002, "localhost", function () {
          playerTurn : () => {},
          pieceMoved : (piece) => {},
          pieceCleared : (piece) => {},
+         capturesMade: { "W": 0, "B": 0 },
          board: [],
          moveHistory: []
        };
@@ -323,10 +339,14 @@ server.listen(3002, "localhost", function () {
             clearInterval(timer);
           }
         }, 1000);
+        //start the game
+        io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
         /////////////////////////FINISH START GAME/////////////////////////////
      }
    //send the game information to the player
-   if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
+   else if (activeGamesToPlayers[gameId] != null && activeGamesToPlayers[gameId]["started"] == true) {
+     socket.join(gameId);
+     socket.gameId = gameId;
      //emit game-started to the game room
      io.to(gameId).emit("game-started", activeGamesToPlayers[gameId]);
    }
@@ -404,6 +424,7 @@ server.listen(3002, "localhost", function () {
          //clear the pieces in between
          activeGamesToPlayers[gameId]["game"]["board"][row + yOffset*1][col + xOffset*1] = 'A';
          activeGamesToPlayers[gameId]["game"]["board"][row + yOffset*2][col + xOffset*2] = 'A';
+         activeGamesToPlayers[gameId]["game"]["capturesMade"][color] += 1;
          console.info("Pieces Cleared");
          //in the client as well
          io.to(gameId).emit("piece-cleared", {row: row + yOffset*1, column: col + xOffset*1});
@@ -509,6 +530,30 @@ server.listen(3002, "localhost", function () {
   * Game logic to end when 5 in a row is met.
   */
  let checkIfWin = (socket, row, column, color) => {
+   var gameId = socket.gameId;
+   //winning condition 1: 5 captures
+   let capturesMade = activeGamesToPlayers[gameId]["game"]["capturesMade"][color];
+   if (capturesMade >= 5) {
+     var winnerColor = color == 'W' ? "WHITE" : "BLACK";
+     var loserColor = color == 'W' ? "BLACK" : "WHITE";
+     var winner = activeGamesToPlayers[gameId][winnerColor];
+     var loser = activeGamesToPlayers[gameId][loserColor];
+     let status = winner + " won with " + capturesMade + " captures!\nCongratulations " + winner + "!!";
+     activeGamesToPlayers[gameId]["game"].isDone = true;
+     activeGamesToPlayers[gameId]["winner"] = winner;
+     activeGamesToPlayers[gameId]["loser"] = loser;
+     activeGamesToPlayers[gameId]["status"] = status;
+     activeGamesToPlayers[gameId]["game"]["dateFinished"] = new Date();
+     registeredUsers[winner]["wins"] += 1;
+     registeredUsers[loser]["losses"] += 1;
+     //internals are freed, finish the game
+     completedGames[gameId] = activeGamesToPlayers[gameId];
+     playersToActiveGames[winner] = playersToActiveGames[winner].filter(game => game != gameId);
+     playersToActiveGames[loser] = playersToActiveGames[loser].filter(game => game != gameId);
+     io.to(gameId).emit("game-over", status);
+     return;
+   }
+   //winning condition 2: 5 in a row
    traverseAllDirections(socket, row, column, color, false);
  }
  ////////////////////////////////END PENTE GAME LOGIC/////////////////////////

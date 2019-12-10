@@ -6,10 +6,12 @@ var server = require("http").Server(router);
 var io = require("socket.io").listen(server);
 
 const uuid = require("uuid/v4");
-// var registeredUsers = {};
 
 let cookieParser = require("cookie-parser");
 let session = require("express-session");
+
+
+let usernameregex = /^[a-zA-Z0-9]{5,}$/;
 
 router.use(session({
   genid: (req) => {
@@ -108,7 +110,7 @@ router.post("/getGameStatus", (req, res) => {
       res.status(500).send("No Game with id " + gameId + " Found");
     }
   } else {
-    res.send("No Game with id " + gameId + " Found");
+    res.status(500).send("No Game with id " + gameId + " Found");
   }
 });
 
@@ -149,6 +151,26 @@ router.get("/gameHistory", (req, res) => {
   res.sendFile("/gameHistory.html", { root: __dirname + "/../public/pages/pente" });
 });
 
+router.post("/getActiveGames", function(req, res) {
+  console.info("Post getActiveGames received with ");
+  console.info(req.body);
+  if (req.body.username == null || ! req.body.username.match(usernameregex)) {
+    res.status(200).send([]);
+    return;
+  }
+  console.info("here");
+  let playerGames = req.app.playersToActiveGames[req.body.username] || [];
+  //the only games the player can join are the ones that didn't finish
+  let validGames = [];
+  playerGames.forEach((gameId) => {
+    let game = req.app.activeGamesToPlayers[gameId];
+    if (! game.isDone) {
+      validGames.push(gameId);
+    }
+  });
+  res.status(200).send(validGames);
+});
+
 router.post("/getTable", function(req, res) {
   let result = "<table style='width:100%'>";
   result+="<th>Username</th>";
@@ -158,7 +180,7 @@ router.post("/getTable", function(req, res) {
     result += "<tr><td>" + user + "</td><td>" + registeredUsers[user].wins + "/" + registeredUsers[user].losses + "/" + registeredUsers[user].ties + "</td></tr>";
   }
   result += "</table>";
-  res.send(result);
+  res.status(200).send(result);
 });
 
 router.get("/getCompletedGames", function(req, res) {
@@ -180,7 +202,7 @@ router.post("/getAvailableGames", function(req, res){
       availableGames.push({ id: game, host: activeGamesToPlayers[game]["host"] });
     }
   }
-  res.send(availableGames);
+  res.status(200).send(availableGames);
 });
 
 

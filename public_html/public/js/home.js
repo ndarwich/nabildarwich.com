@@ -1,13 +1,28 @@
 $(window).on("load", function() {
   loadNavigation(4);
   //request our pente username
-  $.get("/pente/getPenteUsername", function(data, status) {
+  $.get("/pente/getPenteUsername", function(username, status) {
     if (status != "success") {
       console.info("fail");
     } else {
       console.info("success");
-      $("#greeting-text").text("Greetings, " + data);
+      $("#greeting-text").text("Greetings, " + username);
     }
+    //now that we have username, request active games
+    $.ajax({
+      url: "/pente/getActiveGames",
+      type: "POST",
+      dataType: "json",
+      data: {
+          username: username
+      },
+      success: function(activeGames) {
+        displayActiveGames(activeGames);
+      },
+      error: function(err) {
+          console.log("Error", err.responseText);
+      }
+    });
   });
   $("body").on("click", "#pente-creategame-btn", (e) => {
     e.preventDefault(); //don"t scroll up
@@ -19,6 +34,18 @@ $(window).on("load", function() {
   });
 
 });
+
+let displayActiveGames = (activeGames) => {
+  console.info(activeGames)
+  if (activeGames == null || activeGames.length == 0) {
+    $("#pente-active-games").val("You are not playing in any game currently.");
+  }
+  let activeGameHtml = "";
+  activeGames.forEach((gameId) => {
+    activeGameHtml += "<a style='color:blue' class='active-game' href='/pente/game?gameId=" + gameId + "'>" + gameId + "</a> ";
+  });
+  $("#pente-active-games").html(activeGameHtml);
+}
 
 let createGame = () => {
   $.get("/pente/getUniqueGameId", function(gameId, status) {
