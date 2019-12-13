@@ -47,5 +47,12 @@
         "wins": 0,
         "losses": 0,
         "ties": 0
+    },
+    "hmughal55": {
+        "salt": "9af250ee2b0449e0",
+        "hash": "7cf2f8ad4a9ae0022cf44264d5e6c3eb612a072e6446e29bcdca9ac70905da96eeab03130c4d2dc7570514924133696a68066cbd44c4308139b95cfdb97f5c29",
+        "wins": 0,
+        "losses": 0,
+        "ties": 0
     }
 }

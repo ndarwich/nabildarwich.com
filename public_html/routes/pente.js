@@ -28,11 +28,13 @@ router.use(session({
 router.get("/", (req, res) => {
    res.cookie("cart", "test", {maxAge: 900000, httpOnly: true});
   res.setHeader("Content-Type", "text/html");
+  res.set("X-XSS-Protection", 1);
   res.sendFile("/pente.html", { root: __dirname + "/../public" });
 });
 
 router.get("/createAccount", (req, res) => {
   res.setHeader("Content-Type", "text/html");
+  res.set("X-XSS-Protection", 1);
   res.sendFile("/createAccount.html", { root: __dirname + "/../public/pages/pente" });
 });
 

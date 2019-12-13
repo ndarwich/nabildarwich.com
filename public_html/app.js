@@ -4,9 +4,12 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
+const helmet = require('helmet');
 //let https = require("https");
 let app = express();
 let router = express.Router();
+app.use(helmet.frameguard({ action: "sameorigin" }));
+app.use(helmet.xssFilter());
 //ALL routes are imported
 let index = require("./routes/index");
 let contact = require("./routes/contact");
@@ -596,7 +599,6 @@ server.listen(3002, "localhost", function () {
       delete activeGamesToPlayers[clientGame];
     }
   });
-
   app.completedGames = completedGames;
   app.registeredUsers = registeredUsers;
   app.io = io;
