@@ -44,8 +44,8 @@ let getQueryObjects = () => {
 
 let displayGameHistory = (game) => {
   console.log(game);
-  $("#user-white").text(game["WHITE"]);
-  $("#user-black").text(game["BLACK"]);
+  $("#username-white").text(game["WHITE"]);
+  $("#username-black").text(game["BLACK"]);
   $("#date-started").text(game["game"]["dateStarted"]);
   $("#date-finished").text(game["game"]["dateFinished"]);
   $("#game-status").text(game["status"]);
