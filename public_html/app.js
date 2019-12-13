@@ -17,6 +17,7 @@ let books = require("./routes/books");
 let pente = require("./routes/pente");
 //helper variables
 let usernameregex = /^[a-zA-Z0-9]{5,}$/;
+let gameidregex = /^[A-Z0-9]{5}$/;
 let passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
 //helper functions
 let sha512 = function(password, salt){
@@ -180,10 +181,10 @@ app.post("/createPenteAccount", function(req, res) {
     //       return res.status(404).end({message: "Error Registering"});
     //     }
     // });
-    // console.log("User successfully registered");
-    //  res.status(206).send({
-    //     message: "Username " + username + " registered"
-    // });
+    console.log("User successfully registered");
+     res.status(206).send({
+        message: "Username " + username + " registered"
+    });
   }
   else {
     console.log("Username already registered");
@@ -241,11 +242,17 @@ server.listen(3002, "localhost", function () {
  socket.on("join-game", function(gameId) {
    //do nothing if client is not logged in
    if (socket.clientUsername == null || gameId == null) {
+     socket.emit('cannot-join', "Cannot join as you're not logged in or you didn't provide a game ID");
+     return;
+   }
+   //do nothing if client is not logged in
+   if (! gameId.match(gameidregex)) {
+     socket.emit('cannot-join', "Cannot join as gameID must exactly 5 A-Z, 0-9 characters");
      return;
    }
    //joining game conditions for failure
    if (gameId in completedGames) {
-     socket.emit('cannot-join', "Cannot join game as it already finished")
+     socket.emit('cannot-join', "Cannot join game as it already finished");
      return;
    } else if (gameId in activeGamesToPlayers) {
      if (activeGamesToPlayers[gameId].BLACK != null && activeGamesToPlayers[gameId].BLACK != socket.clientUsername
