@@ -176,3 +176,21 @@ h3 {
   display:none;
   transition: all .5s ease-in-out;
 }
+
+.pente-button {
+  text-align: center;
+  background-color: brown;
+  border: 2px solid BLACK;
+  color: white;
+  font-weight: bold;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  max-width: 8rem;
+  a {
+    color: white;
+  }
+  &:hover {
+    background-color: rgb(143, 82, 0);
+    cursor: pointer;
+  }
+}

@@ -2,13 +2,6 @@ expanded = [false];
 
 $(window).on("load", function() {
   loadNavigation(0);
-  //socket io test
-  //origins: '*:*',
-  $(window).on('beforeunload', function(){
-    socket.close();
-  });
-  //var socket = io();
-  console.info(socket);
   /* removed visitor number
   //let storedCookie = $.cookie("visitorNum");
   let myNumber = -1;
@@ -33,6 +26,9 @@ $(window).on("load", function() {
   });
   $("body").on("click", "#expand-previous1", (e) => {
     expand(1, e);
+  });
+  $("body").on("click", "#expand-previous2", (e) => {
+    expand(2, e);
   });
   $("#featured-game").css("display", "none");
   $("#mobile-message").css("display", "none");
