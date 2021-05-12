@@ -5,7 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.16.3",
-    "nodemailer": "^4.6.5"
+    "nodemailer": "^6.4.16"
   },
   "devDependencies": {},
   "scripts": {
