@@ -34,7 +34,7 @@
     "gulp-sass": "^4.0.1",
     "helmet": "^3.21.2",
     "jquery": "^3.4.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "nodemon": "^1.17.5",
     "session": "^0.1.0"
   },
